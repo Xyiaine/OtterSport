@@ -1,0 +1,283 @@
+import type { Express } from "express";
+import { createServer, type Server } from "http";
+import { storage } from "./storage";
+import { setupAuth, isAuthenticated } from "./replitAuth";
+import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeckExerciseSchema } from "@shared/schema";
+import { z } from "zod";
+
+export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth middleware
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // User profile routes
+  app.patch('/api/user/profile', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const updates = req.body;
+      const user = await storage.updateUserProgress(userId, updates);
+      res.json(user);
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      res.status(500).json({ message: "Failed to update profile" });
+    }
+  });
+
+  app.get('/api/user/stats', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const stats = await storage.getUserStats(userId);
+      res.json(stats);
+    } catch (error) {
+      console.error("Error fetching user stats:", error);
+      res.status(500).json({ message: "Failed to fetch stats" });
+    }
+  });
+
+  // Exercise routes
+  app.get('/api/exercises', async (req, res) => {
+    try {
+      const category = req.query.category as string;
+      const exercises = category 
+        ? await storage.getExercisesByCategory(category)
+        : await storage.getExercises();
+      res.json(exercises);
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
+      res.status(500).json({ message: "Failed to fetch exercises" });
+    }
+  });
+
+  app.post('/api/exercises', isAuthenticated, async (req: any, res) => {
+    try {
+      const exerciseData = insertExerciseSchema.parse(req.body);
+      const exercise = await storage.createExercise(exerciseData);
+      res.json(exercise);
+    } catch (error) {
+      console.error("Error creating exercise:", error);
+      res.status(500).json({ message: "Failed to create exercise" });
+    }
+  });
+
+  // Deck routes
+  app.get('/api/decks', async (req, res) => {
+    try {
+      const decks = await storage.getDecks();
+      res.json(decks);
+    } catch (error) {
+      console.error("Error fetching decks:", error);
+      res.status(500).json({ message: "Failed to fetch decks" });
+    }
+  });
+
+  app.get('/api/decks/:id', async (req, res) => {
+    try {
+      const deckId = parseInt(req.params.id);
+      const deck = await storage.getDeckWithExercises(deckId);
+      if (!deck) {
+        return res.status(404).json({ message: "Deck not found" });
+      }
+      res.json(deck);
+    } catch (error) {
+      console.error("Error fetching deck:", error);
+      res.status(500).json({ message: "Failed to fetch deck" });
+    }
+  });
+
+  app.post('/api/decks', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const deckData = insertDeckSchema.parse({
+        ...req.body,
+        createdBy: userId,
+        isCustom: true,
+      });
+      const deck = await storage.createDeck(deckData);
+      res.json(deck);
+    } catch (error) {
+      console.error("Error creating deck:", error);
+      res.status(500).json({ message: "Failed to create deck" });
+    }
+  });
+
+  app.post('/api/decks/:id/exercises', isAuthenticated, async (req: any, res) => {
+    try {
+      const deckId = parseInt(req.params.id);
+      const deckExerciseData = insertDeckExerciseSchema.parse({
+        ...req.body,
+        deckId,
+      });
+      const deckExercise = await storage.addExerciseToDeck(deckExerciseData);
+      res.json(deckExercise);
+    } catch (error) {
+      console.error("Error adding exercise to deck:", error);
+      res.status(500).json({ message: "Failed to add exercise to deck" });
+    }
+  });
+
+  app.get('/api/user/decks', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const decks = await storage.getUserCustomDecks(userId);
+      res.json(decks);
+    } catch (error) {
+      console.error("Error fetching user decks:", error);
+      res.status(500).json({ message: "Failed to fetch user decks" });
+    }
+  });
+
+  // Workout routes
+  app.post('/api/workouts', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const workoutData = insertWorkoutSchema.parse({
+        ...req.body,
+        userId,
+        startedAt: new Date(),
+      });
+      const workout = await storage.createWorkout(workoutData);
+      res.json(workout);
+    } catch (error) {
+      console.error("Error creating workout:", error);
+      res.status(500).json({ message: "Failed to create workout" });
+    }
+  });
+
+  app.patch('/api/workouts/:id/complete', isAuthenticated, async (req: any, res) => {
+    try {
+      const workoutId = parseInt(req.params.id);
+      const { feedback, duration, calories } = req.body;
+      
+      if (!feedback || typeof duration !== 'number') {
+        return res.status(400).json({ message: "Feedback and duration are required" });
+      }
+
+      const workout = await storage.completeWorkout(workoutId, feedback, duration, calories);
+      res.json(workout);
+    } catch (error) {
+      console.error("Error completing workout:", error);
+      res.status(500).json({ message: "Failed to complete workout" });
+    }
+  });
+
+  app.get('/api/user/workouts', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+      const workouts = await storage.getUserWorkouts(userId, limit);
+      res.json(workouts);
+    } catch (error) {
+      console.error("Error fetching user workouts:", error);
+      res.status(500).json({ message: "Failed to fetch workouts" });
+    }
+  });
+
+  // Achievement routes
+  app.get('/api/achievements', async (req, res) => {
+    try {
+      const achievements = await storage.getAchievements();
+      res.json(achievements);
+    } catch (error) {
+      console.error("Error fetching achievements:", error);
+      res.status(500).json({ message: "Failed to fetch achievements" });
+    }
+  });
+
+  app.get('/api/user/achievements', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const achievements = await storage.getUserAchievements(userId);
+      res.json(achievements);
+    } catch (error) {
+      console.error("Error fetching user achievements:", error);
+      res.status(500).json({ message: "Failed to fetch achievements" });
+    }
+  });
+
+  // Initialize data route
+  app.post('/api/init-data', async (req, res) => {
+    try {
+      // Create default exercises
+      const defaultExercises = [
+        { name: "Jumping Jacks", category: "cardio", difficulty: 1.0, defaultReps: 20, instructions: "Jump with feet apart while raising arms overhead, then return to starting position.", icon: "fas fa-running" },
+        { name: "Push-ups", category: "strength", difficulty: 1.2, defaultReps: 10, instructions: "Start in plank position, lower chest to ground, then push back up.", icon: "fas fa-dumbbell" },
+        { name: "Squats", category: "strength", difficulty: 1.0, defaultReps: 15, instructions: "Stand with feet shoulder-width apart, lower hips back and down, then stand up.", icon: "fas fa-arrows-alt-v" },
+        { name: "Plank", category: "strength", difficulty: 1.1, defaultDuration: 30, instructions: "Hold a straight line from head to heels in push-up position.", icon: "fas fa-minus" },
+        { name: "Mountain Climbers", category: "cardio", difficulty: 1.3, defaultReps: 20, instructions: "In plank position, alternate bringing knees to chest rapidly.", icon: "fas fa-mountain" },
+        { name: "Burpees", category: "mixed", difficulty: 1.8, defaultReps: 5, instructions: "Squat down, jump back to plank, do push-up, jump feet forward, then jump up.", icon: "fas fa-fire" },
+        { name: "Lunges", category: "strength", difficulty: 1.1, defaultReps: 12, instructions: "Step forward and lower hips until both knees are at 90 degrees.", icon: "fas fa-walking" },
+        { name: "High Knees", category: "cardio", difficulty: 0.9, defaultReps: 20, instructions: "Run in place bringing knees up to hip level.", icon: "fas fa-running" },
+      ];
+
+      for (const exerciseData of defaultExercises) {
+        await storage.createExercise(exerciseData);
+      }
+
+      // Create default decks
+      const cardioBlast = await storage.createDeck({
+        name: "Cardio Blast",
+        description: "Quick cardio workout to get your heart pumping",
+        category: "cardio",
+        difficulty: 1.0,
+        estimatedMinutes: 15,
+        isCustom: false,
+      });
+
+      const strengthBuilder = await storage.createDeck({
+        name: "Strength Builder",
+        description: "Build muscle with bodyweight exercises",
+        category: "strength",
+        difficulty: 1.2,
+        estimatedMinutes: 20,
+        isCustom: false,
+      });
+
+      const quickStart = await storage.createDeck({
+        name: "Quick Start",
+        description: "Perfect for beginners - easy and effective",
+        category: "mixed",
+        difficulty: 0.8,
+        estimatedMinutes: 10,
+        isCustom: false,
+      });
+
+      // Add exercises to decks (simplified for brevity)
+      const exercises = await storage.getExercises();
+      const jumpingJacks = exercises.find(e => e.name === "Jumping Jacks");
+      const pushUps = exercises.find(e => e.name === "Push-ups");
+      const squats = exercises.find(e => e.name === "Squats");
+      const plank = exercises.find(e => e.name === "Plank");
+
+      if (jumpingJacks && pushUps && squats && plank) {
+        // Cardio Blast deck
+        await storage.addExerciseToDeck({ deckId: cardioBlast.id, exerciseId: jumpingJacks.id, order: 1 });
+        await storage.addExerciseToDeck({ deckId: cardioBlast.id, exerciseId: squats.id, order: 2 });
+        
+        // Quick Start deck  
+        await storage.addExerciseToDeck({ deckId: quickStart.id, exerciseId: jumpingJacks.id, order: 1, customReps: 10 });
+        await storage.addExerciseToDeck({ deckId: quickStart.id, exerciseId: pushUps.id, order: 2, customReps: 5 });
+        await storage.addExerciseToDeck({ deckId: quickStart.id, exerciseId: squats.id, order: 3, customReps: 10 });
+        await storage.addExerciseToDeck({ deckId: quickStart.id, exerciseId: plank.id, order: 4, customDuration: 20 });
+      }
+
+      res.json({ message: "Data initialized successfully" });
+    } catch (error) {
+      console.error("Error initializing data:", error);
+      res.status(500).json({ message: "Failed to initialize data" });
+    }
+  });
+
+  const httpServer = createServer(app);
+  return httpServer;
+}

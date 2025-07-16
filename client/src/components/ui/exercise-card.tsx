@@ -1,0 +1,173 @@
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import type { Exercise } from "@shared/schema";
+
+interface ExerciseCardProps {
+  exercise: Exercise;
+  reps?: number | null;
+  duration?: number | null;
+  onComplete: () => void;
+  onSkip: () => void;
+}
+
+export default function ExerciseCard({ 
+  exercise, 
+  reps, 
+  duration, 
+  onComplete, 
+  onSkip 
+}: ExerciseCardProps) {
+  const [timer, setTimer] = useState(duration || 0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isTimerRunning && timer > 0) {
+      interval = setInterval(() => {
+        setTimer(prev => {
+          if (prev <= 1) {
+            setIsTimerRunning(false);
+            setIsCompleted(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isTimerRunning, timer]);
+
+  const startTimer = () => {
+    if (duration && !isCompleted) {
+      setIsTimerRunning(true);
+    }
+  };
+
+  const pauseTimer = () => {
+    setIsTimerRunning(false);
+  };
+
+  const resetTimer = () => {
+    setTimer(duration || 0);
+    setIsTimerRunning(false);
+    setIsCompleted(false);
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getExerciseIcon = () => {
+    return exercise.icon || "fas fa-dumbbell";
+  };
+
+  return (
+    <Card className="w-full max-w-sm mx-auto shadow-lg border-slate-100 animate-slide-up">
+      <CardContent className="p-8 text-center space-y-6 min-h-96 flex flex-col justify-center">
+        {/* Exercise Icon */}
+        <div className="w-16 h-16 mx-auto bg-otter-teal-light rounded-full flex items-center justify-center">
+          <i className={`${getExerciseIcon()} text-2xl text-otter-teal`}></i>
+        </div>
+
+        {/* Exercise Info */}
+        <div className="space-y-3">
+          <h2 className="text-2xl font-bold text-slate-800">{exercise.name}</h2>
+          
+          {reps && (
+            <div className="text-4xl font-bold text-otter-teal">{reps}</div>
+          )}
+          
+          {exercise.instructions && (
+            <p className="text-slate-600 text-sm leading-relaxed">
+              {exercise.instructions}
+            </p>
+          )}
+        </div>
+
+        {/* Timer Display for Duration-based Exercises */}
+        {duration && (
+          <div className="space-y-4">
+            <div className="text-6xl font-bold text-slate-700">
+              {formatTime(timer)}
+            </div>
+            
+            {/* Timer Controls */}
+            <div className="flex justify-center space-x-2">
+              {!isTimerRunning && timer > 0 && !isCompleted && (
+                <Button
+                  onClick={startTimer}
+                  variant="outline"
+                  size="sm"
+                  className="hover:bg-emerald-50 hover:border-emerald-500 hover:text-emerald-600"
+                >
+                  <i className="fas fa-play mr-1"></i>
+                  Start
+                </Button>
+              )}
+              
+              {isTimerRunning && (
+                <Button
+                  onClick={pauseTimer}
+                  variant="outline"
+                  size="sm"
+                  className="hover:bg-amber-50 hover:border-amber-500 hover:text-amber-600"
+                >
+                  <i className="fas fa-pause mr-1"></i>
+                  Pause
+                </Button>
+              )}
+              
+              {(timer < (duration || 0) || isCompleted) && (
+                <Button
+                  onClick={resetTimer}
+                  variant="outline"
+                  size="sm"
+                  className="hover:bg-slate-50"
+                >
+                  <i className="fas fa-redo mr-1"></i>
+                  Reset
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Completion Status */}
+        {isCompleted && (
+          <div className="space-y-2">
+            <div className="text-emerald-600 font-semibold">
+              <i className="fas fa-check-circle mr-2"></i>
+              Time's up! Great job!
+            </div>
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        <div className="space-y-3 mt-8">
+          <Button
+            onClick={onComplete}
+            className="w-full bg-otter-teal hover:bg-teal-600 text-white py-3 font-semibold transition-all transform hover:scale-105"
+          >
+            <i className="fas fa-check mr-2"></i>
+            Exercise Complete
+          </Button>
+          
+          <div className="flex space-x-3">
+            <Button
+              onClick={onSkip}
+              variant="outline"
+              className="flex-1 py-2 hover:bg-slate-50"
+            >
+              <i className="fas fa-forward mr-2"></i>
+              Skip
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
