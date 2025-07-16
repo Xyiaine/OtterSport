@@ -11,6 +11,7 @@ import { apiRequest } from "@/lib/queryClient";
 import ExerciseCard from "@/components/ui/exercise-card";
 import FeedbackModal from "@/components/ui/feedback-modal";
 import OtterCharacter from "@/components/ui/otter-character";
+import CardDeckSelection from "@/components/ui/card-deck-selection";
 import type { Deck, DeckExercise, Exercise, Workout } from "@shared/schema";
 
 type DeckWithExercises = Deck & { 
@@ -36,6 +37,10 @@ export default function WorkoutPage() {
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [workoutStartTime, setWorkoutStartTime] = useState<Date | null>(null);
+  
+  // Card selection state
+  const [workoutPhase, setWorkoutPhase] = useState<'card-selection' | 'exercise' | 'complete'>('card-selection');
+  const [selectedExercises, setSelectedExercises] = useState<number[]>([]);
   
   // AI Challenge specific state
   const [aiScore, setAiScore] = useState(0);
@@ -134,16 +139,16 @@ export default function WorkoutPage() {
     return () => clearInterval(interval);
   }, [isTimerRunning]);
 
-  // Initialize workout when deck is loaded
+  // Initialize workout when deck is loaded (after card selection)
   useEffect(() => {
-    if (deck && !currentWorkout && user) {
-      const totalCards = deck.exercises.length;
+    if (deck && !currentWorkout && user && workoutPhase === 'exercise') {
+      const totalCards = selectedExercises.length || deck.exercises.length;
       createWorkoutMutation.mutate({
         deckId: deck.id,
         totalCards,
       });
     }
-  }, [deck, currentWorkout, user]);
+  }, [deck, currentWorkout, user, workoutPhase, selectedExercises]);
 
   const startTimer = () => {
     setIsTimerRunning(true);
@@ -191,6 +196,11 @@ export default function WorkoutPage() {
 
   const handleSkipExercise = () => {
     handleCompleteExercise();
+  };
+
+  const handleCardSelection = (exerciseIndex: number) => {
+    setSelectedExercises([exerciseIndex]);
+    setWorkoutPhase('exercise');
   };
 
   const handleFeedbackSubmit = (feedback: string) => {
@@ -246,7 +256,19 @@ export default function WorkoutPage() {
     );
   }
 
-  const currentExercise = deck.exercises[currentCardIndex];
+  // Get current exercise based on selected cards or normal flow
+  const currentExercise = selectedExercises.length > 0 
+    ? deck.exercises[selectedExercises[currentCardIndex]] 
+    : deck.exercises[currentCardIndex];
+
+  // Show card selection phase first
+  if (workoutPhase === 'card-selection') {
+    return <CardDeckSelection 
+      deck={deck} 
+      onCardSelected={handleCardSelection}
+      gameMode={gameMode}
+    />;
+  }
 
   return (
     <div className="min-h-screen p-6 max-w-md mx-auto space-y-6">

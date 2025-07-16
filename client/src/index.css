@@ -95,6 +95,19 @@
   .animate-slide-up {
     animation: slideUp 0.3s ease-out;
   }
+  
+  /* Framer Motion 3D transforms */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
 }
 
 @keyframes cardFlip {
