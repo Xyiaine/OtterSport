@@ -8,6 +8,7 @@ export default function BottomNavigation() {
     { id: "workout", path: "/workout", icon: "fas fa-play", label: "Workout" },
     { id: "progress", path: "/progress", icon: "fas fa-chart-line", label: "Progress" },
     { id: "decks", path: "/decks", icon: "fas fa-layer-group", label: "Decks" },
+    { id: "artist", path: "/game-artist", icon: "fas fa-palette", label: "Artist" },
   ];
 
   const isActive = (path: string) => {

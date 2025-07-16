@@ -14,12 +14,18 @@ interface CardDeckSelectionProps {
   deck: DeckWithExercises;
   onCardSelected: (exerciseIndex: number) => void;
   gameMode: string;
+  playerHand?: number[];
+  aiHandSize?: number;
+  deckSize?: number;
 }
 
 export default function CardDeckSelection({ 
   deck, 
   onCardSelected,
-  gameMode 
+  gameMode,
+  playerHand = [],
+  aiHandSize = 0,
+  deckSize = 0
 }: CardDeckSelectionProps) {
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
   const [revealedCards, setRevealedCards] = useState(false);
@@ -44,9 +50,32 @@ export default function CardDeckSelection({
     }, 600);
   };
 
+  // Get exercises to display (either from hand or all exercises)
+  const exercisesToShow = gameMode === 'ai-challenge' && playerHand.length > 0 
+    ? playerHand.map(cardIndex => deck.exercises[cardIndex])
+    : deck.exercises;
+
   return (
     <div className="min-h-screen p-4 bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="max-w-4xl mx-auto">
+        
+        {/* Hand Size Display for AI Challenge */}
+        {gameMode === 'ai-challenge' && (
+          <div className="flex justify-between items-center mb-6 p-4 bg-white rounded-lg shadow-sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{playerHand.length}</div>
+              <div className="text-sm text-gray-600">Your Hand</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-500">{deckSize}</div>
+              <div className="text-sm text-gray-600">Deck</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">{aiHandSize}</div>
+              <div className="text-sm text-gray-600">AI Hand</div>
+            </div>
+          </div>
+        )}
         
         {/* Intro Phase */}
         <AnimatePresence>
@@ -142,36 +171,43 @@ export default function CardDeckSelection({
 
               {/* Cards Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                {deck.exercises.map((deckExercise, index) => (
-                  <motion.div
-                    key={deckExercise.exercise.id}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ 
-                      opacity: 1, 
-                      scale: selectedCards.includes(index) ? 1.05 : 1,
-                    }}
-                    transition={{ 
-                      delay: index * 0.1,
-                      duration: 0.5,
-                    }}
-                    className={`transform transition-all duration-300 ${
-                      selectedCards.includes(index) 
-                        ? 'ring-4 ring-otter-teal ring-opacity-50 shadow-2xl' 
-                        : currentSelectionPhase === 'selecting' 
-                          ? 'hover:scale-105 cursor-pointer' 
-                          : ''
-                    }`}
-                  >
-                    <CardDrawAnimation
-                      exercise={deckExercise.exercise}
-                      reps={deckExercise.customReps || deckExercise.exercise.defaultReps}
-                      duration={deckExercise.customDuration || deckExercise.exercise.defaultDuration}
-                      onCardSelect={() => handleCardSelect(index)}
-                      isRevealed={revealedCards}
-                      cardIndex={index}
-                    />
-                  </motion.div>
-                ))}
+                {exercisesToShow.map((deckExercise, displayIndex) => {
+                  // Get the actual deck index for AI challenge mode
+                  const actualIndex = gameMode === 'ai-challenge' && playerHand.length > 0 
+                    ? playerHand[displayIndex] 
+                    : displayIndex;
+                  
+                  return (
+                    <motion.div
+                      key={deckExercise.exercise.id}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ 
+                        opacity: 1, 
+                        scale: selectedCards.includes(actualIndex) ? 1.05 : 1,
+                      }}
+                      transition={{ 
+                        delay: displayIndex * 0.1,
+                        duration: 0.5,
+                      }}
+                      className={`transform transition-all duration-300 ${
+                        selectedCards.includes(actualIndex) 
+                          ? 'ring-4 ring-otter-teal ring-opacity-50 shadow-2xl' 
+                          : currentSelectionPhase === 'selecting' 
+                            ? 'hover:scale-105 cursor-pointer' 
+                            : ''
+                      }`}
+                    >
+                      <CardDrawAnimation
+                        exercise={deckExercise.exercise}
+                        reps={deckExercise.customReps || deckExercise.exercise.defaultReps}
+                        duration={deckExercise.customDuration || deckExercise.exercise.defaultDuration}
+                        onCardSelect={() => handleCardSelect(actualIndex)}
+                        isRevealed={revealedCards}
+                        cardIndex={displayIndex}
+                      />
+                    </motion.div>
+                  );
+                })}
               </div>
 
               {/* Selection Status */}

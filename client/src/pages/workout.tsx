@@ -42,6 +42,11 @@ export default function WorkoutPage() {
   const [workoutPhase, setWorkoutPhase] = useState<'card-selection' | 'exercise' | 'complete'>('card-selection');
   const [selectedExercises, setSelectedExercises] = useState<number[]>([]);
   
+  // Hand management state
+  const [playerHand, setPlayerHand] = useState<number[]>([]);
+  const [aiHand, setAiHand] = useState<number[]>([]);
+  const [deckCards, setDeckCards] = useState<number[]>([]);
+  
   // AI Challenge specific state
   const [aiScore, setAiScore] = useState(0);
   const [playerScore, setPlayerScore] = useState(0);
@@ -139,6 +144,22 @@ export default function WorkoutPage() {
     return () => clearInterval(interval);
   }, [isTimerRunning]);
 
+  // Initialize hands when deck is loaded
+  useEffect(() => {
+    if (deck && deckCards.length === 0) {
+      const allCardIndices = deck.exercises.map((_, index) => index);
+      setDeckCards([...allCardIndices]);
+      
+      if (gameMode === 'ai-challenge') {
+        // Deal initial hands for AI challenge mode
+        const shuffledCards = [...allCardIndices].sort(() => Math.random() - 0.5);
+        setPlayerHand(shuffledCards.slice(0, 5));
+        setAiHand(shuffledCards.slice(5, 10));
+        setDeckCards(shuffledCards.slice(10));
+      }
+    }
+  }, [deck, gameMode]);
+
   // Initialize workout when deck is loaded (after card selection)
   useEffect(() => {
     if (deck && !currentWorkout && user && workoutPhase === 'exercise') {
@@ -158,38 +179,75 @@ export default function WorkoutPage() {
     setIsTimerRunning(!isTimerRunning);
   };
 
+  const drawCardFromDeck = () => {
+    if (deckCards.length > 0) {
+      const drawnCard = deckCards[0];
+      setDeckCards(prev => prev.slice(1));
+      return drawnCard;
+    }
+    return null;
+  };
+
   const handleCompleteExercise = () => {
     if (!deck) return;
 
     // AI Challenge scoring logic
     if (gameMode === 'ai-challenge') {
       const baseScore = difficulty === 'easy' ? 10 : difficulty === 'normal' ? 15 : 20;
-      const timeBonus = Math.max(0, 30 - (timer % 60)) / 3; // Faster completion = more points
+      const timeBonus = Math.max(0, 30 - (timer % 60)) / 3;
       const exerciseScore = Math.floor(baseScore + timeBonus);
       
       setPlayerScore(prev => prev + exerciseScore);
       
-      // AI progresses at varying speeds based on difficulty
+      // AI draws a card after player completes exercise
+      const aiDrawnCard = drawCardFromDeck();
+      if (aiDrawnCard !== null) {
+        setAiHand(prev => [...prev, aiDrawnCard]);
+      }
+      
+      // Player draws a card after completing exercise
+      const playerDrawnCard = drawCardFromDeck();
+      if (playerDrawnCard !== null) {
+        setPlayerHand(prev => [...prev, playerDrawnCard]);
+      }
+
+      // Remove completed card from player's hand
+      if (selectedExercises.length > 0) {
+        setPlayerHand(prev => prev.filter(card => card !== selectedExercises[currentCardIndex]));
+      }
+      
+      // AI progresses and scores
       const aiSpeed = difficulty === 'easy' ? 0.8 : difficulty === 'normal' ? 1.0 : 1.2;
       const aiProgressIncrement = (100 / deck.exercises.length) * aiSpeed * (0.9 + Math.random() * 0.2);
       setAiProgress(prev => Math.min(100, prev + aiProgressIncrement));
       
-      // AI scores based on its progress
       if (aiProgress < 100) {
         const aiExerciseScore = Math.floor(baseScore * 0.9 + Math.random() * 5);
         setAiScore(prev => prev + aiExerciseScore);
       }
+
+      // Check if hands are depleted
+      if (playerHand.length <= 1 && deckCards.length === 0) {
+        setIsWorkoutComplete(true);
+        setIsTimerRunning(false);
+        setShowFeedback(true);
+        return;
+      }
+
+      // Continue to next card selection
+      setWorkoutPhase('card-selection');
+      setCurrentCardIndex(0);
+      return;
     }
 
+    // Solo mode logic
     const nextIndex = currentCardIndex + 1;
     
-    if (nextIndex >= deck.exercises.length) {
-      // Workout complete
+    if (nextIndex >= (selectedExercises.length || deck.exercises.length)) {
       setIsWorkoutComplete(true);
       setIsTimerRunning(false);
       setShowFeedback(true);
     } else {
-      // Move to next exercise
       setCurrentCardIndex(nextIndex);
     }
   };
@@ -199,8 +257,17 @@ export default function WorkoutPage() {
   };
 
   const handleCardSelection = (exerciseIndex: number) => {
-    setSelectedExercises([exerciseIndex]);
-    setWorkoutPhase('exercise');
+    if (gameMode === 'ai-challenge') {
+      // In AI mode, player selects from their hand
+      if (playerHand.includes(exerciseIndex)) {
+        setSelectedExercises([exerciseIndex]);
+        setWorkoutPhase('exercise');
+      }
+    } else {
+      // In solo mode, select from available cards
+      setSelectedExercises([exerciseIndex]);
+      setWorkoutPhase('exercise');
+    }
   };
 
   const handleFeedbackSubmit = (feedback: string) => {
@@ -267,6 +334,9 @@ export default function WorkoutPage() {
       deck={deck} 
       onCardSelected={handleCardSelection}
       gameMode={gameMode}
+      playerHand={playerHand}
+      aiHandSize={aiHand.length}
+      deckSize={deckCards.length}
     />;
   }
 
