@@ -10,6 +10,7 @@ import Onboarding from "@/pages/onboarding";
 import Workout from "@/pages/workout";
 import Progress from "@/pages/progress";
 import DeckCreation from "@/pages/deck-creation";
+import GameModes from "@/pages/game-modes";
 import NotFound from "@/pages/not-found";
 import BottomNavigation from "@/components/ui/bottom-navigation";
 
@@ -36,6 +37,7 @@ function Router() {
             <Route path="/workout/:deckId?" component={Workout} />
             <Route path="/progress" component={Progress} />
             <Route path="/decks" component={DeckCreation} />
+            <Route path="/game-modes/:mode" component={GameModes} />
           </>
         )}
         <Route component={NotFound} />

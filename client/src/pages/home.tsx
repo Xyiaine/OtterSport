@@ -199,17 +199,22 @@ export default function Home() {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-slate-800">Game Modes</h3>
         <div className="grid grid-cols-2 gap-3">
-          <Card className="shadow-sm border-slate-200 hover:border-otter-teal hover:bg-otter-teal-light transition-all cursor-pointer">
+          <Card 
+            className="shadow-sm border-slate-200 hover:border-otter-teal hover:bg-otter-teal-light transition-all cursor-pointer"
+            onClick={() => setLocation('/game-modes/solo')}
+          >
             <CardContent className="p-4 text-center space-y-2">
               <i className="fas fa-user text-2xl text-slate-400"></i>
               <div className="text-sm font-medium text-slate-700">Solo Play</div>
             </CardContent>
           </Card>
-          <Card className="shadow-sm border-slate-200 hover:border-otter-teal hover:bg-otter-teal-light transition-all cursor-pointer opacity-75">
+          <Card 
+            className="shadow-sm border-slate-200 hover:border-otter-teal hover:bg-otter-teal-light transition-all cursor-pointer"
+            onClick={() => setLocation('/game-modes/ai-challenge')}
+          >
             <CardContent className="p-4 text-center space-y-2">
               <i className="fas fa-robot text-2xl text-slate-400"></i>
               <div className="text-sm font-medium text-slate-700">AI Challenge</div>
-              <Badge variant="outline" className="text-xs">Coming Soon</Badge>
             </CardContent>
           </Card>
         </div>

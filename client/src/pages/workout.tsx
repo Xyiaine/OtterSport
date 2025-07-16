@@ -24,6 +24,11 @@ export default function WorkoutPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
+  // Get URL parameters for game mode
+  const urlParams = new URLSearchParams(window.location.search);
+  const gameMode = urlParams.get('mode') || 'solo';
+  const difficulty = urlParams.get('difficulty') || 'normal';
+
   const [currentWorkout, setCurrentWorkout] = useState<Workout | null>(null);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isWorkoutComplete, setIsWorkoutComplete] = useState(false);
@@ -31,6 +36,11 @@ export default function WorkoutPage() {
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [workoutStartTime, setWorkoutStartTime] = useState<Date | null>(null);
+  
+  // AI Challenge specific state
+  const [aiScore, setAiScore] = useState(0);
+  const [playerScore, setPlayerScore] = useState(0);
+  const [aiProgress, setAiProgress] = useState(0);
 
   // Fetch deck with exercises
   const { data: deck, isLoading } = useQuery<DeckWithExercises>({
@@ -146,6 +156,26 @@ export default function WorkoutPage() {
   const handleCompleteExercise = () => {
     if (!deck) return;
 
+    // AI Challenge scoring logic
+    if (gameMode === 'ai-challenge') {
+      const baseScore = difficulty === 'easy' ? 10 : difficulty === 'normal' ? 15 : 20;
+      const timeBonus = Math.max(0, 30 - (timer % 60)) / 3; // Faster completion = more points
+      const exerciseScore = Math.floor(baseScore + timeBonus);
+      
+      setPlayerScore(prev => prev + exerciseScore);
+      
+      // AI progresses at varying speeds based on difficulty
+      const aiSpeed = difficulty === 'easy' ? 0.8 : difficulty === 'normal' ? 1.0 : 1.2;
+      const aiProgressIncrement = (100 / deck.exercises.length) * aiSpeed * (0.9 + Math.random() * 0.2);
+      setAiProgress(prev => Math.min(100, prev + aiProgressIncrement));
+      
+      // AI scores based on its progress
+      if (aiProgress < 100) {
+        const aiExerciseScore = Math.floor(baseScore * 0.9 + Math.random() * 5);
+        setAiScore(prev => prev + aiExerciseScore);
+      }
+    }
+
     const nextIndex = currentCardIndex + 1;
     
     if (nextIndex >= deck.exercises.length) {
@@ -232,7 +262,9 @@ export default function WorkoutPage() {
         </Button>
         <div className="text-center">
           <h1 className="font-semibold text-slate-800">{deck.name}</h1>
-          <p className="text-sm text-slate-600">{formatTime(timer)}</p>
+          <p className="text-sm text-slate-600">
+            {gameMode === 'ai-challenge' ? 'AI Challenge' : 'Solo Play'} • {formatTime(timer)}
+          </p>
         </div>
         <Button 
           variant="ghost" 
@@ -252,6 +284,58 @@ export default function WorkoutPage() {
         <Progress value={getProgressPercentage()} className="h-2" />
       </div>
 
+      {/* AI Challenge Scoreboard */}
+      {gameMode === 'ai-challenge' && (
+        <Card className="bg-gradient-to-r from-otter-teal-light to-blue-50 border-otter-teal">
+          <CardContent className="p-4">
+            <div className="grid grid-cols-2 gap-4">
+              {/* Player Score */}
+              <div className="text-center">
+                <div className="flex items-center justify-center space-x-2 mb-1">
+                  <i className="fas fa-user text-otter-teal"></i>
+                  <span className="text-sm font-medium text-slate-700">You</span>
+                </div>
+                <div className="text-2xl font-bold text-otter-teal">{playerScore}</div>
+                <div className="text-xs text-slate-600">points</div>
+              </div>
+              
+              {/* AI Score */}
+              <div className="text-center">
+                <div className="flex items-center justify-center space-x-2 mb-1">
+                  <i className="fas fa-robot text-blue-500"></i>
+                  <span className="text-sm font-medium text-slate-700">AI</span>
+                </div>
+                <div className="text-2xl font-bold text-blue-500">{aiScore}</div>
+                <div className="text-xs text-slate-600">points</div>
+              </div>
+            </div>
+            
+            {/* AI Progress Bar */}
+            <div className="mt-3">
+              <div className="flex justify-between text-xs text-slate-600 mb-1">
+                <span>AI Progress</span>
+                <span>{Math.round(aiProgress)}%</span>
+              </div>
+              <Progress value={aiProgress} className="h-1.5 bg-slate-200">
+                <div className="bg-blue-500 h-full rounded-full transition-all duration-500" 
+                     style={{ width: `${aiProgress}%` }} />
+              </Progress>
+            </div>
+            
+            {/* Competition Status */}
+            <div className="text-center mt-2">
+              {playerScore > aiScore ? (
+                <span className="text-xs text-green-600 font-medium">🎯 You're in the lead!</span>
+              ) : playerScore < aiScore ? (
+                <span className="text-xs text-orange-600 font-medium">🔥 AI is ahead - push harder!</span>
+              ) : (
+                <span className="text-xs text-slate-600 font-medium">⚖️ It's a tie!</span>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Exercise Card */}
       {currentExercise && (
         <div className="flex-1 flex items-center justify-center">
@@ -269,10 +353,17 @@ export default function WorkoutPage() {
       {currentCardIndex === 0 && (
         <div className="text-center space-y-2">
           <div className="w-16 h-16 mx-auto">
-            <OtterCharacter mood="excited" size="sm" animated />
+            <OtterCharacter 
+              mood={gameMode === 'ai-challenge' ? 'competitive' : 'excited'} 
+              size="sm" 
+              animated 
+            />
           </div>
           <p className="text-sm text-slate-600 font-medium">
-            You've got this! Let's crush this workout! 💪
+            {gameMode === 'ai-challenge' 
+              ? 'Time to battle! Show that AI who\'s boss! 🏆'
+              : 'You\'ve got this! Let\'s crush this workout! 💪'
+            }
           </p>
         </div>
       )}
