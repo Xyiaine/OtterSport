@@ -76,7 +76,7 @@ export default function CardDrawAnimation({
 
   return (
     <motion.div
-      className="relative perspective-1000"
+      className="relative perspective-1000 z-20"
       variants={cardVariants}
       initial="hidden"
       animate={isRevealed ? "revealed" : "hidden"}
@@ -84,7 +84,7 @@ export default function CardDrawAnimation({
       style={{ perspective: "1000px" }}
     >
       <motion.div
-        className="relative w-full h-64 preserve-3d cursor-pointer"
+        className="relative w-full h-64 preserve-3d cursor-pointer z-20"
         animate={isFlipped ? "back" : "front"}
         variants={flipVariants}
         onClick={isFlipped ? onCardSelect : undefined}
@@ -120,8 +120,8 @@ export default function CardDrawAnimation({
             transform: "rotateY(180deg)"
           }}
         >
-          <Card className="w-full h-full bg-white border-2 border-otter-teal shadow-xl hover:shadow-2xl transition-shadow">
-            <CardContent className="h-full p-6 flex flex-col">
+          <Card className="w-full h-full bg-white border-2 border-otter-teal shadow-xl hover:shadow-2xl transition-shadow relative z-10">
+            <CardContent className="h-full p-6 flex flex-col relative">
               {/* Exercise Icon and Title */}
               <div className="text-center mb-4">
                 <motion.div
@@ -199,13 +199,14 @@ export default function CardDrawAnimation({
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3 }}
+                    className="relative z-50"
                   >
                     <Button
                       onClick={(e) => {
                         e.stopPropagation();
                         onCardSelect();
                       }}
-                      className="w-full bg-otter-teal hover:bg-otter-teal-dark text-white py-3 font-semibold"
+                      className="w-full bg-otter-teal hover:bg-otter-teal-dark text-white py-3 font-semibold relative z-50"
                     >
                       <motion.span
                         initial={{ x: -10, opacity: 0 }}

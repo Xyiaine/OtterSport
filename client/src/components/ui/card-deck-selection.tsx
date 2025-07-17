@@ -189,7 +189,7 @@ export default function CardDeckSelection({
                         delay: displayIndex * 0.1,
                         duration: 0.5,
                       }}
-                      className={`transform transition-all duration-300 ${
+                      className={`transform transition-all duration-300 relative z-30 ${
                         selectedCards.includes(actualIndex) 
                           ? 'ring-4 ring-otter-teal ring-opacity-50 shadow-2xl' 
                           : currentSelectionPhase === 'selecting' 
