@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import OtterCharacter from "@/components/ui/otter-character";
+import { EditableBackground, EditableImage, EditableText } from "@/components/ui/visual-element";
 
 export default function Landing() {
   const handleLogin = () => {
@@ -8,18 +9,30 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-otter-neutral">
+    <EditableBackground id="landing-bg" className="min-h-screen flex items-center justify-center p-6">
       <Card className="w-full max-w-md mx-auto shadow-lg border-0">
         <CardContent className="p-8 space-y-8">
           {/* Otter Character */}
           <div className="text-center space-y-4">
             <div className="w-32 h-32 mx-auto">
-              <OtterCharacter mood="cheerful" animated />
+              <EditableImage 
+                id="landing-hero-image" 
+                className="w-full h-full object-cover rounded-full"
+                fallback={<OtterCharacter mood="cheerful" animated />}
+              />
             </div>
-            <h1 className="text-3xl font-bold text-slate-800">Welcome to OtterSport!</h1>
-            <p className="text-slate-600 leading-relaxed">
-              Build consistent fitness habits with fun, card-based workouts guided by your personal otter coach.
-            </p>
+            <EditableText 
+              id="landing-title" 
+              as="h1" 
+              className="text-3xl font-bold text-slate-800"
+              fallback="Welcome to OtterSport!"
+            />
+            <EditableText 
+              id="landing-subtitle" 
+              as="p" 
+              className="text-slate-600 leading-relaxed"
+              fallback="Build consistent fitness habits with fun, card-based workouts guided by your personal otter coach."
+            />
           </div>
 
           {/* Features */}
