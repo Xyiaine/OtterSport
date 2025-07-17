@@ -1,3 +1,10 @@
+/**
+ * API ROUTES FOR OTTERSPORT
+ * 
+ * This file defines all the HTTP endpoints for the application.
+ * Routes are organized by feature: auth, users, exercises, decks, workouts, achievements.
+ */
+
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
@@ -6,10 +13,17 @@ import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeck
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
+  // Set up authentication middleware
   await setupAuth(app);
 
-  // Auth routes
+  // ============================================================================
+  // AUTH ROUTES
+  // ============================================================================
+  
+  /**
+   * GET /api/auth/user
+   * Returns the current authenticated user's data
+   */
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
@@ -21,7 +35,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // User profile routes
+  // ============================================================================
+  // USER ROUTES
+  // ============================================================================
+  
+  /**
+   * PATCH /api/user/profile
+   * Updates user profile information (fitness goals, preferences, etc.)
+   */
   app.patch('/api/user/profile', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
@@ -34,6 +55,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  /**
+   * GET /api/user/stats
+   * Returns user fitness statistics (workouts, streaks, etc.)
+   */
   app.get('/api/user/stats', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
@@ -45,7 +70,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Exercise routes
+  // ============================================================================
+  // EXERCISE ROUTES
+  // ============================================================================
+  
+  /**
+   * GET /api/exercises
+   * Returns all exercises, optionally filtered by category
+   * Query params: category (optional) - filter by exercise category
+   */
   app.get('/api/exercises', async (req, res) => {
     try {
       const category = req.query.category as string;
@@ -59,6 +92,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  /**
+   * POST /api/exercises
+   * Creates a new exercise (authenticated users only)
+   */
   app.post('/api/exercises', isAuthenticated, async (req: any, res) => {
     try {
       const exerciseData = insertExerciseSchema.parse(req.body);

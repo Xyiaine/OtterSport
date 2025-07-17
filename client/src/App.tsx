@@ -1,3 +1,10 @@
+/**
+ * MAIN APP COMPONENT
+ * 
+ * This is the root component that sets up routing and authentication.
+ * It shows different pages based on whether the user is logged in.
+ */
+
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -15,9 +22,14 @@ import GameArtist from "@/pages/game-artist";
 import NotFound from "@/pages/not-found";
 import BottomNavigation from "@/components/ui/bottom-navigation";
 
+/**
+ * Router component that handles page navigation
+ * Shows different pages based on authentication state
+ */
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
+  // Show loading spinner while checking authentication
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-otter-neutral">
@@ -30,8 +42,10 @@ function Router() {
     <div className="min-h-screen bg-otter-neutral">
       <Switch>
         {!isAuthenticated ? (
+          // Show landing page for unauthenticated users
           <Route path="/" component={Landing} />
         ) : (
+          // Show app pages for authenticated users
           <>
             <Route path="/" component={Home} />
             <Route path="/onboarding" component={Onboarding} />
@@ -44,6 +58,7 @@ function Router() {
         )}
         <Route component={NotFound} />
       </Switch>
+      {/* Show bottom navigation only for authenticated users */}
       {isAuthenticated && <BottomNavigation />}
     </div>
   );

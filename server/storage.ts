@@ -1,3 +1,10 @@
+/**
+ * DATABASE STORAGE LAYER
+ * 
+ * This file handles all database operations for the OtterSport app.
+ * It provides a clean interface between the API routes and the database.
+ */
+
 import {
   users,
   exercises,
@@ -22,17 +29,27 @@ import {
 import { db } from "./db";
 import { eq, desc, and, gte, count, sql } from "drizzle-orm";
 
+/**
+ * Storage interface defining all database operations
+ * This makes it easy to test and switch database implementations if needed
+ */
 export interface IStorage {
-  // User operations (required for Replit Auth)
+  // ============================================================================
+  // USER OPERATIONS (Required for Replit Auth)
+  // ============================================================================
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   
-  // Exercise operations
+  // ============================================================================
+  // EXERCISE OPERATIONS
+  // ============================================================================
   getExercises(): Promise<Exercise[]>;
   getExercisesByCategory(category: string): Promise<Exercise[]>;
   createExercise(exercise: InsertExercise): Promise<Exercise>;
   
-  // Deck operations
+  // ============================================================================
+  // DECK OPERATIONS
+  // ============================================================================
   getDecks(): Promise<Deck[]>;
   getDeck(id: number): Promise<Deck | undefined>;
   getDeckWithExercises(id: number): Promise<(Deck & { exercises: (DeckExercise & { exercise: Exercise })[] }) | undefined>;
@@ -40,7 +57,9 @@ export interface IStorage {
   addExerciseToDeck(deckExercise: InsertDeckExercise): Promise<DeckExercise>;
   getUserCustomDecks(userId: string): Promise<Deck[]>;
   
-  // Workout operations
+  // ============================================================================
+  // WORKOUT OPERATIONS
+  // ============================================================================
   createWorkout(workout: InsertWorkout): Promise<Workout>;
   completeWorkout(workoutId: number, feedback: string, duration: number, calories?: number): Promise<Workout>;
   getUserWorkouts(userId: string, limit?: number): Promise<Workout[]>;
@@ -52,23 +71,43 @@ export interface IStorage {
     averageRating: number;
   }>;
   
-  // Achievement operations
+  // ============================================================================
+  // ACHIEVEMENT OPERATIONS
+  // ============================================================================
   getAchievements(): Promise<Achievement[]>;
   getUserAchievements(userId: string): Promise<(UserAchievement & { achievement: Achievement })[]>;
   unlockAchievement(userId: string, achievementId: number): Promise<UserAchievement>;
   
-  // Progress operations
+  // ============================================================================
+  // PROGRESS OPERATIONS
+  // ============================================================================
   updateUserProgress(userId: string, updates: Partial<User>): Promise<User>;
   updateUserStreak(userId: string): Promise<User>;
 }
 
+/**
+ * PostgreSQL implementation of the storage interface
+ * This class contains all the actual database query logic
+ */
 export class DatabaseStorage implements IStorage {
-  // User operations
+  
+  // ============================================================================
+  // USER OPERATIONS
+  // ============================================================================
+  
+  /**
+   * Get a user by their ID
+   * Used by authentication system to load user data
+   */
   async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
   }
 
+  /**
+   * Create or update a user
+   * Used during login to sync user data from Replit OAuth
+   */
   async upsertUser(userData: UpsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
@@ -84,11 +123,20 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  // Exercise operations
+  // ============================================================================
+  // EXERCISE OPERATIONS
+  // ============================================================================
+  
+  /**
+   * Get all exercises, sorted by name
+   */
   async getExercises(): Promise<Exercise[]> {
     return await db.select().from(exercises).orderBy(exercises.name);
   }
 
+  /**
+   * Get exercises filtered by category (cardio, strength, etc.)
+   */
   async getExercisesByCategory(category: string): Promise<Exercise[]> {
     return await db
       .select()
@@ -97,12 +145,21 @@ export class DatabaseStorage implements IStorage {
       .orderBy(exercises.name);
   }
 
+  /**
+   * Create a new exercise
+   */
   async createExercise(exercise: InsertExercise): Promise<Exercise> {
     const [newExercise] = await db.insert(exercises).values(exercise).returning();
     return newExercise;
   }
 
-  // Deck operations
+  // ============================================================================
+  // DECK OPERATIONS
+  // ============================================================================
+  
+  /**
+   * Get all system decks (excludes user-created custom decks)
+   */
   async getDecks(): Promise<Deck[]> {
     return await db
       .select()
@@ -111,11 +168,18 @@ export class DatabaseStorage implements IStorage {
       .orderBy(decks.name);
   }
 
+  /**
+   * Get a single deck by ID
+   */
   async getDeck(id: number): Promise<Deck | undefined> {
     const [deck] = await db.select().from(decks).where(eq(decks.id, id));
     return deck;
   }
 
+  /**
+   * Get a deck with all its exercises included
+   * Used when user wants to start a workout
+   */
   async getDeckWithExercises(id: number): Promise<(Deck & { exercises: (DeckExercise & { exercise: Exercise })[] }) | undefined> {
     const deck = await db.query.decks.findFirst({
       where: eq(decks.id, id),
@@ -131,16 +195,25 @@ export class DatabaseStorage implements IStorage {
     return deck;
   }
 
+  /**
+   * Create a new workout deck
+   */
   async createDeck(deck: InsertDeck): Promise<Deck> {
     const [newDeck] = await db.insert(decks).values(deck).returning();
     return newDeck;
   }
 
+  /**
+   * Add an exercise to a deck with custom parameters
+   */
   async addExerciseToDeck(deckExercise: InsertDeckExercise): Promise<DeckExercise> {
     const [newDeckExercise] = await db.insert(deckExercises).values(deckExercise).returning();
     return newDeckExercise;
   }
 
+  /**
+   * Get all custom decks created by a specific user
+   */
   async getUserCustomDecks(userId: string): Promise<Deck[]> {
     return await db
       .select()
@@ -149,7 +222,13 @@ export class DatabaseStorage implements IStorage {
       .orderBy(decks.createdAt);
   }
 
-  // Workout operations
+  // ============================================================================
+  // WORKOUT OPERATIONS
+  // ============================================================================
+  
+  /**
+   * Start a new workout session
+   */
   async createWorkout(workout: InsertWorkout): Promise<Workout> {
     const [newWorkout] = await db.insert(workouts).values(workout).returning();
     return newWorkout;

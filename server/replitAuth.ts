@@ -1,3 +1,10 @@
+/**
+ * REPLIT AUTHENTICATION SETUP
+ * 
+ * This file handles user authentication using Replit's OAuth system.
+ * It sets up Passport.js with OpenID Connect for secure login.
+ */
+
 import * as client from "openid-client";
 import { Strategy, type VerifyFunction } from "openid-client/passport";
 
@@ -8,10 +15,15 @@ import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
 import { storage } from "./storage";
 
+// Ensure required environment variables are set
 if (!process.env.REPLIT_DOMAINS) {
   throw new Error("Environment variable REPLIT_DOMAINS not provided");
 }
 
+/**
+ * Get OpenID Connect configuration from Replit
+ * Cached for 1 hour to improve performance
+ */
 const getOidcConfig = memoize(
   async () => {
     return await client.discovery(
@@ -22,23 +34,28 @@ const getOidcConfig = memoize(
   { maxAge: 3600 * 1000 }
 );
 
+/**
+ * Configure express-session with PostgreSQL storage
+ * Sessions are stored in the database for persistence across server restarts
+ */
 export function getSession() {
-  const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
+  const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
   const pgStore = connectPg(session);
   const sessionStore = new pgStore({
     conString: process.env.DATABASE_URL,
-    createTableIfMissing: false,
+    createTableIfMissing: false, // Table created via Drizzle migrations
     ttl: sessionTtl,
     tableName: "sessions",
   });
+  
   return session({
     secret: process.env.SESSION_SECRET || process.env.REPL_ID || 'fallback-secret-key-for-development',
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
     cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true, // Prevent XSS attacks
+      secure: process.env.NODE_ENV === 'production', // HTTPS in production
       maxAge: sessionTtl,
     },
   });
