@@ -47,10 +47,10 @@ export default function Home() {
     queryKey: ["/api/decks"],
   });
 
-  // Get today's recommended deck (simple logic for now)
-  const todaysWorkout = decks.find(deck => 
-    deck.name === "Quick Start" || deck.difficulty <= (user?.currentDifficultyLevel || 1.0)
-  ) || decks[0];
+  // Get today's recommended deck (prioritize Quick Start, then difficulty-appropriate decks)
+  const todaysWorkout = decks.find(deck => deck.name === "Quick Start") || 
+                       decks.find(deck => deck.difficulty <= (user?.currentDifficultyLevel || 1.0)) || 
+                       decks[0];
 
   const handleStartWorkout = (deckId?: number) => {
     if (deckId) {
@@ -136,22 +136,22 @@ export default function Home() {
 
       {/* Today's Workout */}
       {todaysWorkout && (
-        <Card className="bg-gradient-to-br from-otter-teal to-teal-600 text-white shadow-lg">
+        <Card className="bg-gradient-to-br from-otter-teal to-teal-600 text-white shadow-lg border-0 opacity-100">
           <CardContent className="p-6 space-y-4">
             <div>
-              <h3 className="text-lg font-semibold">Today's Workout</h3>
-              <p className="text-teal-100 text-sm">
+              <h3 className="text-lg font-semibold text-white">Today's Workout</h3>
+              <p className="text-teal-100 text-sm opacity-90">
                 {todaysWorkout.name} • {todaysWorkout.estimatedMinutes || 15} mins
               </p>
               {todaysWorkout.description && (
-                <p className="text-teal-100 text-sm mt-1">
+                <p className="text-teal-100 text-sm mt-1 opacity-90">
                   {todaysWorkout.description}
                 </p>
               )}
             </div>
             <Button 
               onClick={() => handleStartWorkout(todaysWorkout.id)}
-              className="bg-white text-otter-teal hover:bg-slate-50 transition-colors font-semibold"
+              className="bg-white text-otter-teal hover:bg-slate-50 transition-colors font-semibold shadow-md"
             >
               <i className="fas fa-play mr-2"></i>
               Start Workout

@@ -76,8 +76,26 @@
     border-color: var(--otter-teal);
   }
   
-  .otter-teal-light {
+  .bg-otter-teal-light {
     background-color: var(--otter-teal-light);
+  }
+  
+  .hover\:bg-otter-teal-light:hover {
+    background-color: var(--otter-teal-light);
+  }
+  
+  .from-otter-teal {
+    --tw-gradient-from: var(--otter-teal);
+    --tw-gradient-to: color-mix(in srgb, var(--otter-teal) 0%, transparent);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  
+  .hover\:bg-otter-teal-dark:hover {
+    background-color: hsl(173, 80%, 32%);
+  }
+  
+  .bg-otter-teal-dark {
+    background-color: hsl(173, 80%, 32%);
   }
   
   .otter-neutral {
