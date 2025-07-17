@@ -12,6 +12,7 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeckExerciseSchema } from "@shared/schema";
 import { z } from "zod";
 import { registerTestRoutes } from "./api-test-routes";
+import { registerDevelopmentRoutes } from "./development-tools";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
@@ -19,6 +20,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register test routes (development only)
   registerTestRoutes(app);
+  
+  // Register development monitoring tools
+  registerDevelopmentRoutes(app);
 
   // ============================================================================
   // AUTH ROUTES

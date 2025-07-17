@@ -859,7 +859,8 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-// Export the optimized storage - uncomment line below to use optimized version
-// export { storage } from './storage-optimized';
+// Export the database storage for production use
+export { storage } from './storage-optimized';
 
-export const storage = new MemoryStorage();
+// Use memory storage for development testing
+// export const storage = new MemoryStorage();

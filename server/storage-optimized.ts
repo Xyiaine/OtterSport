@@ -775,5 +775,544 @@ export class OptimizedMemoryStorage implements IStorage {
   }
 }
 
-// Export the optimized storage instance
-export const storage = new OptimizedMemoryStorage();
+// Import database components from the blueprint
+import { db } from "./db";
+import { eq, and, desc, asc, sql, count } from "drizzle-orm";
+import { checkAndSeedDatabase } from "./seed-data";
+
+/**
+ * DATABASE STORAGE IMPLEMENTATION
+ * 
+ * This class provides a PostgreSQL-backed storage system using Drizzle ORM
+ * with the same interface as the memory storage for seamless switching.
+ */
+export class DatabaseStorage implements IStorage {
+  constructor() {
+    console.log("[DatabaseStorage] Initializing PostgreSQL storage with Drizzle ORM...");
+    this.initializeDatabase();
+  }
+  
+  private async initializeDatabase(): Promise<void> {
+    try {
+      await checkAndSeedDatabase();
+      console.log("[DatabaseStorage] Database initialization completed");
+    } catch (error) {
+      console.error("[DatabaseStorage] Database initialization failed:", error);
+    }
+  }
+
+  // ============================================================================
+  // USER OPERATIONS
+  // ============================================================================
+
+  async getUser(id: string): Promise<User | undefined> {
+    if (!id || typeof id !== 'string' || id.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    if (!userData.id || typeof userData.id !== 'string' || userData.id.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+
+    const now = new Date();
+    const userToInsert = {
+      ...userData,
+      updatedAt: now,
+      createdAt: now,
+      // Set proper defaults for all fields
+      fitnessGoal: userData.fitnessGoal || null,
+      fitnessLevel: userData.fitnessLevel || null,
+      workoutFrequency: userData.workoutFrequency || null,
+      currentStreak: userData.currentStreak ?? 0,
+      longestStreak: userData.longestStreak ?? 0,
+      totalWorkouts: userData.totalWorkouts ?? 0,
+      totalMinutes: userData.totalMinutes ?? 0,
+      currentDifficultyLevel: userData.currentDifficultyLevel ?? 1.0,
+      lastWorkoutFeedback: userData.lastWorkoutFeedback || null,
+    };
+
+    const [user] = await db
+      .insert(users)
+      .values({
+        ...userToInsert,
+        email: userToInsert.email ?? null,
+        firstName: userToInsert.firstName ?? null,
+        lastName: userToInsert.lastName ?? null,
+        profileImageUrl: userToInsert.profileImageUrl ?? null,
+      })
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userToInsert,
+          email: userToInsert.email ?? null,
+          firstName: userToInsert.firstName ?? null,
+          lastName: userToInsert.lastName ?? null,
+          profileImageUrl: userToInsert.profileImageUrl ?? null,
+          updatedAt: now,
+        },
+      })
+      .returning();
+
+    console.log(`[DatabaseStorage] User ${userData.id} upserted successfully`);
+    return user;
+  }
+
+  // ============================================================================
+  // EXERCISE OPERATIONS
+  // ============================================================================
+
+  async getExercises(): Promise<Exercise[]> {
+    const exercisesList = await db
+      .select()
+      .from(exercises)
+      .orderBy(asc(exercises.name));
+    return exercisesList;
+  }
+
+  async getExercisesByCategory(category: string): Promise<Exercise[]> {
+    const exercisesList = await db
+      .select()
+      .from(exercises)
+      .where(eq(exercises.category, category))
+      .orderBy(asc(exercises.name));
+    return exercisesList;
+  }
+
+  async createExercise(exercise: InsertExercise): Promise<Exercise> {
+    const [newExercise] = await db
+      .insert(exercises)
+      .values({
+        ...exercise,
+        description: exercise.description ?? null,
+        defaultReps: exercise.defaultReps ?? null,
+        defaultDuration: exercise.defaultDuration ?? null,
+        instructions: exercise.instructions ?? null,
+        icon: exercise.icon ?? null,
+        createdAt: new Date(),
+      })
+      .returning();
+
+    console.log(`[DatabaseStorage] Created exercise: ${newExercise.name} (ID: ${newExercise.id})`);
+    return newExercise;
+  }
+
+  // ============================================================================
+  // DECK OPERATIONS
+  // ============================================================================
+
+  async getDecks(): Promise<Deck[]> {
+    const decksList = await db
+      .select()
+      .from(decks)
+      .where(eq(decks.isCustom, false))
+      .orderBy(asc(decks.name));
+    return decksList;
+  }
+
+  async getDeck(id: number): Promise<Deck | undefined> {
+    if (!id || typeof id !== 'number' || id <= 0) {
+      throw new Error('Invalid ID provided');
+    }
+
+    const [deck] = await db.select().from(decks).where(eq(decks.id, id));
+    return deck || undefined;
+  }
+
+  async getDeckWithExercises(id: number): Promise<(Deck & { exercises: (DeckExercise & { exercise: Exercise })[] }) | undefined> {
+    if (!id || typeof id !== 'number' || id <= 0) {
+      throw new Error('Invalid ID provided');
+    }
+
+    const [deck] = await db.select().from(decks).where(eq(decks.id, id));
+    if (!deck) return undefined;
+
+    const deckExercisesList = await db
+      .select({
+        id: deckExercises.id,
+        deckId: deckExercises.deckId,
+        exerciseId: deckExercises.exerciseId,
+        order: deckExercises.order,
+        customReps: deckExercises.customReps,
+        customDuration: deckExercises.customDuration,
+        exercise: {
+          id: exercises.id,
+          name: exercises.name,
+          description: exercises.description,
+          category: exercises.category,
+          difficulty: exercises.difficulty,
+          defaultReps: exercises.defaultReps,
+          defaultDuration: exercises.defaultDuration,
+          instructions: exercises.instructions,
+          icon: exercises.icon,
+          createdAt: exercises.createdAt,
+        },
+      })
+      .from(deckExercises)
+      .innerJoin(exercises, eq(deckExercises.exerciseId, exercises.id))
+      .where(eq(deckExercises.deckId, id))
+      .orderBy(asc(deckExercises.order));
+
+    return { ...deck, exercises: deckExercisesList };
+  }
+
+  async createDeck(deck: InsertDeck): Promise<Deck> {
+    const [newDeck] = await db
+      .insert(decks)
+      .values({
+        ...deck,
+        description: deck.description ?? null,
+        estimatedMinutes: deck.estimatedMinutes ?? null,
+        isCustom: deck.isCustom ?? null,
+        createdBy: deck.createdBy ?? null,
+        createdAt: new Date(),
+      })
+      .returning();
+
+    console.log(`[DatabaseStorage] Created deck: ${newDeck.name} (ID: ${newDeck.id})`);
+    return newDeck;
+  }
+
+  async addExerciseToDeck(deckExercise: InsertDeckExercise): Promise<DeckExercise> {
+    const [newDeckExercise] = await db
+      .insert(deckExercises)
+      .values({
+        ...deckExercise,
+        customReps: deckExercise.customReps ?? null,
+        customDuration: deckExercise.customDuration ?? null,
+      })
+      .returning();
+
+    return newDeckExercise;
+  }
+
+  async getUserCustomDecks(userId: string): Promise<Deck[]> {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+
+    const decksList = await db
+      .select()
+      .from(decks)
+      .where(and(eq(decks.createdBy, userId), eq(decks.isCustom, true)))
+      .orderBy(asc(decks.createdAt));
+
+    return decksList;
+  }
+
+  // ============================================================================
+  // WORKOUT OPERATIONS
+  // ============================================================================
+
+  async createWorkout(workout: InsertWorkout): Promise<Workout> {
+    const [newWorkout] = await db
+      .insert(workouts)
+      .values({
+        ...workout,
+        completedAt: workout.completedAt ?? null,
+        duration: workout.duration ?? null,
+        feedback: workout.feedback ?? null,
+        calories: workout.calories ?? null,
+        cardsCompleted: 0,
+      })
+      .returning();
+
+    console.log(`[DatabaseStorage] Created workout ${newWorkout.id} for user ${workout.userId}`);
+    return newWorkout;
+  }
+
+  async completeWorkout(workoutId: number, feedback: string, duration: number, calories?: number): Promise<Workout> {
+    if (!workoutId || typeof workoutId !== 'number' || workoutId <= 0) {
+      throw new Error('Invalid ID provided');
+    }
+
+    const [updatedWorkout] = await db
+      .update(workouts)
+      .set({
+        completedAt: new Date(),
+        feedback,
+        duration,
+        calories: calories ?? null,
+      })
+      .where(eq(workouts.id, workoutId))
+      .returning();
+
+    if (!updatedWorkout) {
+      throw new Error("Workout not found");
+    }
+
+    // Update user stats
+    const [user] = await db.select().from(users).where(eq(users.id, updatedWorkout.userId));
+    if (user) {
+      const newTotalWorkouts = (user.totalWorkouts || 0) + 1;
+      const newTotalMinutes = (user.totalMinutes || 0) + Math.floor(duration / 60);
+
+      await this.updateUserProgress(updatedWorkout.userId, {
+        totalWorkouts: newTotalWorkouts,
+        totalMinutes: newTotalMinutes,
+        lastWorkoutFeedback: feedback,
+      });
+
+      await this.updateUserStreak(updatedWorkout.userId);
+    }
+
+    console.log(`[DatabaseStorage] Completed workout ${workoutId} for user ${updatedWorkout.userId}`);
+    return updatedWorkout;
+  }
+
+  async getUserWorkouts(userId: string, limit = 10): Promise<Workout[]> {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+
+    const workoutsList = await db
+      .select()
+      .from(workouts)
+      .where(eq(workouts.userId, userId))
+      .orderBy(desc(workouts.startedAt))
+      .limit(limit);
+
+    return workoutsList;
+  }
+
+  async getUserStats(userId: string): Promise<{
+    totalWorkouts: number;
+    totalMinutes: number;
+    currentStreak: number;
+    longestStreak: number;
+    averageRating: number;
+  }> {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    if (!user) {
+      return {
+        totalWorkouts: 0,
+        totalMinutes: 0,
+        currentStreak: 0,
+        longestStreak: 0,
+        averageRating: 0,
+      };
+    }
+
+    // Calculate average rating from workout feedback
+    const userWorkouts = await db
+      .select()
+      .from(workouts)
+      .where(and(eq(workouts.userId, userId), sql`${workouts.feedback} IS NOT NULL`));
+
+    let averageRating = 0;
+    if (userWorkouts.length > 0) {
+      const totalRating = userWorkouts.reduce((sum, workout) => {
+        const rating = workout.feedback === 'too_easy' ? 5 : 
+                      workout.feedback === 'just_right' ? 4 : 
+                      workout.feedback === 'bit_too_hard' ? 3 : 2;
+        return sum + rating;
+      }, 0);
+      averageRating = Number((totalRating / userWorkouts.length).toFixed(1));
+    }
+
+    return {
+      totalWorkouts: user.totalWorkouts || 0,
+      totalMinutes: user.totalMinutes || 0,
+      currentStreak: user.currentStreak || 0,
+      longestStreak: user.longestStreak || 0,
+      averageRating,
+    };
+  }
+
+  // ============================================================================
+  // ACHIEVEMENT OPERATIONS
+  // ============================================================================
+
+  async getAchievements(): Promise<Achievement[]> {
+    const achievementsList = await db
+      .select()
+      .from(achievements)
+      .orderBy(asc(achievements.name));
+    return achievementsList;
+  }
+
+  async getUserAchievements(userId: string): Promise<(UserAchievement & { achievement: Achievement })[]> {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+
+    const userAchievementsList = await db
+      .select({
+        id: userAchievements.id,
+        userId: userAchievements.userId,
+        achievementId: userAchievements.achievementId,
+        unlockedAt: userAchievements.unlockedAt,
+        achievement: {
+          id: achievements.id,
+          name: achievements.name,
+          description: achievements.description,
+          icon: achievements.icon,
+          requirement: achievements.requirement,
+          createdAt: achievements.createdAt,
+        },
+      })
+      .from(userAchievements)
+      .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
+      .where(eq(userAchievements.userId, userId))
+      .orderBy(desc(userAchievements.unlockedAt));
+
+    return userAchievementsList;
+  }
+
+  async unlockAchievement(userId: string, achievementId: number): Promise<UserAchievement> {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+    if (!achievementId || typeof achievementId !== 'number' || achievementId <= 0) {
+      throw new Error('Invalid ID provided');
+    }
+
+    const [newAchievement] = await db
+      .insert(userAchievements)
+      .values({
+        userId,
+        achievementId,
+        unlockedAt: new Date(),
+      })
+      .returning();
+
+    console.log(`[DatabaseStorage] Unlocked achievement ${achievementId} for user ${userId}`);
+    return newAchievement;
+  }
+
+  // ============================================================================
+  // PROGRESS OPERATIONS
+  // ============================================================================
+
+  async updateUserProgress(userId: string, updates: Partial<User>): Promise<User> {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        ...updates,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+
+    return updatedUser;
+  }
+
+  async updateUserStreak(userId: string): Promise<User> {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // Check if user worked out today
+    const [todayWorkout] = await db
+      .select()
+      .from(workouts)
+      .where(and(
+        eq(workouts.userId, userId),
+        sql`${workouts.completedAt} IS NOT NULL`,
+        sql`${workouts.startedAt} >= ${today}`
+      ))
+      .limit(1);
+
+    // Check if user worked out yesterday
+    const [yesterdayWorkout] = await db
+      .select()
+      .from(workouts)
+      .where(and(
+        eq(workouts.userId, userId),
+        sql`${workouts.completedAt} IS NOT NULL`,
+        sql`${workouts.startedAt} >= ${yesterday}`,
+        sql`${workouts.startedAt} < ${today}`
+      ))
+      .limit(1);
+
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    let newStreak = user.currentStreak || 0;
+
+    if (todayWorkout) {
+      if (yesterdayWorkout || newStreak === 0) {
+        newStreak += 1;
+      }
+    } else if (!yesterdayWorkout && newStreak > 0) {
+      newStreak = 0;
+    }
+
+    const newLongestStreak = Math.max(user.longestStreak || 0, newStreak);
+
+    return await this.updateUserProgress(userId, {
+      currentStreak: newStreak,
+      longestStreak: newLongestStreak,
+    });
+  }
+
+  // ============================================================================
+  // TESTING AND DEBUGGING OPERATIONS
+  // ============================================================================
+
+  async clearAllData(): Promise<void> {
+    console.log("[DatabaseStorage] Clearing all data...");
+    
+    // Clear in order to respect foreign key constraints
+    await db.delete(userAchievements);
+    await db.delete(workouts);
+    await db.delete(deckExercises);
+    await db.delete(decks);
+    await db.delete(exercises);
+    await db.delete(achievements);
+    await db.delete(users);
+    
+    console.log("[DatabaseStorage] All data cleared");
+  }
+
+  async getStorageStats(): Promise<{
+    users: number;
+    exercises: number;
+    decks: number;
+    workouts: number;
+    achievements: number;
+  }> {
+    const [userCount] = await db.select({ count: count() }).from(users);
+    const [exerciseCount] = await db.select({ count: count() }).from(exercises);
+    const [deckCount] = await db.select({ count: count() }).from(decks);
+    const [workoutCount] = await db.select({ count: count() }).from(workouts);
+    const [achievementCount] = await db.select({ count: count() }).from(achievements);
+
+    const stats = {
+      users: userCount.count,
+      exercises: exerciseCount.count,
+      decks: deckCount.count,
+      workouts: workoutCount.count,
+      achievements: achievementCount.count,
+    };
+
+    console.log("[DatabaseStorage] Current database stats:", stats);
+    return stats;
+  }
+}
+
+// Export the database storage instance
+export const storage = new DatabaseStorage();
