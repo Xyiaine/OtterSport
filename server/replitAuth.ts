@@ -12,7 +12,7 @@ import passport from "passport";
 import session from "express-session";
 import type { Express, RequestHandler } from "express";
 import memoize from "memoizee";
-import connectPg from "connect-pg-simple";
+import MemoryStore from "memorystore";
 import { storage } from "./storage";
 
 // Ensure required environment variables are set
@@ -35,17 +35,15 @@ const getOidcConfig = memoize(
 );
 
 /**
- * Configure express-session with PostgreSQL storage
- * Sessions are stored in the database for persistence across server restarts
+ * Configure express-session with in-memory storage
+ * Sessions are stored in memory for development
  */
 export function getSession() {
   const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
-  const pgStore = connectPg(session);
-  const sessionStore = new pgStore({
-    conString: process.env.DATABASE_URL,
-    createTableIfMissing: false, // Table created via Drizzle migrations
+  const memoryStore = MemoryStore(session);
+  const sessionStore = new memoryStore({
+    checkPeriod: 24 * 60 * 60 * 1000, // Check for expired sessions every 24 hours
     ttl: sessionTtl,
-    tableName: "sessions",
   });
   
   return session({
