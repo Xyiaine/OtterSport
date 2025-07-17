@@ -11,10 +11,14 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeckExerciseSchema } from "@shared/schema";
 import { z } from "zod";
+import { registerTestRoutes } from "./api-test-routes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
   await setupAuth(app);
+  
+  // Register test routes (development only)
+  registerTestRoutes(app);
 
   // ============================================================================
   // AUTH ROUTES

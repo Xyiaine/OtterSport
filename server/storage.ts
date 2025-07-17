@@ -153,10 +153,13 @@ export class MemoryStorage implements IStorage {
   // ============================================================================
 
   async getUser(id: string): Promise<User | undefined> {
+    this.validateUserId(id);
     return this.users.get(id);
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
+    this.validateUserId(userData.id);
+    
     const user: User = {
       ...userData,
       updatedAt: new Date(),
@@ -212,10 +215,13 @@ export class MemoryStorage implements IStorage {
   }
 
   async getDeck(id: number): Promise<Deck | undefined> {
+    this.validateId(id);
     return this.decks.get(id);
   }
 
   async getDeckWithExercises(id: number): Promise<(Deck & { exercises: (DeckExercise & { exercise: Exercise })[] }) | undefined> {
+    this.validateId(id);
+    
     const deck = this.decks.get(id);
     if (!deck) return undefined;
 
@@ -251,6 +257,8 @@ export class MemoryStorage implements IStorage {
   }
 
   async getUserCustomDecks(userId: string): Promise<Deck[]> {
+    this.validateUserId(userId);
+    
     return Array.from(this.decks.values())
       .filter(deck => deck.createdBy === userId && deck.isCustom)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
@@ -271,6 +279,8 @@ export class MemoryStorage implements IStorage {
   }
 
   async completeWorkout(workoutId: number, feedback: string, duration: number, calories?: number): Promise<Workout> {
+    this.validateId(workoutId);
+    
     const workout = this.workouts.get(workoutId);
     if (!workout) throw new Error("Workout not found");
 
@@ -303,6 +313,8 @@ export class MemoryStorage implements IStorage {
   }
 
   async getUserWorkouts(userId: string, limit = 10): Promise<Workout[]> {
+    this.validateUserId(userId);
+    
     return Array.from(this.workouts.values())
       .filter(workout => workout.userId === userId)
       .sort((a, b) => b.startedAt.getTime() - a.startedAt.getTime())
@@ -316,6 +328,8 @@ export class MemoryStorage implements IStorage {
     longestStreak: number;
     averageRating: number;
   }> {
+    this.validateUserId(userId);
+    
     const user = this.users.get(userId);
     if (!user) {
       return {
@@ -360,6 +374,8 @@ export class MemoryStorage implements IStorage {
   }
 
   async getUserAchievements(userId: string): Promise<(UserAchievement & { achievement: Achievement })[]> {
+    this.validateUserId(userId);
+    
     return Array.from(this.userAchievements.values())
       .filter(ua => ua.userId === userId)
       .map(ua => ({
@@ -370,6 +386,9 @@ export class MemoryStorage implements IStorage {
   }
 
   async unlockAchievement(userId: string, achievementId: number): Promise<UserAchievement> {
+    this.validateUserId(userId);
+    this.validateId(achievementId);
+    
     const newAchievement: UserAchievement = {
       id: this.getNextId(),
       userId,
@@ -385,6 +404,8 @@ export class MemoryStorage implements IStorage {
   // ============================================================================
 
   async updateUserProgress(userId: string, updates: Partial<User>): Promise<User> {
+    this.validateUserId(userId);
+    
     const user = this.users.get(userId);
     if (!user) throw new Error("User not found");
 
@@ -398,6 +419,8 @@ export class MemoryStorage implements IStorage {
   }
 
   async updateUserStreak(userId: string): Promise<User> {
+    this.validateUserId(userId);
+    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const yesterday = new Date(today);
@@ -437,6 +460,69 @@ export class MemoryStorage implements IStorage {
       currentStreak: newStreak,
       longestStreak: newLongestStreak,
     });
+  }
+
+  // ============================================================================
+  // TESTING AND DEBUGGING METHODS
+  // ============================================================================
+
+  /**
+   * Add input validation to prevent invalid operations
+   */
+  private validateUserId(userId: string): void {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('Invalid user ID provided');
+    }
+  }
+
+  private validateId(id: number): void {
+    if (!id || typeof id !== 'number' || id <= 0) {
+      throw new Error('Invalid ID provided');
+    }
+  }
+
+  /**
+   * Clear all data and reset to initial state
+   */
+  async clearAllData(): Promise<void> {
+    console.log("[Storage] Clearing all data...");
+    
+    this.users.clear();
+    this.exercises.clear();
+    this.decks.clear();
+    this.deckExercises.clear();
+    this.workouts.clear();
+    this.achievements.clear();
+    this.userAchievements.clear();
+    
+    this.nextId = 1;
+    
+    // Reinitialize with default data
+    this.initializeDefaultData();
+    
+    console.log("[Storage] All data cleared and reset");
+  }
+
+  /**
+   * Get storage statistics for monitoring and debugging
+   */
+  async getStorageStats(): Promise<{
+    users: number;
+    exercises: number;
+    decks: number;
+    workouts: number;
+    achievements: number;
+  }> {
+    const stats = {
+      users: this.users.size,
+      exercises: this.exercises.size,
+      decks: this.decks.size,
+      workouts: this.workouts.size,
+      achievements: this.achievements.size,
+    };
+    
+    console.log("[Storage] Current stats:", stats);
+    return stats;
   }
 }
 
@@ -772,5 +858,8 @@ export class DatabaseStorage implements IStorage {
     });
   }
 }
+
+// Export the optimized storage - uncomment line below to use optimized version
+// export { storage } from './storage-optimized';
 
 export const storage = new MemoryStorage();
