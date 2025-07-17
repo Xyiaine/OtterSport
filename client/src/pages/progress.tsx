@@ -74,7 +74,7 @@ export default function Progress() {
   const progressLevel = getProgressLevel();
 
   return (
-    <div className="pt-4 pb-24 px-6 max-w-md mx-auto space-y-6">
+    <div className="pt-4 pb-32 px-6 max-w-md mx-auto space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
         <div className="w-16 h-16 mx-auto">

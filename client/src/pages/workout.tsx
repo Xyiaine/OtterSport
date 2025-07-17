@@ -461,7 +461,7 @@ export default function WorkoutPage() {
       )}
 
       {/* Action Buttons - Fixed position to avoid overlapping */}
-      <div className="sticky bottom-0 bg-white border-t border-slate-200 p-4 -mx-6 space-y-3">
+      <div className="sticky bottom-20 bg-white border-t border-slate-200 p-4 -mx-6 space-y-3 z-40">
         <Button
           onClick={handleCompleteExercise}
           className="w-full bg-otter-teal hover:bg-teal-600 text-white py-4 font-semibold"

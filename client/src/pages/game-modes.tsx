@@ -112,7 +112,7 @@ export default function GameModesPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <div className="max-w-md mx-auto space-y-6">
+      <div className="max-w-md mx-auto space-y-6 pb-32">
         {/* Header */}
         <div className="flex items-center justify-between pt-4">
           <Button 

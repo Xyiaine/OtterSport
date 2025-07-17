@@ -236,7 +236,7 @@ export default function Onboarding() {
       </div>
 
       {/* Action Buttons - Fixed position to avoid overlapping */}
-      <div className="sticky bottom-0 bg-white border-t border-slate-200 p-4 -mx-6 mt-8 space-y-3">
+      <div className="sticky bottom-20 bg-white border-t border-slate-200 p-4 -mx-6 mt-8 space-y-3 z-40">
         <Button
           onClick={handleNext}
           disabled={!canProceed() || updateProfileMutation.isPending}
