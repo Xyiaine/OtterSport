@@ -341,7 +341,7 @@ export default function WorkoutPage() {
   }
 
   return (
-    <div className="min-h-screen p-6 max-w-md mx-auto space-y-6">
+    <div className="min-h-screen p-6 pb-32 max-w-md mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <Button 
@@ -460,8 +460,8 @@ export default function WorkoutPage() {
         </div>
       )}
 
-      {/* Action Buttons */}
-      <div className="space-y-3">
+      {/* Action Buttons - Fixed position to avoid overlapping */}
+      <div className="sticky bottom-0 bg-white border-t border-slate-200 p-4 -mx-6 space-y-3">
         <Button
           onClick={handleCompleteExercise}
           className="w-full bg-otter-teal hover:bg-teal-600 text-white py-4 font-semibold"

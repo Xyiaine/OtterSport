@@ -121,7 +121,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen p-6 max-w-md mx-auto flex flex-col">
+    <div className="min-h-screen p-6 max-w-md mx-auto flex flex-col pb-20">
       {/* Header */}
       <div className="text-center space-y-4 mt-8 mb-8">
         <div className="w-16 h-16 mx-auto">
@@ -235,8 +235,8 @@ export default function Onboarding() {
         )}
       </div>
 
-      {/* Action Buttons */}
-      <div className="space-y-3 mt-8">
+      {/* Action Buttons - Fixed position to avoid overlapping */}
+      <div className="sticky bottom-0 bg-white border-t border-slate-200 p-4 -mx-6 mt-8 space-y-3">
         <Button
           onClick={handleNext}
           disabled={!canProceed() || updateProfileMutation.isPending}

@@ -86,7 +86,7 @@ export default function Home() {
   if (!user) return null;
 
   return (
-    <div className="pt-4 pb-24 px-6 max-w-md mx-auto space-y-6">
+    <div className="pt-4 pb-32 px-6 max-w-md mx-auto space-y-6">
       {/* Welcome Section */}
       <Card className="shadow-sm border-slate-100">
         <CardContent className="p-6">
