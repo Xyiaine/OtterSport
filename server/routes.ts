@@ -28,6 +28,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register migration and optimization tools
   registerMigrationRoutes(app);
+  
+  // Register code optimization and testing routes
+  registerOptimizationRoutes(app);
 
   // ============================================================================
   // AUTH ROUTES
@@ -424,4 +427,69 @@ function registerMigrationRoutes(app: Express): void {
   });
 
   console.log("[Migration] Migration routes registered successfully");
+}
+
+/**
+ * REGISTER CODE OPTIMIZATION & TESTING ROUTES
+ * Provides comprehensive code optimization and testing endpoints
+ */
+function registerOptimizationRoutes(app: Express): void {
+  console.log("[Optimization] Registering code optimization routes...");
+
+  // Run comprehensive optimization suite
+  app.get('/api/optimization/suite', async (req, res) => {
+    try {
+      const { codeOptimizationTester } = await import("./code-optimization-tester");
+      const results = await codeOptimizationTester.runOptimizationSuite();
+      res.json(results);
+    } catch (error) {
+      res.status(500).json({ error: "Optimization suite failed", details: error });
+    }
+  });
+
+  // Code quality analysis
+  app.get('/api/optimization/code-quality', async (req, res) => {
+    try {
+      const { codeOptimizationTester } = await import("./code-optimization-tester");
+      const results = await codeOptimizationTester.runOptimizationSuite();
+      res.json(results.codeQuality);
+    } catch (error) {
+      res.status(500).json({ error: "Code quality analysis failed", details: error });
+    }
+  });
+
+  // Performance benchmarks
+  app.get('/api/optimization/performance', async (req, res) => {
+    try {
+      const { codeOptimizationTester } = await import("./code-optimization-tester");
+      const results = await codeOptimizationTester.runOptimizationSuite();
+      res.json(results.performance);
+    } catch (error) {
+      res.status(500).json({ error: "Performance benchmarking failed", details: error });
+    }
+  });
+
+  // Functionality tests
+  app.get('/api/optimization/functionality', async (req, res) => {
+    try {
+      const { codeOptimizationTester } = await import("./code-optimization-tester");
+      const results = await codeOptimizationTester.runOptimizationSuite();
+      res.json(results.functionality);
+    } catch (error) {
+      res.status(500).json({ error: "Functionality testing failed", details: error });
+    }
+  });
+
+  // Security analysis
+  app.get('/api/optimization/security', async (req, res) => {
+    try {
+      const { codeOptimizationTester } = await import("./code-optimization-tester");
+      const results = await codeOptimizationTester.runOptimizationSuite();
+      res.json(results.security);
+    } catch (error) {
+      res.status(500).json({ error: "Security analysis failed", details: error });
+    }
+  });
+
+  console.log("[Optimization] Code optimization routes registered successfully");
 }

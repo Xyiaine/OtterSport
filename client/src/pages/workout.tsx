@@ -14,10 +14,34 @@ import OtterCharacter from "@/components/ui/otter-character";
 import CardDeckSelection from "@/components/ui/card-deck-selection";
 import type { Deck, DeckExercise, Exercise, Workout } from "@shared/schema";
 
+/**
+ * WORKOUT PAGE COMPONENT
+ * 
+ * Core workout execution interface that handles the complete workout flow:
+ * - Card selection phase for strategic workout planning
+ * - Exercise execution with real-time timers and progress tracking
+ * - Multi-mode support (solo, AI challenge, collaborative)
+ * - Adaptive difficulty integration with user feedback collection
+ * 
+ * Features:
+ * - Smart card-based exercise selection
+ * - Real-time workout tracking and analytics
+ * - Gamification elements (scoring, challenges)
+ * - Responsive design for mobile workout sessions
+ * - Comprehensive error handling and offline support
+ */
+
+// Extended deck type with exercise relationships
 type DeckWithExercises = Deck & { 
   exercises: (DeckExercise & { exercise: Exercise })[] 
 };
 
+/**
+ * WorkoutPage Component
+ * 
+ * Main workout execution interface that manages the complete workout lifecycle
+ * from exercise selection through completion and feedback collection.
+ */
 export default function WorkoutPage() {
   const { deckId } = useParams<{ deckId: string }>();
   const [, setLocation] = useLocation();

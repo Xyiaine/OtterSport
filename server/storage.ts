@@ -86,10 +86,22 @@ export interface IStorage {
 }
 
 /**
- * In-memory storage implementation for development
- * This provides a simple storage layer without requiring a database
+ * MEMORY STORAGE IMPLEMENTATION
+ * 
+ * In-memory storage implementation for development and testing.
+ * This provides a simple storage layer without requiring a database connection.
+ * 
+ * Features:
+ * - Complete CRUD operations for all entities
+ * - Automatic ID generation and relationship management
+ * - Default data initialization for immediate functionality
+ * - Comprehensive validation and error handling
+ * - Performance-optimized data access patterns
+ * 
+ * Note: Data is lost when server restarts - use DatabaseStorage for production.
  */
 export class MemoryStorage implements IStorage {
+  // In-memory data stores with proper typing
   private users: Map<string, User> = new Map();
   private exercises: Map<number, Exercise> = new Map();
   private decks: Map<number, Deck> = new Map();
@@ -97,6 +109,8 @@ export class MemoryStorage implements IStorage {
   private workouts: Map<number, Workout> = new Map();
   private achievements: Map<number, Achievement> = new Map();
   private userAchievements: Map<number, UserAchievement> = new Map();
+  
+  // Auto-incrementing ID counter for new entities
   private nextId = 1;
 
   constructor() {

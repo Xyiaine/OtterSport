@@ -1,19 +1,37 @@
 import type { User } from "@shared/schema";
 
+/**
+ * ADAPTIVE WORKOUT DIFFICULTY ENGINE
+ * 
+ * This system automatically adjusts workout difficulty based on user feedback,
+ * ensuring optimal challenge levels for consistent progression.
+ * 
+ * Key Features:
+ * - Real-time difficulty adjustment based on user feedback
+ * - User fitness level consideration for personalized progression
+ * - Consecutive feedback analysis for pattern recognition
+ * - Safe difficulty bounds to prevent injury or discouragement
+ */
+
+// Feedback types that users can provide after workouts
 export type FeedbackType = 'too_easy' | 'just_right' | 'bit_too_hard' | 'way_too_hard';
 
+// Comprehensive adaptive settings returned by the engine
 export interface AdaptiveSettings {
   difficultyLevel: number;
   recommendations: {
-    adjustDifficulty: boolean;
-    adjustVolume: boolean;
-    adjustRest: boolean;
-    message: string;
+    adjustDifficulty: boolean;   // Should we adjust exercise difficulty?
+    adjustVolume: boolean;       // Should we adjust workout volume?
+    adjustRest: boolean;         // Should we adjust rest periods?
+    message: string;             // Human-readable recommendation
   };
 }
 
 /**
  * Core adaptive engine that adjusts difficulty based on user feedback
+ * 
+ * This engine analyzes user feedback patterns and fitness levels to calculate
+ * optimal difficulty adjustments, ensuring users stay in their optimal challenge zone.
  */
 export class AdaptiveEngine {
   private static readonly DIFFICULTY_ADJUSTMENT_RATES = {
@@ -27,7 +45,16 @@ export class AdaptiveEngine {
   private static readonly MAX_DIFFICULTY = 2.5;
 
   /**
-   * Calculate new difficulty level based on feedback
+   * Calculate new difficulty level based on user feedback
+   * 
+   * This is the core algorithm that processes user feedback and calculates
+   * the optimal difficulty adjustment to maintain appropriate challenge levels.
+   * 
+   * @param currentDifficulty - Current difficulty multiplier (0.3 to 2.5)
+   * @param feedback - User's workout feedback
+   * @param consecutiveFeedback - Recent feedback history for pattern analysis
+   * @param userLevel - User's fitness level for personalized adjustments
+   * @returns New difficulty level clamped to safe bounds
    */
   static calculateNewDifficulty(
     currentDifficulty: number,

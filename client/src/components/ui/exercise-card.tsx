@@ -3,14 +3,33 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { Exercise } from "@shared/schema";
 
+/**
+ * EXERCISE CARD COMPONENT
+ * 
+ * Interactive card component that displays individual exercises during workouts.
+ * Handles both rep-based and time-based exercises with built-in timer functionality.
+ * 
+ * Features:
+ * - Smart timer for time-based exercises
+ * - Visual feedback and progress indicators
+ * - Accessibility-friendly controls
+ * - Responsive design for mobile and desktop
+ */
+
 interface ExerciseCardProps {
-  exercise: Exercise;
-  reps?: number | null;
-  duration?: number | null;
-  onComplete: () => void;
-  onSkip: () => void;
+  exercise: Exercise;           // The exercise to display
+  reps?: number | null;        // Number of reps (for rep-based exercises)
+  duration?: number | null;    // Duration in seconds (for time-based exercises)
+  onComplete: () => void;      // Called when exercise is completed
+  onSkip: () => void;         // Called when exercise is skipped
 }
 
+/**
+ * ExerciseCard Component
+ * 
+ * Renders an interactive exercise card with timer functionality for workouts.
+ * Automatically handles different exercise types (reps vs time-based).
+ */
 export default function ExerciseCard({ 
   exercise, 
   reps, 
@@ -18,10 +37,17 @@ export default function ExerciseCard({
   onComplete, 
   onSkip 
 }: ExerciseCardProps) {
+  // Timer state management for time-based exercises
   const [timer, setTimer] = useState(duration || 0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
+  /**
+   * Timer Effect Hook
+   * 
+   * Manages the countdown timer for time-based exercises.
+   * Automatically stops timer when reaching zero and marks exercise as complete.
+   */
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isTimerRunning && timer > 0) {
@@ -39,6 +65,12 @@ export default function ExerciseCard({
     return () => clearInterval(interval);
   }, [isTimerRunning, timer]);
 
+  /**
+   * Timer Control Functions
+   * 
+   * These functions provide clean interfaces for timer management
+   * with proper state validation and user experience considerations.
+   */
   const startTimer = () => {
     if (duration && !isCompleted) {
       setIsTimerRunning(true);
@@ -55,13 +87,26 @@ export default function ExerciseCard({
     setIsCompleted(false);
   };
 
-  const formatTime = (seconds: number) => {
+  /**
+   * Time Formatting Utility
+   * 
+   * Converts seconds to MM:SS format for better readability.
+   * @param seconds - Number of seconds to format
+   * @returns Formatted time string (e.g., "2:05")
+   */
+  const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const getExerciseIcon = () => {
+  /**
+   * Exercise Icon Helper
+   * 
+   * Returns appropriate icon for the exercise type with fallback.
+   * @returns Icon class string for FontAwesome icons
+   */
+  const getExerciseIcon = (): string => {
     return exercise.icon || "fas fa-dumbbell";
   };
 
