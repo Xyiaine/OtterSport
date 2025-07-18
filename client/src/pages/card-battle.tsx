@@ -69,27 +69,28 @@ export default function CardBattle() {
   }, [exercises]);
 
   const initializeGame = () => {
-    // Create game cards from exercises
-    const gameCards: GameCard[] = exercises.map((exercise, index) => ({
-      id: `${exercise.id}-${index}`,
-      exercise,
-      points: calculatePoints(exercise),
-      difficulty: getDifficultyLevel(exercise.category),
-    }));
+    // Create game cards from exercises (duplicate exercises to make a bigger deck)
+    const gameCards: GameCard[] = [];
+    exercises.forEach((exercise, index) => {
+      // Add 2-3 copies of each exercise to make deck bigger
+      for (let i = 0; i < 2; i++) {
+        gameCards.push({
+          id: `${exercise.id}-${index}-${i}`,
+          exercise,
+          points: calculatePoints(exercise),
+          difficulty: getDifficultyLevel(exercise.category),
+        });
+      }
+    });
 
     // Shuffle deck
     const shuffledDeck = [...gameCards].sort(() => Math.random() - 0.5);
     
-    // Deal initial hands (3 cards each)
-    const playerHand = shuffledDeck.slice(0, 3);
-    const aiHand = shuffledDeck.slice(3, 6);
-    const remainingDeck = shuffledDeck.slice(6);
-
     setGameState(prev => ({
       ...prev,
-      playerHand,
-      aiHand,
-      deckCards: remainingDeck,
+      playerHand: [],
+      aiHand: [],
+      deckCards: shuffledDeck,
       gamePhase: 'drawing',
     }));
   };
@@ -119,8 +120,9 @@ export default function CardBattle() {
       return;
     }
 
-    const cardsToDrawPlayer = Math.min(3 - gameState.playerHand.length, gameState.deckCards.length);
-    const cardsToDrawAI = Math.min(3 - gameState.aiHand.length, gameState.deckCards.length - cardsToDrawPlayer);
+    // Draw 3 cards for player and AI only if they have no cards
+    const cardsToDrawPlayer = gameState.playerHand.length === 0 ? Math.min(3, gameState.deckCards.length) : 0;
+    const cardsToDrawAI = gameState.aiHand.length === 0 ? Math.min(3, gameState.deckCards.length - cardsToDrawPlayer) : 0;
 
     const newPlayerCards = gameState.deckCards.slice(0, cardsToDrawPlayer);
     const newAICards = gameState.deckCards.slice(cardsToDrawPlayer, cardsToDrawPlayer + cardsToDrawAI);
@@ -183,9 +185,10 @@ export default function CardBattle() {
       aiLastPlayedCard: bestCard,
       aiScore: prev.aiScore + bestCard.points,
       currentTurn: 'player',
-      gamePhase: prev.deckCards.length > 0 || prev.playerHand.length > 0 ? 'drawing' : 'game-over',
+      gamePhase: (prev.deckCards.length > 0 && (prev.playerHand.length > 0 || newAIHand.length > 0)) ? 'drawing' : 'game-over',
     }));
 
+    // Check if game should end
     if (gameState.deckCards.length === 0 && newAIHand.length === 0 && gameState.playerHand.length === 0) {
       setTimeout(() => endGame(), 1000);
     }
@@ -261,7 +264,7 @@ export default function CardBattle() {
         {/* Game Phase Indicator */}
         <div className="text-center mb-6">
           <Badge variant="outline" className="px-4 py-2">
-            {gameState.gamePhase === 'drawing' && 'Draw Phase - Click to draw cards'}
+            {gameState.gamePhase === 'drawing' && 'Draw Phase - Click the deck to draw cards'}
             {gameState.gamePhase === 'playing' && 'Your Turn - Select a card to play'}
             {gameState.gamePhase === 'ai-turn' && 'AI is thinking...'}
             {gameState.gamePhase === 'game-over' && 'Game Over!'}
@@ -317,6 +320,35 @@ export default function CardBattle() {
           </div>
         </div>
 
+        {/* Deck */}
+        <div className="text-center mb-6">
+          <div className="text-sm text-slate-600 mb-2">Deck ({gameState.deckCards.length} cards remaining)</div>
+          <div className="flex justify-center">
+            {gameState.deckCards.length > 0 ? (
+              <div
+                className={`w-24 h-32 bg-gradient-to-br from-otter-teal to-teal-700 rounded-lg border-2 border-teal-600 shadow-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-xl ${
+                  gameState.gamePhase === 'drawing' ? 'animate-pulse' : ''
+                }`}
+                onClick={drawCards}
+              >
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <i className="fas fa-layer-group text-2xl mb-1"></i>
+                    <div className="text-xs font-semibold">DRAW</div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="w-24 h-32 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center">
+                <div className="text-slate-400 text-center">
+                  <i className="fas fa-times text-xl mb-1"></i>
+                  <div className="text-xs">Empty</div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Player Hand */}
         <div className="text-center mb-6">
           <div className="text-sm text-slate-600 mb-2">Your Hand</div>
@@ -357,16 +389,6 @@ export default function CardBattle() {
 
         {/* Game Actions */}
         <div className="flex justify-center space-x-4 mb-6">
-          {gameState.gamePhase === 'drawing' && (
-            <Button
-              onClick={drawCards}
-              className="bg-otter-teal hover:bg-teal-600 text-white px-8 py-3"
-              disabled={gameState.deckCards.length === 0}
-            >
-              Draw Cards
-            </Button>
-          )}
-          
           {gameState.gamePhase === 'playing' && gameState.selectedCard && (
             <Button
               onClick={() => playCard(gameState.selectedCard!)}
