@@ -1,0 +1,69 @@
+{
+  "startTime": "2025-07-18T14:54:51.958Z",
+  "checks": [
+    {
+      "type": "connection",
+      "status": "pass",
+      "details": "Connection successful",
+      "timestamp": "2025-07-18T14:54:52.481Z"
+    },
+    {
+      "type": "schema",
+      "status": "pass",
+      "details": "Schema validation passed",
+      "timestamp": "2025-07-18T14:54:53.613Z"
+    },
+    {
+      "type": "indexes",
+      "status": "warning",
+      "details": "Index analysis failed: column \"tablename\" does not exist",
+      "recommendations": [],
+      "timestamp": "2025-07-18T14:54:53.759Z"
+    },
+    {
+      "type": "integrity",
+      "status": "pass",
+      "details": "No data integrity issues found",
+      "timestamp": "2025-07-18T14:54:54.069Z"
+    },
+    {
+      "type": "connection",
+      "status": "pass",
+      "details": "Connection successful",
+      "timestamp": "2025-07-18T14:54:54.215Z"
+    },
+    {
+      "type": "schema",
+      "status": "pass",
+      "details": "Schema validation passed",
+      "timestamp": "2025-07-18T14:54:54.959Z"
+    },
+    {
+      "type": "indexes",
+      "status": "warning",
+      "details": "Index analysis failed: column \"tablename\" does not exist",
+      "recommendations": [],
+      "timestamp": "2025-07-18T14:54:55.105Z"
+    },
+    {
+      "type": "integrity",
+      "status": "pass",
+      "details": "No data integrity issues found",
+      "timestamp": "2025-07-18T14:54:55.404Z"
+    }
+  ],
+  "recommendations": [],
+  "performance": {
+    "responseTime": 439.9132490000002,
+    "databaseStats": [],
+    "connectionStats": [
+      {
+        "state": "active",
+        "count": "1"
+      }
+    ],
+    "queryStats": [],
+    "timestamp": "2025-07-18T14:54:54.655Z"
+  },
+  "migrations": []
+}
