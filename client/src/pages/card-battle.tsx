@@ -69,13 +69,13 @@ export default function CardBattle() {
   }, [exercises]);
 
   const initializeGame = () => {
-    // Create game cards from exercises (duplicate exercises to make a bigger deck)
+    // Create game cards from exercises (create multiple copies with unique IDs)
     const gameCards: GameCard[] = [];
     exercises.forEach((exercise, index) => {
-      // Add 2-3 copies of each exercise to make deck bigger
-      for (let i = 0; i < 2; i++) {
+      // Add 3-4 copies of each exercise to make a bigger deck
+      for (let i = 0; i < 3; i++) {
         gameCards.push({
-          id: `${exercise.id}-${index}-${i}`,
+          id: `${exercise.id}-${index}-${i}-${Date.now()}`, // Ensure unique IDs
           exercise,
           points: calculatePoints(exercise),
           difficulty: getDifficultyLevel(exercise.category),
@@ -83,7 +83,7 @@ export default function CardBattle() {
       }
     });
 
-    // Shuffle deck
+    // Shuffle deck thoroughly
     const shuffledDeck = [...gameCards].sort(() => Math.random() - 0.5);
     
     setGameState(prev => ({
@@ -91,7 +91,13 @@ export default function CardBattle() {
       playerHand: [],
       aiHand: [],
       deckCards: shuffledDeck,
+      playerScore: 0,
+      aiScore: 0,
+      currentTurn: 'player',
       gamePhase: 'drawing',
+      selectedCard: null,
+      lastPlayedCard: null,
+      aiLastPlayedCard: null,
     }));
   };
 
@@ -120,19 +126,27 @@ export default function CardBattle() {
       return;
     }
 
-    // Draw 3 cards for player and AI only if they have no cards
-    const cardsToDrawPlayer = gameState.playerHand.length === 0 ? Math.min(3, gameState.deckCards.length) : 0;
-    const cardsToDrawAI = gameState.aiHand.length === 0 ? Math.min(3, gameState.deckCards.length - cardsToDrawPlayer) : 0;
-
+    // Calculate how many cards each player needs (up to 3 cards max in hand)
+    const playerNeedsCards = Math.max(0, 3 - gameState.playerHand.length);
+    const aiNeedsCards = Math.max(0, 3 - gameState.aiHand.length);
+    
+    // Draw cards for player first
+    const cardsToDrawPlayer = Math.min(playerNeedsCards, gameState.deckCards.length);
     const newPlayerCards = gameState.deckCards.slice(0, cardsToDrawPlayer);
-    const newAICards = gameState.deckCards.slice(cardsToDrawPlayer, cardsToDrawPlayer + cardsToDrawAI);
-    const remainingDeck = gameState.deckCards.slice(cardsToDrawPlayer + cardsToDrawAI);
+    
+    // Draw cards for AI from remaining deck
+    const remainingAfterPlayer = gameState.deckCards.slice(cardsToDrawPlayer);
+    const cardsToDrawAI = Math.min(aiNeedsCards, remainingAfterPlayer.length);
+    const newAICards = remainingAfterPlayer.slice(0, cardsToDrawAI);
+    
+    // Final remaining deck after both players draw
+    const finalRemainingDeck = remainingAfterPlayer.slice(cardsToDrawAI);
 
     setGameState(prev => ({
       ...prev,
       playerHand: [...prev.playerHand, ...newPlayerCards],
       aiHand: [...prev.aiHand, ...newAICards],
-      deckCards: remainingDeck,
+      deckCards: finalRemainingDeck,
       gamePhase: 'playing',
     }));
   };
@@ -188,7 +202,7 @@ export default function CardBattle() {
       gamePhase: (prev.deckCards.length > 0 && (prev.playerHand.length > 0 || newAIHand.length > 0)) ? 'drawing' : 'game-over',
     }));
 
-    // Check if game should end
+    // Check if game should end - no cards left in deck and both players have no cards
     if (gameState.deckCards.length === 0 && newAIHand.length === 0 && gameState.playerHand.length === 0) {
       setTimeout(() => endGame(), 1000);
     }
