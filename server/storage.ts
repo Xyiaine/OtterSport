@@ -213,6 +213,11 @@ export class MemoryStorage implements IStorage {
       ...exercise,
       id: this.getNextId(),
       createdAt: new Date(),
+      description: exercise.description ?? null,
+      defaultReps: exercise.defaultReps ?? null,
+      defaultDuration: exercise.defaultDuration ?? null,
+      instructions: exercise.instructions ?? null,
+      icon: exercise.icon ?? null,
     };
     this.exercises.set(newExercise.id, newExercise);
     return newExercise;
@@ -256,6 +261,10 @@ export class MemoryStorage implements IStorage {
       ...deck,
       id: this.getNextId(),
       createdAt: new Date(),
+      description: deck.description ?? null,
+      estimatedMinutes: deck.estimatedMinutes ?? null,
+      isCustom: deck.isCustom ?? null,
+      createdBy: deck.createdBy ?? null,
     };
     this.decks.set(newDeck.id, newDeck);
     return newDeck;
@@ -265,6 +274,8 @@ export class MemoryStorage implements IStorage {
     const newDeckExercise: DeckExercise = {
       ...deckExercise,
       id: this.getNextId(),
+      customReps: deckExercise.customReps ?? null,
+      customDuration: deckExercise.customDuration ?? null,
     };
     this.deckExercises.set(newDeckExercise.id, newDeckExercise);
     return newDeckExercise;
@@ -275,7 +286,7 @@ export class MemoryStorage implements IStorage {
     
     return Array.from(this.decks.values())
       .filter(deck => deck.createdBy === userId && deck.isCustom)
-      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+      .sort((a, b) => (a.createdAt?.getTime() || 0) - (b.createdAt?.getTime() || 0));
   }
 
   // ============================================================================
@@ -287,6 +298,10 @@ export class MemoryStorage implements IStorage {
       ...workout,
       id: this.getNextId(),
       cardsCompleted: 0,
+      completedAt: workout.completedAt ?? null,
+      duration: workout.duration ?? null,
+      feedback: workout.feedback ?? null,
+      calories: workout.calories ?? null,
     };
     this.workouts.set(newWorkout.id, newWorkout);
     return newWorkout;
@@ -303,7 +318,7 @@ export class MemoryStorage implements IStorage {
       completedAt: new Date(),
       feedback,
       duration,
-      calories: calories || undefined,
+      calories: calories ?? null,
     };
     this.workouts.set(workoutId, updatedWorkout);
 
@@ -396,7 +411,7 @@ export class MemoryStorage implements IStorage {
         ...ua,
         achievement: this.achievements.get(ua.achievementId)!,
       }))
-      .sort((a, b) => b.unlockedAt.getTime() - a.unlockedAt.getTime());
+      .sort((a, b) => (b.unlockedAt?.getTime() || 0) - (a.unlockedAt?.getTime() || 0));
   }
 
   async unlockAchievement(userId: string, achievementId: number): Promise<UserAchievement> {
