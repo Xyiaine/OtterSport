@@ -71,6 +71,6 @@ export default function Landing() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </EditableBackground>
   );
 }

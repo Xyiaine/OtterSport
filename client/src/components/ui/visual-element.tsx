@@ -89,7 +89,13 @@ export const VisualElement = forwardRef<HTMLElement, VisualElementProps>(
     };
 
     const getElementContent = () => {
-      if (!element) return children;
+      if (!element) {
+        // For img elements, don't return children as they can't have children
+        if (Component === 'img') {
+          return null;
+        }
+        return children;
+      }
       
       switch (type) {
         case 'text':
@@ -104,7 +110,8 @@ export const VisualElement = forwardRef<HTMLElement, VisualElementProps>(
               />
             );
           }
-          return children;
+          // For img elements, the src is set in getElementProps, no children needed
+          return null;
         default:
           return children;
       }
@@ -165,8 +172,52 @@ export const VisualElement = forwardRef<HTMLElement, VisualElementProps>(
           {...props}
           {...editableProps}
         >
-          {children}
+          {Component === 'img' ? null : children}
         </Component>
+      );
+    }
+
+    // If element not found but fallback exists, render fallback
+    if (!element && fallback) {
+      if (Component === 'img') {
+        // For img elements, we need to wrap the fallback in a div
+        return (
+          <div 
+            ref={elementRefToUse}
+            {...editableProps}
+          >
+            {fallback}
+          </div>
+        );
+      }
+      return (
+        <Component 
+          ref={elementRefToUse}
+          {...props}
+          {...editableProps}
+        >
+          {fallback}
+        </Component>
+      );
+    }
+
+    // Handle img elements separately since they can't have children
+    if (Component === 'img') {
+      return (
+        <div className="relative">
+          <Component 
+            ref={elementRefToUse}
+            {...getElementProps()}
+            {...editableProps}
+          />
+          {/* Edit indicator */}
+          {isEditable && (isHovered || isSelected) && (
+            <div className="absolute -top-6 left-0 bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium pointer-events-none z-30">
+              {element?.name || id}
+              {isSelected && ' (Selected)'}
+            </div>
+          )}
+        </div>
       );
     }
 
@@ -194,7 +245,7 @@ VisualElement.displayName = 'VisualElement';
 
 // Convenience components for common use cases
 export const EditableImage = ({ id, ...props }: Omit<VisualElementProps, 'type'>) => (
-  <VisualElement id={id} type="image" as="img" {...props} />
+  <VisualElement id={id} type="image" as="div" {...props} />
 );
 
 export const EditableText = ({ id, ...props }: Omit<VisualElementProps, 'type'>) => (
