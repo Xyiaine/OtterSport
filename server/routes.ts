@@ -13,6 +13,8 @@ import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeck
 import { z } from "zod";
 import { registerTestRoutes } from "./api-test-routes";
 import { registerDevelopmentRoutes } from "./development-tools";
+import { databaseOptimizer } from "./database-optimizer";
+import { migrationTools } from "./migration-tools";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
@@ -23,6 +25,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register development monitoring tools
   registerDevelopmentRoutes(app);
+  
+  // Register migration and optimization tools
+  registerMigrationRoutes(app);
 
   // ============================================================================
   // AUTH ROUTES
@@ -325,4 +330,98 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   const httpServer = createServer(app);
   return httpServer;
+}
+
+/**
+ * REGISTER MIGRATION & OPTIMIZATION ROUTES
+ * Provides comprehensive database migration and optimization endpoints
+ */
+function registerMigrationRoutes(app: Express): void {
+  console.log("[Migration] Registering migration and optimization routes...");
+
+  // Database health check
+  app.get('/api/migration/health', async (req, res) => {
+    try {
+      const health = await databaseOptimizer.performHealthCheck();
+      res.json(health);
+    } catch (error) {
+      res.status(500).json({ error: "Health check failed", details: error });
+    }
+  });
+
+  // Database optimization
+  app.post('/api/migration/optimize', async (req, res) => {
+    try {
+      const optimization = await databaseOptimizer.optimizeDatabase();
+      res.json(optimization);
+    } catch (error) {
+      res.status(500).json({ error: "Optimization failed", details: error });
+    }
+  });
+
+  // Export schema
+  app.get('/api/migration/export-schema', async (req, res) => {
+    try {
+      const schema = await databaseOptimizer.exportSchema();
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', 'attachment; filename=ottersport-schema.json');
+      res.send(schema);
+    } catch (error) {
+      res.status(500).json({ error: "Schema export failed", details: error });
+    }
+  });
+
+  // Generate migration scripts
+  app.get('/api/migration/scripts', async (req, res) => {
+    try {
+      const scripts = await migrationTools.generatePlatformScripts();
+      res.json(scripts);
+    } catch (error) {
+      res.status(500).json({ error: "Script generation failed", details: error });
+    }
+  });
+
+  // Full backup
+  app.get('/api/migration/backup', async (req, res) => {
+    try {
+      const backup = await migrationTools.createFullBackup();
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', 'attachment; filename=ottersport-backup.json');
+      res.json(backup);
+    } catch (error) {
+      res.status(500).json({ error: "Backup failed", details: error });
+    }
+  });
+
+  // Migration validation
+  app.get('/api/migration/validate', async (req, res) => {
+    try {
+      const validation = await migrationTools.validateMigrationReadiness();
+      res.json(validation);
+    } catch (error) {
+      res.status(500).json({ error: "Validation failed", details: error });
+    }
+  });
+
+  // Test migration
+  app.post('/api/migration/test', async (req, res) => {
+    try {
+      const test = await migrationTools.testMigration();
+      res.json(test);
+    } catch (error) {
+      res.status(500).json({ error: "Migration test failed", details: error });
+    }
+  });
+
+  // Platform compatibility check
+  app.get('/api/migration/compatibility', async (req, res) => {
+    try {
+      const compatibility = await databaseOptimizer.validateMigrationCompatibility();
+      res.json(compatibility);
+    } catch (error) {
+      res.status(500).json({ error: "Compatibility check failed", details: error });
+    }
+  });
+
+  console.log("[Migration] Migration routes registered successfully");
 }
