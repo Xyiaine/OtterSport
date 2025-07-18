@@ -17,6 +17,7 @@ import Landing from "@/pages/landing";
 import Home from "@/pages/home";
 import Onboarding from "@/pages/onboarding";
 import Workout from "@/pages/workout";
+import CardBattle from "@/pages/card-battle";
 import Progress from "@/pages/progress";
 import DeckCreation from "@/pages/deck-creation";
 import GameModes from "@/pages/game-modes";
@@ -52,6 +53,7 @@ function Router() {
             <Route path="/" component={Home} />
             <Route path="/onboarding" component={Onboarding} />
             <Route path="/workout/:deckId?" component={Workout} />
+            <Route path="/card-battle/:id" component={CardBattle} />
             <Route path="/progress" component={Progress} />
             <Route path="/decks" component={DeckCreation} />
             <Route path="/game-modes/:mode" component={GameModes} />

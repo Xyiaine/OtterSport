@@ -171,27 +171,44 @@ export default function Home() {
           {decks.map((deck) => (
             <Card 
               key={deck.id} 
-              className="shadow-sm border-slate-100 hover:border-otter-teal hover:bg-otter-teal-light transition-all cursor-pointer"
-              onClick={() => handleStartWorkout(deck.id)}
+              className="shadow-sm border-slate-100"
             >
               <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2">
-                      <h4 className="font-medium text-slate-800">{deck.name}</h4>
-                      <Badge variant="secondary" className="text-xs">
-                        {deck.category}
-                      </Badge>
-                    </div>
-                    {deck.description && (
-                      <p className="text-sm text-slate-600 mt-1">{deck.description}</p>
-                    )}
-                    <div className="flex items-center space-x-4 mt-2 text-xs text-slate-500">
-                      <span>{deck.estimatedMinutes || 15} mins</span>
-                      <span>Difficulty: {deck.difficulty.toFixed(1)}</span>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2">
+                        <h4 className="font-medium text-slate-800">{deck.name}</h4>
+                        <Badge variant="secondary" className="text-xs">
+                          {deck.category}
+                        </Badge>
+                      </div>
+                      {deck.description && (
+                        <p className="text-sm text-slate-600 mt-1">{deck.description}</p>
+                      )}
+                      <div className="flex items-center space-x-4 mt-2 text-xs text-slate-500">
+                        <span>{deck.estimatedMinutes || 15} mins</span>
+                        <span>Difficulty: {deck.difficulty.toFixed(1)}</span>
+                      </div>
                     </div>
                   </div>
-                  <i className="fas fa-chevron-right text-slate-400"></i>
+                  <div className="flex space-x-2">
+                    <Button 
+                      onClick={() => handleStartWorkout(deck.id)}
+                      className="flex-1 bg-otter-teal hover:bg-teal-600 text-white text-sm py-2"
+                    >
+                      <i className="fas fa-play mr-2"></i>
+                      Regular Workout
+                    </Button>
+                    <Button 
+                      onClick={() => setLocation(`/card-battle/${deck.id}`)}
+                      variant="outline"
+                      className="flex-1 border-purple-300 text-purple-600 hover:bg-purple-50 text-sm py-2"
+                    >
+                      <i className="fas fa-layer-group mr-2"></i>
+                      Card Battle
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
