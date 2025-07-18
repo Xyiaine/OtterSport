@@ -494,7 +494,7 @@ export class OtterSportTestRunner {
           await storage.getUser("");
           throw new Error("Should have thrown error");
         } catch (error) {
-          if (error.message.includes("Invalid user ID")) {
+          if (error instanceof Error && error.message.includes("Invalid user ID")) {
             return "Correctly handled invalid user ID";
           }
           throw error;
@@ -506,7 +506,7 @@ export class OtterSportTestRunner {
           await storage.getDeck(-1);
           throw new Error("Should have thrown error");
         } catch (error) {
-          if (error.message.includes("Invalid ID")) {
+          if (error instanceof Error && error.message.includes("Invalid ID")) {
             return "Correctly handled invalid deck ID";
           }
           throw error;
@@ -518,7 +518,7 @@ export class OtterSportTestRunner {
           await storage.completeWorkout(99999, "just_right", 900);
           throw new Error("Should have thrown error");
         } catch (error) {
-          if (error.message.includes("not found")) {
+          if (error instanceof Error && error.message.includes("not found")) {
             return "Correctly handled non-existent workout";
           }
           throw error;
@@ -530,7 +530,7 @@ export class OtterSportTestRunner {
           await storage.updateUserProgress("non-existent-user", { currentStreak: 5 });
           throw new Error("Should have thrown error");
         } catch (error) {
-          if (error.message.includes("not found")) {
+          if (error instanceof Error && error.message.includes("not found")) {
             return "Correctly handled non-existent user";
           }
           throw error;

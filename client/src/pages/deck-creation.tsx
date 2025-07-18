@@ -42,18 +42,6 @@ export default function DeckCreation() {
   const { data: userDecks = [] } = useQuery<Deck[]>({
     queryKey: ["/api/user/decks"],
     enabled: !!user,
-    onError: (error: Error) => {
-      if (isUnauthorizedError(error)) {
-        toast({
-          title: "Session expired",
-          description: "Please log in again",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
-      }
-    },
   });
 
   // Create deck mutation
@@ -379,11 +367,11 @@ export default function DeckCreation() {
       </div>
 
       {/* User's Custom Decks */}
-      {userDecks.length > 0 && (
+      {userDecks && userDecks.length > 0 && (
         <div className="space-y-4 border-t border-slate-200 pt-6">
           <h3 className="font-semibold text-slate-800">Your Custom Decks</h3>
           <div className="space-y-3">
-            {userDecks.map((deck) => (
+            {userDecks.map((deck: Deck) => (
               <Card key={deck.id} className="shadow-sm border-slate-100">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">

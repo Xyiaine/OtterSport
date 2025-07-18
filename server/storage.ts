@@ -26,8 +26,8 @@ import {
   type InsertWorkout,
   type InsertDeckExercise,
 } from "@shared/schema";
-// import { db } from "./db";
-// import { eq, desc, and, gte, count, sql } from "drizzle-orm";
+import { db } from "./db";
+import { eq, desc, and, gte, count, sql } from "drizzle-orm";
 
 /**
  * Storage interface defining all database operations

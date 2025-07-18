@@ -183,7 +183,7 @@ export const VisualElement = forwardRef<HTMLElement, VisualElementProps>(
         // For img elements, we need to wrap the fallback in a div
         return (
           <div 
-            ref={elementRefToUse}
+            ref={elementRefToUse as React.RefObject<HTMLDivElement>}
             {...editableProps}
           >
             {fallback}
