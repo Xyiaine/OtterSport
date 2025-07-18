@@ -20,7 +20,11 @@ export default function Home() {
   // Redirect to onboarding if user hasn't completed setup
   useEffect(() => {
     if (!authLoading && user && !user.fitnessGoal) {
-      setLocation("/onboarding");
+      // Small delay to prevent redirect loops during profile updates
+      const timer = setTimeout(() => {
+        setLocation("/onboarding");
+      }, 100);
+      return () => clearTimeout(timer);
     }
   }, [user, authLoading, setLocation]);
 

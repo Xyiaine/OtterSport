@@ -132,7 +132,9 @@ The architecture prioritizes user experience with fast, responsive interactions 
 
 ### July 18, 2025
 - **Migration to Replit**: Successfully migrated project from Replit Agent to full Replit environment
-- **Database Setup**: Created PostgreSQL database with proper connection configuration
+- **Database Setup**: Created PostgreSQL database with proper connection configuration  
+- **Onboarding Fix**: Fixed critical onboarding flow loop where "What's Your Fitness Goal?" was repeating
+- **Cache Synchronization**: Resolved user data cache invalidation timing issues causing redirect loops
 - **React Component Fixes**: Fixed critical EditableImage component errors causing runtime crashes
 - **TypeScript Compatibility**: Resolved React Query v5 compatibility issues and type safety problems
 - **API Testing**: Comprehensive testing of all endpoints - exercises, decks, achievements, analytics

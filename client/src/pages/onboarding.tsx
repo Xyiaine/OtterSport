@@ -44,13 +44,20 @@ export default function Onboarding() {
     mutationFn: async (profileData: any) => {
       await apiRequest("PATCH", "/api/user/profile", profileData);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+    onSuccess: async () => {
+      // Invalidate and refetch user data to ensure it's up to date
+      await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/auth/user"] });
+      
       toast({
         title: "Profile updated!",
         description: "Your fitness journey is ready to begin.",
       });
-      setLocation("/");
+      
+      // Small delay to ensure the user data is properly updated
+      setTimeout(() => {
+        setLocation("/");
+      }, 100);
     },
     onError: (error: Error) => {
       if (isUnauthorizedError(error)) {
