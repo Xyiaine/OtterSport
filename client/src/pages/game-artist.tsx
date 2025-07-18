@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Upload, 
   Image, 
@@ -20,12 +21,22 @@ import {
   Activity,
   BarChart3,
   CreditCard,
-  Zap
+  Zap,
+  Wand2,
+  Save,
+  Download,
+  Upload as UploadIcon,
+  RotateCcw,
+  Grid,
+  Maximize2,
+  Minimize2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useGameArtist } from "@/contexts/GameArtistContext";
 import { useLocation } from "wouter";
 import VisualEditor from "@/components/ui/visual-editor";
+import ColorPaletteManager from "@/components/ui/color-palette-manager";
+import LayerPanel from "@/components/ui/layer-panel";
 
 interface AssetSlot {
   id: string;
@@ -67,6 +78,8 @@ export default function GameArtistMode() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [uploadedAssets, setUploadedAssets] = useState<Record<string, string>>({});
   const [showVisualEditor, setShowVisualEditor] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   
@@ -78,24 +91,44 @@ export default function GameArtistMode() {
     getElementsForScreen,
     exportVisualPack,
     importVisualPack,
-    resetToDefaults 
+    resetToDefaults,
+    previewMode,
+    setPreviewMode,
+    gridMode,
+    setGridMode,
+    layerPanelOpen,
+    setLayerPanelOpen,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    currentTheme,
+    applyTheme,
+    animationSpeed,
+    setAnimationSpeed
   } = useGameArtist();
 
-  const handleFileUpload = (assetId: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Create object URL for preview
-      const imageUrl = URL.createObjectURL(file);
-      setUploadedAssets(prev => ({
-        ...prev,
-        [assetId]: imageUrl
-      }));
-      
-      toast({
-        title: "Asset Uploaded",
-        description: `Successfully uploaded ${file.name}`,
-      });
-    }
+  const handleFileUpload = (assetId: string) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        // Create object URL for preview
+        const imageUrl = URL.createObjectURL(file);
+        setUploadedAssets(prev => ({
+          ...prev,
+          [assetId]: imageUrl
+        }));
+        
+        toast({
+          title: "Asset Uploaded",
+          description: `Successfully uploaded ${file.name}`,
+        });
+      }
+    };
+    input.click();
   };
 
   const filteredAssets = selectedCategory 
@@ -118,6 +151,11 @@ export default function GameArtistMode() {
     { path: '/game-modes/battle', name: 'Battle Mode', icon: Zap, elements: getElementsForScreen('/game-modes/battle').length },
   ];
 
+  const getScreenName = (path: string) => {
+    const page = appPages.find(p => p.path === path);
+    return page ? page.name : path;
+  };
+
   const handleImportPack = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -130,9 +168,9 @@ export default function GameArtistMode() {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
+    <div className={`min-h-screen p-6 bg-gray-50 dark:bg-gray-900 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+      <div className={`${isFullscreen ? 'max-w-none' : 'max-w-7xl'} mx-auto`}>
+        {/* Enhanced Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -140,6 +178,9 @@ export default function GameArtistMode() {
               <h1 className="text-3xl font-bold">Game Artist Mode</h1>
               <Badge variant={isGameArtistMode ? "default" : "secondary"}>
                 {isGameArtistMode ? "Active" : "Inactive"}
+              </Badge>
+              <Badge variant="outline" className="ml-2">
+                {getScreenName(currentScreen)}
               </Badge>
             </div>
             <div className="flex items-center gap-4">
@@ -150,15 +191,248 @@ export default function GameArtistMode() {
                 />
                 <Label>Enable Game Artist Mode</Label>
               </div>
-              <Button onClick={() => setShowVisualEditor(true)}>
-                <Settings className="h-4 w-4 mr-2" />
-                Visual Editor
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsFullscreen(!isFullscreen)}
+              >
+                {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
               </Button>
             </div>
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
             Advanced visual editing system for OtterSport. Navigate through screens, edit elements in real-time, and manage visual assets.
           </p>
+          
+          {/* Quick Actions Bar */}
+          <div className="flex items-center gap-2 mt-4 p-3 bg-white dark:bg-gray-800 rounded-lg border">
+            <Button
+              variant={previewMode ? "default" : "outline"}
+              size="sm"
+              onClick={() => setPreviewMode(!previewMode)}
+            >
+              <Eye className="h-4 w-4 mr-2" />
+              Preview
+            </Button>
+            <Button
+              variant={gridMode ? "default" : "outline"}
+              size="sm"
+              onClick={() => setGridMode(!gridMode)}
+            >
+              <Grid className="h-4 w-4 mr-2" />
+              Grid
+            </Button>
+            <Button
+              variant={layerPanelOpen ? "default" : "outline"}
+              size="sm"
+              onClick={() => setLayerPanelOpen(!layerPanelOpen)}
+            >
+              <Layers className="h-4 w-4 mr-2" />
+              Layers
+            </Button>
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={undo}
+              disabled={!canUndo}
+            >
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Undo
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={redo}
+              disabled={!canRedo}
+            >
+              <RotateCcw className="h-4 w-4 mr-2 scale-x-[-1]" />
+              Redo
+            </Button>
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportVisualPack}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) importVisualPack(file);
+                };
+                input.click();
+              }}
+            >
+              <UploadIcon className="h-4 w-4 mr-2" />
+              Import
+            </Button>
+          </div>
+        </div>
+
+        {/* Main Content with Tabs */}
+        <div className="flex gap-6">
+          {/* Sidebar - Layer Panel */}
+          {layerPanelOpen && (
+            <div className="w-80 shrink-0">
+              <LayerPanel />
+            </div>
+          )}
+          
+          {/* Main Content */}
+          <div className="flex-1">
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="colors">Colors</TabsTrigger>
+                <TabsTrigger value="assets">Assets</TabsTrigger>
+                <TabsTrigger value="themes">Themes</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="overview" className="space-y-6">
+                {/* Overview content */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Project Overview</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{visualElements.length}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Total Elements</div>
+                      </div>
+                      <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{currentScreenElements.length}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Current Screen</div>
+                      </div>
+                      <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{currentTheme}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Active Theme</div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Changes</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {canUndo && (
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          You have recent changes available
+                        </div>
+                      )}
+                      {!canUndo && (
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          No recent changes
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="colors">
+                <ColorPaletteManager />
+              </TabsContent>
+
+              <TabsContent value="assets" className="space-y-6">
+                {/* Asset Management */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Asset Library</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {editableAssets.map((asset) => (
+                        <div key={asset.id} className="p-4 border rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-medium">{asset.name}</span>
+                            <Badge variant="secondary">{asset.category}</Badge>
+                          </div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            {asset.description}
+                          </div>
+                          <div className="text-xs text-gray-500 mb-3">
+                            {asset.recommendedSize}
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleFileUpload(asset.id)}
+                            >
+                              <Upload className="h-4 w-4 mr-2" />
+                              Upload
+                            </Button>
+                            {uploadedAssets[asset.id] && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const img = new Image();
+                                  img.src = uploadedAssets[asset.id];
+                                  const w = window.open("");
+                                  w?.document.write(img.outerHTML);
+                                }}
+                              >
+                                <Eye className="h-4 w-4 mr-2" />
+                                View
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="themes" className="space-y-6">
+                {/* Theme Management */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Theme Manager</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {['default', 'dark', 'ocean', 'forest', 'sunset'].map((theme) => (
+                        <div
+                          key={theme}
+                          className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                            currentTheme === theme ? 'ring-2 ring-primary bg-primary/5' : ''
+                          }`}
+                          onClick={() => applyTheme(theme)}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-medium capitalize">{theme}</span>
+                            {currentTheme === theme && (
+                              <Badge variant="default">Active</Badge>
+                            )}
+                          </div>
+                          <div className="flex gap-2">
+                            <div className="w-4 h-4 rounded-full bg-primary" />
+                            <div className="w-4 h-4 rounded-full bg-secondary" />
+                            <div className="w-4 h-4 rounded-full bg-accent" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
 
         {/* Live Screen Navigation */}

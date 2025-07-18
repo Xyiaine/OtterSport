@@ -21,7 +21,8 @@ import {
   Upload,
   RotateCcw,
   Move,
-  X
+  X,
+  Zap
 } from "lucide-react";
 import { useGameArtist } from "@/contexts/GameArtistContext";
 import VisualEditor from "./visual-editor";
@@ -38,13 +39,29 @@ export default function GameArtistToolbar() {
     selectedElement,
     visualElements,
     exportVisualPack,
-    resetToDefaults
+    resetToDefaults,
+    previewMode,
+    setPreviewMode,
+    gridMode,
+    setGridMode,
+    layerPanelOpen,
+    setLayerPanelOpen,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    currentTheme,
+    applyTheme,
+    animationSpeed,
+    setAnimationSpeed
   } = useGameArtist();
 
   const [showEditor, setShowEditor] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [position, setPosition] = useState({ x: 20, y: 20 });
   const [isDragging, setIsDragging] = useState(false);
+  const [showThemeSelector, setShowThemeSelector] = useState(false);
+  const [showSpeedControl, setShowSpeedControl] = useState(false);
 
   if (!isGameArtistMode) return null;
 
@@ -183,33 +200,148 @@ export default function GameArtistToolbar() {
               </div>
             )}
 
-            {/* Quick Tools */}
-            <div className="flex flex-wrap gap-1">
+            {/* Enhanced Quick Tools */}
+            <div className="grid grid-cols-3 gap-1">
+              {/* Undo/Redo */}
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={exportVisualPack}
+                onClick={undo}
+                disabled={!canUndo}
                 className="h-8 px-2"
-              >
-                <Download className="h-3 w-3" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={resetToDefaults}
-                className="h-8 px-2"
+                title="Undo"
               >
                 <RotateCcw className="h-3 w-3" />
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setShowEditor(true)}
+                onClick={redo}
+                disabled={!canRedo}
                 className="h-8 px-2"
+                title="Redo"
+              >
+                <RotateCcw className="h-3 w-3 scale-x-[-1]" />
+              </Button>
+              
+              {/* Preview Mode */}
+              <Button
+                variant={previewMode ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setPreviewMode(!previewMode)}
+                className="h-8 px-2"
+                title="Preview Mode"
+              >
+                <Eye className="h-3 w-3" />
+              </Button>
+              
+              {/* Grid Mode */}
+              <Button
+                variant={gridMode ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setGridMode(!gridMode)}
+                className="h-8 px-2"
+                title="Show Grid"
+              >
+                <Monitor className="h-3 w-3" />
+              </Button>
+              
+              {/* Layers Panel */}
+              <Button
+                variant={layerPanelOpen ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setLayerPanelOpen(!layerPanelOpen)}
+                className="h-8 px-2"
+                title="Layers Panel"
               >
                 <Layers className="h-3 w-3" />
               </Button>
+              
+              {/* Export */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={exportVisualPack}
+                className="h-8 px-2"
+                title="Export Visual Pack"
+              >
+                <Download className="h-3 w-3" />
+              </Button>
             </div>
+
+            {/* Theme Selector */}
+            <div className="space-y-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowThemeSelector(!showThemeSelector)}
+                className="w-full justify-start text-xs"
+              >
+                <Palette className="h-3 w-3 mr-2" />
+                Theme: {currentTheme}
+              </Button>
+              
+              {showThemeSelector && (
+                <div className="grid grid-cols-2 gap-1 p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                  {['default', 'dark', 'ocean', 'forest', 'sunset', 'purple'].map(theme => (
+                    <Button
+                      key={theme}
+                      variant={currentTheme === theme ? "default" : "ghost"}
+                      size="sm"
+                      onClick={() => {
+                        applyTheme(theme);
+                        setShowThemeSelector(false);
+                      }}
+                      className="h-6 text-xs capitalize"
+                    >
+                      {theme}
+                    </Button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Animation Speed Control */}
+            <div className="space-y-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowSpeedControl(!showSpeedControl)}
+                className="w-full justify-start text-xs"
+              >
+                <Zap className="h-3 w-3 mr-2" />
+                Speed: {animationSpeed}x
+              </Button>
+              
+              {showSpeedControl && (
+                <div className="p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                  <input
+                    type="range"
+                    min="0.25"
+                    max="3"
+                    step="0.25"
+                    value={animationSpeed}
+                    onChange={(e) => setAnimationSpeed(parseFloat(e.target.value))}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>0.25x</span>
+                    <span>3x</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Reset Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={resetToDefaults}
+              className="w-full text-xs"
+            >
+              <RotateCcw className="h-3 w-3 mr-2" />
+              Reset All
+            </Button>
           </div>
         )}
       </div>
