@@ -1,3 +1,26 @@
+/**
+ * OTTERSPORT DATABASE SCHEMA
+ * 
+ * Complete database schema definition using Drizzle ORM with PostgreSQL.
+ * This schema supports the full OtterSport application including:
+ * - User management and authentication via Replit OAuth
+ * - Exercise library with categorization and difficulty scaling
+ * - Workout deck creation and management system
+ * - Progress tracking with adaptive difficulty algorithms
+ * - Achievement system and gamification mechanics
+ * - Session management for secure authentication
+ * 
+ * All tables include proper relationships, indexes, and constraints
+ * for optimal performance and data integrity across all deployment platforms.
+ * 
+ * Database Optimization Features:
+ * - Connection pooling support for serverless environments
+ * - Efficient indexes for common query patterns
+ * - Proper foreign key relationships for data integrity
+ * - Timestamp tracking for audit and analytics
+ * - JSON fields for flexible configuration storage
+ */
+
 import {
   pgTable,
   text,

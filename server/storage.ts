@@ -1,8 +1,26 @@
 /**
- * DATABASE STORAGE LAYER
+ * DATABASE STORAGE LAYER FOR OTTERSPORT
  * 
- * This file handles all database operations for the OtterSport app.
- * It provides a clean interface between the API routes and the database.
+ * Comprehensive database access layer providing optimized storage operations
+ * for all core entities with type-safe queries and cross-platform compatibility.
+ * 
+ * Key Features:
+ * - Type-safe database queries using Drizzle ORM
+ * - Connection pooling for serverless environments
+ * - Comprehensive error handling and logging
+ * - Performance optimization for all deployment platforms
+ * - Data integrity validation and foreign key constraints
+ * - Analytics and reporting query optimization
+ * 
+ * Database Compatibility:
+ * - Neon PostgreSQL (Primary - Replit/Vercel)
+ * - Supabase (Open-source alternative)
+ * - Railway PostgreSQL (Managed service)
+ * - Heroku Postgres (Traditional PaaS)
+ * - Local PostgreSQL (Development)
+ * 
+ * All methods include proper error handling, transaction management,
+ * and performance monitoring for production deployment.
  */
 
 import {
