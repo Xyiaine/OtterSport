@@ -9,6 +9,15 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import OtterCharacter from "@/components/ui/otter-character";
+import AIOpponentEmotions, { 
+  type EmotionType, 
+  triggerEmotion, 
+  getEmotionForEvent 
+} from "@/components/ui/ai-opponent-emotions";
+import ThemedExerciseCard, { 
+  getDeckTheme, 
+  type DeckTheme 
+} from "@/components/ui/themed-exercise-cards";
 import type { Exercise, Deck } from "@shared/schema";
 
 interface GameCard {
@@ -29,6 +38,8 @@ interface GameState {
   selectedCard: GameCard | null;
   lastPlayedCard: GameCard | null;
   aiLastPlayedCard: GameCard | null;
+  aiEmotion: EmotionType;
+  deckTheme: DeckTheme;
 }
 
 export default function CardBattle() {
@@ -50,6 +61,8 @@ export default function CardBattle() {
     selectedCard: null,
     lastPlayedCard: null,
     aiLastPlayedCard: null,
+    aiEmotion: 'confident',
+    deckTheme: 'cardio'
   });
 
   // Fetch deck with exercises
@@ -64,9 +77,15 @@ export default function CardBattle() {
   // Initialize game when exercises load
   useEffect(() => {
     if (exercises.length > 0 && gameState.deckCards.length === 0) {
+      const theme = getDeckTheme(deck?.name || '');
+      setGameState(prev => ({ 
+        ...prev, 
+        deckTheme: theme,
+        aiEmotion: getEmotionForEvent('game_start', 0, 0)
+      }));
       initializeGame();
     }
-  }, [exercises]);
+  }, [exercises, deck]);
 
   const initializeGame = () => {
     // Create game cards from exercises (create multiple copies with unique IDs)
@@ -164,14 +183,19 @@ export default function CardBattle() {
     // Remove card from player hand
     const newPlayerHand = gameState.playerHand.filter(c => c.id !== card.id);
     
+    // Trigger AI emotion based on player's move
+    const newPlayerScore = gameState.playerScore + card.points;
+    const aiEmotion = getEmotionForEvent('player_good_exercise', gameState.aiScore, newPlayerScore);
+    
     setGameState(prev => ({
       ...prev,
       playerHand: newPlayerHand,
       lastPlayedCard: card,
-      playerScore: prev.playerScore + card.points,
+      playerScore: newPlayerScore,
       currentTurn: 'ai',
       gamePhase: 'ai-turn',
       selectedCard: null,
+      aiEmotion,
     }));
 
     // AI plays after a short delay
@@ -192,14 +216,19 @@ export default function CardBattle() {
     );
 
     const newAIHand = gameState.aiHand.filter(c => c.id !== bestCard.id);
+    const newAIScore = gameState.aiScore + bestCard.points;
+    
+    // Trigger AI emotion after playing
+    const aiEmotion = getEmotionForEvent('ai_good_exercise', newAIScore, gameState.playerScore);
 
     setGameState(prev => ({
       ...prev,
       aiHand: newAIHand,
       aiLastPlayedCard: bestCard,
-      aiScore: prev.aiScore + bestCard.points,
+      aiScore: newAIScore,
       currentTurn: 'player',
       gamePhase: (prev.deckCards.length > 0 && (prev.playerHand.length > 0 || newAIHand.length > 0)) ? 'drawing' : 'game-over',
+      aiEmotion,
     }));
 
     // Check if game should end - no cards left in deck and both players have no cards
@@ -236,6 +265,8 @@ export default function CardBattle() {
       selectedCard: null,
       lastPlayedCard: null,
       aiLastPlayedCard: null,
+      aiEmotion: 'confident',
+      deckTheme: gameState.deckTheme
     });
     initializeGame();
   };
@@ -273,6 +304,18 @@ export default function CardBattle() {
               <div className="text-sm text-slate-600">AI Score</div>
             </div>
           </div>
+        </div>
+
+        {/* AI Opponent Display */}
+        <div className="flex justify-center mb-6">
+          <AIOpponentEmotions 
+            currentEmotion={gameState.aiEmotion}
+            playerScore={gameState.playerScore}
+            aiScore={gameState.aiScore}
+            isAITurn={gameState.gamePhase === 'ai-turn'}
+            deckType={gameState.deckTheme}
+            onEmotionChange={(emotion) => setGameState(prev => ({ ...prev, aiEmotion: emotion }))}
+          />
         </div>
 
         {/* Game Phase Indicator */}
