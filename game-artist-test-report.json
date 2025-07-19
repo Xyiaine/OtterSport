@@ -1,0 +1,271 @@
+{
+  "timestamp": "2025-07-19T18:54:48.286Z",
+  "duration": "0.03s",
+  "totalTests": 52,
+  "passedTests": 49,
+  "failedTests": 3,
+  "successRate": "94.2%",
+  "testResults": [
+    {
+      "testName": "Server is responsive",
+      "passed": false,
+      "details": "Status: 0"
+    },
+    {
+      "testName": "API health check",
+      "passed": false,
+      "details": "Status: 0"
+    },
+    {
+      "testName": "Component file exists: GameArtistContext.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: game-artist-toolbar.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: visual-editor.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: color-palette-manager.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: layer-panel.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: animation-timeline.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: asset-library.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: theme-manager.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: game-artist-performance-monitor.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: game-artist-advanced-tools.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Component file exists: game-artist.tsx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "VisualElement interface defined",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Default visual elements defined",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Update visual element function exists",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Bulk update functionality exists",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Undo/Redo system implemented",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Color palette interface defined",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Color analysis functionality",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Color harmony generation",
+      "passed": false,
+      "details": ""
+    },
+    {
+      "testName": "Accessibility validation",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Batch operations system",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Advanced color harmony tools",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Accessibility validation tools",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "CSS animation generator",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Version control system",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Performance metrics interface",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Debug logging system",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Real-time performance monitoring",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Performance report export",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Keyframe system defined",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Animation tracks system",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Animation project management",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Easing functions implemented",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Asset interface defined",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Asset categorization system",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Drag and drop functionality",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Asset metadata support",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Theme interface defined",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Theme color system",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Theme accessibility validation",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Theme export functionality",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Layer grouping system",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Drag and drop reordering",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Visibility toggle functionality",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Element locking system",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "GameArtistProvider integrated in App",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "GameArtistToolbar integrated",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Game Artist route defined",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Advanced components integrated",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "testName": "Tab system with performance tab",
+      "passed": true,
+      "details": ""
+    }
+  ],
+  "status": "EXCELLENT"
+}

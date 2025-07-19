@@ -40,6 +40,8 @@ import LayerPanel from "@/components/ui/layer-panel";
 import AnimationTimeline from "@/components/ui/animation-timeline";
 import AssetLibrary from "@/components/ui/asset-library";
 import ThemeManager from "@/components/ui/theme-manager";
+import GameArtistPerformanceMonitor from "@/components/ui/game-artist-performance-monitor";
+import GameArtistAdvancedTools from "@/components/ui/game-artist-advanced-tools";
 
 interface AssetSlot {
   id: string;
@@ -293,13 +295,14 @@ export default function GameArtistMode() {
           {/* Main Content */}
           <div className="flex-1">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-6">
+              <TabsList className="grid w-full grid-cols-7">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="colors">Colors</TabsTrigger>
                 <TabsTrigger value="assets">Assets</TabsTrigger>
                 <TabsTrigger value="themes">Themes</TabsTrigger>
                 <TabsTrigger value="animation">Animation</TabsTrigger>
                 <TabsTrigger value="advanced">Advanced</TabsTrigger>
+                <TabsTrigger value="performance">Performance</TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-6">
@@ -364,192 +367,11 @@ export default function GameArtistMode() {
               </TabsContent>
 
               <TabsContent value="advanced" className="space-y-6">
-                {/* Performance Optimization */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Zap className="h-5 w-5" />
-                      Performance Optimization
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                          <div className="text-2xl font-bold text-primary">60fps</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">Target Frame Rate</div>
-                        </div>
-                        <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                          <div className="text-2xl font-bold text-primary">
-                            {(performance.memory?.usedJSHeapSize / 1024 / 1024 || 0).toFixed(1)}MB
-                          </div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">Memory Usage</div>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <Label>Enable GPU Acceleration</Label>
-                          <Switch defaultChecked />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <Label>Optimize Animations</Label>
-                          <Switch defaultChecked />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <Label>Compress Assets</Label>
-                          <Switch defaultChecked />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <Label>Lazy Load Components</Label>
-                          <Switch defaultChecked />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <GameArtistAdvancedTools />
+              </TabsContent>
 
-                {/* Development Tools */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Settings className="h-5 w-5" />
-                      Development Tools
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            const debugInfo = {
-                              visualElements: visualElements.length,
-                              currentScreen,
-                              isGameArtistMode,
-                              memoryUsage: performance.memory?.usedJSHeapSize,
-                              userAgent: navigator.userAgent,
-                              timestamp: new Date().toISOString()
-                            };
-                            console.log('Debug Info:', debugInfo);
-                            toast({
-                              title: "Debug Info",
-                              description: "Debug information logged to console",
-                            });
-                          }}
-                        >
-                          <Monitor className="h-4 w-4 mr-2" />
-                          Debug Console
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            const json = JSON.stringify(visualElements, null, 2);
-                            navigator.clipboard.writeText(json);
-                            toast({
-                              title: "Elements Copied",
-                              description: "Visual elements copied to clipboard",
-                            });
-                          }}
-                        >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Copy Elements
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            localStorage.clear();
-                            sessionStorage.clear();
-                            toast({
-                              title: "Cache Cleared",
-                              description: "All cached data has been cleared",
-                            });
-                          }}
-                        >
-                          <RotateCcw className="h-4 w-4 mr-2" />
-                          Clear Cache
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            const report = {
-                              userAgent: navigator.userAgent,
-                              screen: { width: screen.width, height: screen.height },
-                              viewport: { width: window.innerWidth, height: window.innerHeight },
-                              performance: {
-                                memory: performance.memory?.usedJSHeapSize,
-                                navigation: performance.navigation?.type,
-                                timing: performance.timing?.loadEventEnd - performance.timing?.navigationStart
-                              }
-                            };
-                            console.log('System Report:', report);
-                            toast({
-                              title: "System Report",
-                              description: "System report generated in console",
-                            });
-                          }}
-                        >
-                          <Monitor className="h-4 w-4 mr-2" />
-                          System Report
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Export Options */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Download className="h-5 w-5" />
-                      Export Options
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            const cssVars = visualElements.map(el => 
-                              `--${el.name.toLowerCase().replace(/\s+/g, '-')}: ${el.value};`
-                            ).join('\n');
-                            
-                            const css = `:root {\n${cssVars}\n}`;
-                            navigator.clipboard.writeText(css);
-                            toast({
-                              title: "CSS Variables",
-                              description: "CSS variables copied to clipboard",
-                            });
-                          }}
-                        >
-                          <Palette className="h-4 w-4 mr-2" />
-                          Export CSS
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            const json = JSON.stringify({
-                              theme: currentTheme,
-                              elements: visualElements,
-                              timestamp: new Date().toISOString()
-                            }, null, 2);
-                            
-                            const blob = new Blob([json], { type: 'application/json' });
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = `ottersport-design-${Date.now()}.json`;
-                            a.click();
-                          }}
-                        >
-                          <Download className="h-4 w-4 mr-2" />
-                          Export Design
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              <TabsContent value="performance" className="space-y-6">
+                <GameArtistPerformanceMonitor />
               </TabsContent>
             </Tabs>
           </div>
@@ -589,144 +411,87 @@ export default function GameArtistMode() {
           </div>
         </div>
 
-        {/* Current Screen Elements */}
+        {/* Asset Upload Grid */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Layers className="h-5 w-5" />
-            Current Screen Elements ({currentScreenElements.length})
+            <Upload className="h-5 w-5" />
+            Asset Upload Center
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {currentScreenElements.map((element) => (
-              <Card key={element.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm">{element.name}</CardTitle>
-                    <Badge variant="secondary" className="text-xs">
-                      {element.type}
-                    </Badge>
-                  </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Quick Upload</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button
+                  variant="outline"
+                  className="w-full h-20"
+                  onClick={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = 'image/*';
+                    input.onchange = (event) => {
+                      const file = (event.target as HTMLInputElement).files?.[0];
+                      if (file) {
+                        const imageUrl = URL.createObjectURL(file);
+                        toast({
+                          title: "Asset Uploaded",
+                          description: `Successfully uploaded ${file.name}`,
+                        });
+                      }
+                    };
+                    input.click();
+                  }}
+                >
+                  <Upload className="h-8 w-8 mx-auto mb-2" />
+                  Upload Asset
+                </Button>
+              </CardContent>
+            </Card>
+            {filteredAssets.map((slot) => (
+              <Card key={slot.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-lg">{slot.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center mb-3">
-                    {element.type === 'image' && (
-                      <img 
-                        src={element.currentValue} 
-                        alt={element.name}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    )}
-                    {element.type === 'color' && (
-                      <div 
-                        className="w-20 h-20 rounded-full border-2 border-white shadow-lg"
-                        style={{ backgroundColor: element.currentValue }}
-                      />
-                    )}
-                    {element.type === 'text' && (
-                      <p className="text-center font-medium">{element.currentValue}</p>
-                    )}
-                    {element.type === 'background' && (
-                      <div 
-                        className="w-full h-full rounded-lg"
-                        style={{ background: element.currentValue }}
-                      />
-                    )}
+                  <div className="space-y-3">
+                    <div className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 dark:bg-gray-800">
+                      {uploadedAssets[slot.id] ? (
+                        <img 
+                          src={uploadedAssets[slot.id]} 
+                          alt={slot.name}
+                          className="max-w-full max-h-full object-contain rounded"
+                        />
+                      ) : (
+                        <div className="text-center text-gray-500">
+                          <Image className="h-12 w-12 mx-auto mb-2" />
+                          <p className="text-sm">No asset uploaded</p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm text-gray-600">{slot.description}</p>
+                      <Badge variant="outline" className="text-xs">
+                        {slot.recommendedSize}
+                      </Badge>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => handleFileUpload(slot.id)}
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Upload
+                    </Button>
                   </div>
-                  <p className="text-xs text-gray-500">{element.description}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
 
-        {/* Category Filter */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">Visual Elements by Category</h2>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={selectedCategory === null ? "default" : "outline"}
-              onClick={() => setSelectedCategory(null)}
-              size="sm"
-            >
-              All Elements ({visualElements.length})
-            </Button>
-            {categories.map(category => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category)}
-                size="sm"
-              >
-                {category} ({visualElements.filter(el => el.category === category).length})
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        {/* Visual Elements Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredElements.map(element => (
-            <Card key={element.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm">{element.name}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">
-                      {element.category}
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {element.type}
-                    </Badge>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {/* Preview */}
-                <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
-                  {element.type === 'image' && (
-                    <img 
-                      src={element.currentValue} 
-                      alt={element.name}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                  {element.type === 'color' && (
-                    <div 
-                      className="w-20 h-20 rounded-full border-2 border-white shadow-lg"
-                      style={{ backgroundColor: element.currentValue }}
-                    />
-                  )}
-                  {element.type === 'background' && (
-                    <div 
-                      className="w-full h-full rounded-lg"
-                      style={{ background: element.currentValue }}
-                    />
-                  )}
-                  {element.type === 'text' && (
-                    <div className="text-center p-4">
-                      <p className="text-sm font-medium">{element.currentValue}</p>
-                    </div>
-                  )}
-                  {element.type === 'icon' && (
-                    <div className="text-center">
-                      <i className={`${element.currentValue} text-3xl text-gray-600`} />
-                    </div>
-                  )}
-                </div>
-
-                {/* Element Info */}
-                <div className="text-xs text-gray-500 space-y-1">
-                  <p>{element.description}</p>
-                  <p className="font-mono text-primary">Screen: {element.screenPath}</p>
-                  {element.recommendedSize && (
-                    <p className="font-mono text-primary">Size: {element.recommendedSize}</p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Export/Save Section */}
+        {/* Visual Pack Management */}
         <div className="mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg border">
           <div className="flex items-center gap-3 mb-4">
             <Gamepad2 className="h-6 w-6 text-primary" />
