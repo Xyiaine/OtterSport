@@ -6,8 +6,8 @@
  */
 
 import { db } from "./db";
-import { exercises, decks, deckExercises, achievements } from "@shared/schema";
-import type { InsertExercise, InsertDeck, InsertDeckExercise, InsertAchievement } from "@shared/schema";
+import { exercises, decks, deckExercises, achievements, badges, xpActivities } from "@shared/schema";
+import type { InsertExercise, InsertDeck, InsertDeckExercise, InsertAchievement, InsertBadge, InsertXpActivity } from "@shared/schema";
 
 /**
  * COMPREHENSIVE EXERCISE LIBRARY
@@ -209,49 +209,187 @@ const defaultAchievements: InsertAchievement[] = [
     name: "First Steps",
     description: "Complete your first workout",
     icon: "fas fa-baby",
-    requirement: "complete_workout_1",
+    requirement: { type: "total_workouts", value: 1 },
   },
   {
     name: "Streak Starter",
     description: "Complete workouts for 3 days in a row",
     icon: "fas fa-fire",
-    requirement: "streak_3",
+    requirement: { type: "current_streak", value: 3 },
   },
   {
     name: "Week Warrior",
     description: "Complete workouts for 7 days in a row",
     icon: "fas fa-trophy",
-    requirement: "streak_7",
+    requirement: { type: "current_streak", value: 7 },
+  },
+  {
+    name: "Streak Master",
+    description: "Complete workouts for 30 days in a row",
+    icon: "fas fa-crown",
+    requirement: { type: "current_streak", value: 30 },
   },
   {
     name: "Century Club",
     description: "Complete 100 total workouts",
     icon: "fas fa-medal",
-    requirement: "total_workouts_100",
+    requirement: { type: "total_workouts", value: 100 },
   },
   {
     name: "Cardio King",
     description: "Complete 25 cardio workouts",
     icon: "fas fa-heart",
-    requirement: "cardio_workouts_25",
+    requirement: { type: "category_workouts", category: "cardio", value: 25 },
   },
   {
     name: "Strength Master",
     description: "Complete 25 strength workouts",
     icon: "fas fa-dumbbell",
-    requirement: "strength_workouts_25",
+    requirement: { type: "category_workouts", category: "strength", value: 25 },
   },
   {
     name: "Flexibility Friend",
     description: "Complete 15 flexibility workouts",
     icon: "fas fa-leaf",
-    requirement: "flexibility_workouts_15",
+    requirement: { type: "category_workouts", category: "flexibility", value: 15 },
   },
   {
     name: "Time Keeper",
     description: "Log 10 hours of total workout time",
     icon: "fas fa-clock",
-    requirement: "total_minutes_600",
+    requirement: { type: "total_minutes", value: 600 },
+  },
+  {
+    name: "Level Up",
+    description: "Reach level 5",
+    icon: "fas fa-star",
+    requirement: { type: "current_level", value: 5 },
+  },
+  {
+    name: "XP Hunter",
+    description: "Earn 1000 experience points",
+    icon: "fas fa-bolt",
+    requirement: { type: "experience_points", value: 1000 },
+  },
+  {
+    name: "Perfect Week",
+    description: "Complete workouts every day for a full week",
+    icon: "fas fa-gem",
+    requirement: { type: "perfect_week", value: 1 },
+  },
+];
+
+/**
+ * XP ACTIVITIES SYSTEM
+ * 
+ * Defines how users earn experience points for various activities.
+ */
+const defaultXpActivities: InsertXpActivity[] = [
+  {
+    activityType: "workout_complete",
+    baseXP: 50,
+    description: "Complete a workout",
+    multiplierField: null,
+    isActive: true,
+  },
+  {
+    activityType: "workout_duration_bonus",
+    baseXP: 2,
+    description: "Bonus XP per minute of workout",
+    multiplierField: "duration_minutes",
+    isActive: true,
+  },
+  {
+    activityType: "streak_bonus_3",
+    baseXP: 25,
+    description: "3-day streak bonus",
+    multiplierField: null,
+    isActive: true,
+  },
+  {
+    activityType: "streak_bonus_7",
+    baseXP: 100,
+    description: "7-day streak bonus",
+    multiplierField: null,
+    isActive: true,
+  },
+  {
+    activityType: "streak_bonus_30",
+    baseXP: 500,
+    description: "30-day streak bonus",
+    multiplierField: null,
+    isActive: true,
+  },
+  {
+    activityType: "perfect_workout",
+    baseXP: 25,
+    description: "Complete workout with all exercises",
+    multiplierField: null,
+    isActive: true,
+  },
+  {
+    activityType: "difficulty_bonus",
+    baseXP: 10,
+    description: "Bonus for high difficulty workouts",
+    multiplierField: "difficulty_level",
+    isActive: true,
+  },
+  {
+    activityType: "first_daily_workout",
+    baseXP: 15,
+    description: "First workout of the day",
+    multiplierField: null,
+    isActive: true,
+  },
+];
+
+/**
+ * BADGES SYSTEM
+ * 
+ * Special recognition badges for achievements and events.
+ */
+const defaultBadges: InsertBadge[] = [
+  {
+    name: "Top Performer",
+    description: "Finished in top 10 this week",
+    icon: "fas fa-medal",
+    type: "weekly_top",
+    rarity: "rare",
+  },
+  {
+    name: "Weekly Champion",
+    description: "Finished #1 this week",
+    icon: "fas fa-trophy",
+    type: "weekly_top",
+    rarity: "epic",
+  },
+  {
+    name: "Early Bird",
+    description: "Completed 10 morning workouts",
+    icon: "fas fa-sun",
+    type: "special",
+    rarity: "common",
+  },
+  {
+    name: "Night Owl",
+    description: "Completed 10 evening workouts",
+    icon: "fas fa-moon",
+    type: "special",
+    rarity: "common",
+  },
+  {
+    name: "Comeback Kid",
+    description: "Returned after 30+ day break",
+    icon: "fas fa-phoenix-rising",
+    type: "special",
+    rarity: "rare",
+  },
+  {
+    name: "Perfectionist",
+    description: "Completed 20 workouts without losing a life",
+    icon: "fas fa-diamond",
+    type: "special",
+    rarity: "legendary",
   },
 ];
 
@@ -307,6 +445,8 @@ export async function seedDatabase(): Promise<void> {
     await db.delete(decks);
     await db.delete(exercises);
     await db.delete(achievements);
+    await db.delete(badges);
+    await db.delete(xpActivities);
     
     // Insert exercises
     console.log("[SeedData] Inserting exercises...");
@@ -322,6 +462,24 @@ export async function seedDatabase(): Promise<void> {
     const insertedAchievements = await db
       .insert(achievements)
       .values(defaultAchievements.map(ach => ({ ...ach, createdAt: new Date() })))
+      .returning();
+    
+    console.log(`[SeedData] Inserted ${insertedAchievements.length} achievements`);
+    
+    // Insert XP activities
+    console.log("[SeedData] Inserting XP activities...");
+    const insertedXpActivities = await db
+      .insert(xpActivities)
+      .values(defaultXpActivities)
+      .returning();
+    
+    console.log(`[SeedData] Inserted ${insertedXpActivities.length} XP activities`);
+    
+    // Insert badges
+    console.log("[SeedData] Inserting badges...");
+    const insertedBadges = await db
+      .insert(badges)
+      .values(defaultBadges.map(badge => ({ ...badge, createdAt: new Date() })))
       .returning();
     
     console.log(`[SeedData] Inserted ${insertedAchievements.length} achievements`);

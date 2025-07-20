@@ -15,6 +15,8 @@ import { registerTestRoutes } from "./api-test-routes";
 import { registerDevelopmentRoutes } from "./development-tools";
 import { databaseOptimizer } from "./database-optimizer";
 import { migrationTools } from "./migration-tools";
+import { gamificationRouter } from "./gamification-routes";
+import { processWorkoutCompletion } from "./gamification";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
@@ -31,6 +33,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register code optimization and testing routes
   registerOptimizationRoutes(app);
+
+  // Register gamification routes
+  app.use('/api/gamification', gamificationRouter);
 
   // ============================================================================
   // AUTH ROUTES
@@ -210,14 +215,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/workouts/:id/complete', isAuthenticated, async (req: any, res) => {
     try {
       const workoutId = parseInt(req.params.id);
+      const userId = req.user.claims.sub;
       const { feedback, duration, calories } = req.body;
       
       if (!feedback || typeof duration !== 'number') {
         return res.status(400).json({ message: "Feedback and duration are required" });
       }
 
+      // Complete the workout in storage
       const workout = await storage.completeWorkout(workoutId, feedback, duration, calories);
-      res.json(workout);
+      
+      // Process gamification rewards
+      const gamificationResponse = await processWorkoutCompletion(workoutId, userId);
+      
+      res.json({
+        workout,
+        gamification: gamificationResponse,
+      });
     } catch (error) {
       console.error("Error completing workout:", error);
       res.status(500).json({ message: "Failed to complete workout" });

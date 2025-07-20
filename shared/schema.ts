@@ -88,6 +88,20 @@ export const users = pgTable("users", {
   // Adaptive difficulty system
   currentDifficultyLevel: real("current_difficulty_level").default(1.0), // Multiplier for exercise difficulty
   lastWorkoutFeedback: varchar("last_workout_feedback"), // Options: too_easy, just_right, bit_too_hard, way_too_hard
+  
+  // Gamification system - XP and Levels
+  experiencePoints: integer("experience_points").default(0), // Total XP earned
+  currentLevel: integer("current_level").default(1), // Current user level
+  xpToNextLevel: integer("xp_to_next_level").default(100), // XP needed for next level
+  
+  // Daily streak system
+  lastWorkoutDate: timestamp("last_workout_date"), // Last workout completion date
+  streakFreezeUses: integer("streak_freeze_uses").default(0), // Streak protection uses this month
+  
+  // Life/Heart system
+  livesRemaining: integer("lives_remaining").default(5), // Hearts for mistakes
+  lastLifeLoss: timestamp("last_life_loss"), // When last heart was lost
+  livesRefillAt: timestamp("lives_refill_at"), // When hearts refill completely
 });
 
 // ============================================================================
@@ -189,6 +203,61 @@ export const userAchievements = pgTable("user_achievements", {
   unlockedAt: timestamp("unlocked_at").defaultNow(), // When achievement was earned
 });
 
+/**
+ * Leaderboards table - tracks weekly and global rankings
+ * Used for competitive features and social motivation
+ */
+export const leaderboards = pgTable("leaderboards", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  weekStart: timestamp("week_start").notNull(), // Start of the week this entry covers
+  weeklyXP: integer("weekly_xp").default(0), // XP earned this week
+  weeklyWorkouts: integer("weekly_workouts").default(0), // Workouts completed this week
+  weeklyMinutes: integer("weekly_minutes").default(0), // Minutes worked out this week
+  globalRank: integer("global_rank"), // Global ranking position
+  friendRank: integer("friend_rank"), // Ranking among friends
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+/**
+ * Badges table - special recognition badges beyond achievements
+ * Used for leaderboard rewards and special events
+ */
+export const badges = pgTable("badges", {
+  id: serial("id").primaryKey(),
+  name: varchar("name").notNull(), // Badge name
+  description: text("description"), // Badge description
+  icon: varchar("icon").notNull(), // Badge icon
+  type: varchar("type").notNull(), // Badge type: weekly_top, event, special
+  rarity: varchar("rarity").default("common"), // common, rare, epic, legendary
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+/**
+ * User Badges table - tracks special badges earned by users
+ * Links users to their earned badges (different from achievements)
+ */
+export const userBadges = pgTable("user_badges", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  badgeId: integer("badge_id").references(() => badges.id).notNull(),
+  earnedAt: timestamp("earned_at").defaultNow(),
+  weekEarned: timestamp("week_earned"), // For weekly badges
+});
+
+/**
+ * XP Activities table - defines XP rewards for different activities
+ * Configurable system for XP earning
+ */
+export const xpActivities = pgTable("xp_activities", {
+  id: serial("id").primaryKey(),
+  activityType: varchar("activity_type").notNull(), // workout_complete, streak_bonus, perfect_week, etc.
+  baseXP: integer("base_xp").notNull(), // Base XP for this activity
+  description: text("description"), // Description of the activity
+  multiplierField: varchar("multiplier_field"), // Field to multiply by (e.g., 'duration', 'cards_completed')
+  isActive: boolean("is_active").default(true), // Whether this XP reward is currently active
+});
+
 // ============================================================================
 // DATABASE RELATIONSHIPS
 // ============================================================================
@@ -201,6 +270,8 @@ export const usersRelations = relations(users, ({ many }) => ({
   workouts: many(workouts), // User's workout history
   customDecks: many(decks), // User's custom workout decks
   achievements: many(userAchievements), // User's earned achievements
+  badges: many(userBadges), // User's earned badges
+  leaderboardEntries: many(leaderboards), // User's leaderboard entries
 }));
 
 export const decksRelations = relations(decks, ({ one, many }) => ({
@@ -232,6 +303,19 @@ export const userAchievementsRelations = relations(userAchievements, ({ one }) =
   achievement: one(achievements, { fields: [userAchievements.achievementId], references: [achievements.id] }),
 }));
 
+export const leaderboardsRelations = relations(leaderboards, ({ one }) => ({
+  user: one(users, { fields: [leaderboards.userId], references: [users.id] }),
+}));
+
+export const badgesRelations = relations(badges, ({ many }) => ({
+  userBadges: many(userBadges), // Who has earned this badge
+}));
+
+export const userBadgesRelations = relations(userBadges, ({ one }) => ({
+  user: one(users, { fields: [userBadges.userId], references: [users.id] }),
+  badge: one(badges, { fields: [userBadges.badgeId], references: [badges.id] }),
+}));
+
 // ============================================================================
 // VALIDATION SCHEMAS & TYPES
 // ============================================================================
@@ -258,7 +342,22 @@ export type DeckExercise = typeof deckExercises.$inferSelect;
 export type Workout = typeof workouts.$inferSelect;
 export type Achievement = typeof achievements.$inferSelect;
 export type UserAchievement = typeof userAchievements.$inferSelect;
+export type Leaderboard = typeof leaderboards.$inferSelect;
+export type Badge = typeof badges.$inferSelect;
+export type UserBadge = typeof userBadges.$inferSelect;
+export type XpActivity = typeof xpActivities.$inferSelect;
 export type InsertExercise = z.infer<typeof insertExerciseSchema>;
 export type InsertDeck = z.infer<typeof insertDeckSchema>;
 export type InsertWorkout = z.infer<typeof insertWorkoutSchema>;
 export type InsertDeckExercise = z.infer<typeof insertDeckExerciseSchema>;
+
+// Additional schemas for gamification
+export const insertAchievementSchema = createInsertSchema(achievements).omit({ id: true, createdAt: true });
+export const insertBadgeSchema = createInsertSchema(badges).omit({ id: true, createdAt: true });
+export const insertLeaderboardSchema = createInsertSchema(leaderboards).omit({ id: true, createdAt: true });
+export const insertXpActivitySchema = createInsertSchema(xpActivities).omit({ id: true });
+
+export type InsertAchievement = z.infer<typeof insertAchievementSchema>;
+export type InsertBadge = z.infer<typeof insertBadgeSchema>;
+export type InsertLeaderboard = z.infer<typeof insertLeaderboardSchema>;
+export type InsertXpActivity = z.infer<typeof insertXpActivitySchema>;
