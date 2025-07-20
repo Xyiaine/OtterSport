@@ -214,6 +214,18 @@ gamificationRouter.post("/streak/freeze", async (req: Request, res: Response) =>
  * LEADERBOARD ENDPOINTS
  */
 
+// Get main leaderboard (redirects to weekly)
+gamificationRouter.get("/leaderboard", async (req: Request, res: Response) => {
+  try {
+    const limit = parseInt(req.query.limit as string) || 50;
+    const leaderboard = await gamification.getWeeklyLeaderboard(limit);
+    res.json(leaderboard);
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // Get weekly leaderboard
 gamificationRouter.get("/leaderboard/weekly", async (req: Request, res: Response) => {
   try {
