@@ -22,6 +22,7 @@ import { LevelUpAnimation, AchievementPopup, XPGainAnimation, StreakAnimation } 
 import { StreakWarning, LivesWarning } from '@/components/ui/loss-aversion-warnings';
 import { ProgressCommitmentDashboard, GoalSetting } from '@/components/ui/progress-commitment';
 import { NotificationToast, PersistentReminder } from '@/components/ui/notification-toast';
+import { WorkoutRoadmap } from '@/components/ui/workout-roadmap';
 import { notificationService } from '@/lib/notifications';
 import {
   Trophy,
@@ -424,8 +425,9 @@ export function GamificationDashboard() {
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
           <TabsTrigger value="achievements">Achievements</TabsTrigger>
           <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
           <TabsTrigger value="streak">Streak</TabsTrigger>
@@ -605,6 +607,18 @@ export function GamificationDashboard() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="roadmap" className="space-y-6">
+          <WorkoutRoadmap
+            userLevel={summary?.currentLevel || 1}
+            completedWorkouts={['w1-intro', 'w1-cardio']} // Mock completed workouts
+            currentStreak={streakInfo?.currentStreak || 0}
+            onStartWorkout={(workoutId) => {
+              // Navigate to workout with specific ID
+              window.location.href = `/workout?id=${workoutId}`;
+            }}
+          />
         </TabsContent>
       </Tabs>
     </div>
