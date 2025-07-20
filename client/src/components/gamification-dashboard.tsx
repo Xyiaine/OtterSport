@@ -18,6 +18,11 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { LevelUpAnimation, AchievementPopup, XPGainAnimation, StreakAnimation } from '@/components/ui/progress-animations';
+import { StreakWarning, LivesWarning } from '@/components/ui/loss-aversion-warnings';
+import { ProgressCommitmentDashboard, GoalSetting } from '@/components/ui/progress-commitment';
+import { NotificationToast, PersistentReminder } from '@/components/ui/notification-toast';
+import { notificationService } from '@/lib/notifications';
 import {
   Trophy,
   Star,
@@ -87,6 +92,32 @@ export function GamificationDashboard() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Psychological trigger states
+  const [showLevelUpAnimation, setShowLevelUpAnimation] = useState(false);
+  const [showAchievementPopup, setShowAchievementPopup] = useState(false);
+  const [showStreakWarning, setShowStreakWarning] = useState(false);
+  const [showLivesWarning, setShowLivesWarning] = useState(false);
+  const [showGoalSetting, setShowGoalSetting] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [persistentReminder, setPersistentReminder] = useState(null);
+  
+  // Animation data
+  const [levelUpData, setLevelUpData] = useState({ newLevel: 1, xpGained: 0 });
+  const [newAchievement, setNewAchievement] = useState(null);
+  
+  // Initialize notifications
+  useEffect(() => {
+    notificationService.initialize();
+    
+    // Listen for notification events
+    const handleNotification = (event) => {
+      setNotifications(prev => [...prev, event.detail]);
+    };
+    
+    window.addEventListener('ottersport-notification', handleNotification);
+    return () => window.removeEventListener('ottersport-notification', handleNotification);
+  }, []);
 
   // Fetch gamification summary
   const { data: summary, isLoading: summaryLoading } = useQuery({
@@ -178,8 +209,128 @@ export function GamificationDashboard() {
     );
   }
 
+  // Check for streak warnings
+  useEffect(() => {
+    if (streakInfo?.isAtRisk && streakInfo.currentStreak >= 3) {
+      notificationService.sendStreakBreakWarning(streakInfo.currentStreak, 12); // Assume 12 hours left
+      setShowStreakWarning(true);
+    }
+  }, [streakInfo]);
+
+  // Check for lives warnings
+  useEffect(() => {
+    if (livesInfo?.livesRemaining <= 2) {
+      notificationService.sendLivesLowWarning(livesInfo.livesRemaining);
+      setShowLivesWarning(true);
+    }
+  }, [livesInfo]);
+
+  // Mock goals data - in real app, this would come from API
+  const [userGoals, setUserGoals] = useState([
+    {
+      id: '1',
+      type: 'daily',
+      target: 1,
+      current: 0,
+      unit: 'workouts',
+      description: 'Complete daily workout'
+    },
+    {
+      id: '2', 
+      type: 'weekly',
+      target: 5,
+      current: 2,
+      unit: 'workouts',
+      description: 'Weekly workout target'
+    }
+  ]);
+
+  const handleWorkoutNow = () => {
+    window.location.href = '/workout';
+  };
+
+  const handleUseStreakFreeze = () => {
+    streakFreezeMutation.mutate();
+    setShowStreakWarning(false);
+  };
+
+  const handleNotificationAction = (notification) => {
+    if (notification.actionUrl) {
+      window.location.href = notification.actionUrl;
+    }
+    setNotifications(prev => prev.filter(n => n.id !== notification.id));
+  };
+
+  const handleNotificationDismiss = (id) => {
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
+      {/* Notification Toasts */}
+      <NotificationToast
+        notifications={notifications}
+        onDismiss={handleNotificationDismiss}
+        onAction={handleNotificationAction}
+      />
+
+      {/* Persistent Reminders */}
+      {persistentReminder && (
+        <PersistentReminder
+          show={!!persistentReminder}
+          title={persistentReminder.title}
+          message={persistentReminder.message}
+          type={persistentReminder.type}
+          onAction={persistentReminder.onAction}
+          onSnooze={persistentReminder.onSnooze}
+          onDismiss={() => setPersistentReminder(null)}
+        />
+      )}
+
+      {/* Progress Animations */}
+      <LevelUpAnimation
+        show={showLevelUpAnimation}
+        newLevel={levelUpData.newLevel}
+        xpGained={levelUpData.xpGained}
+        onComplete={() => setShowLevelUpAnimation(false)}
+      />
+
+      <AchievementPopup
+        show={showAchievementPopup}
+        achievement={newAchievement || { name: '', description: '', icon: '' }}
+        onComplete={() => setShowAchievementPopup(false)}
+      />
+
+      {/* Loss Aversion Warnings */}
+      <StreakWarning
+        show={showStreakWarning}
+        streakCount={streakInfo?.currentStreak || 0}
+        hoursRemaining={12}
+        onWorkoutNow={handleWorkoutNow}
+        onUseFreeze={handleUseStreakFreeze}
+        onDismiss={() => setShowStreakWarning(false)}
+        canUseFreeze={streakInfo?.canUseFreeze || false}
+      />
+
+      <LivesWarning
+        show={showLivesWarning}
+        livesRemaining={livesInfo?.livesRemaining || 5}
+        onContinue={() => setShowLivesWarning(false)}
+        onRecover={() => {/* Handle life recovery */}}
+        onQuit={() => setShowLivesWarning(false)}
+        recoveryOptions={[
+          { type: 'currency', cost: 10, label: 'Spend 10 coins' },
+          { type: 'ad', label: 'Watch ad to recover' }
+        ]}
+      />
+
+      {/* Goal Setting Modal */}
+      <GoalSetting
+        show={showGoalSetting}
+        currentGoals={userGoals}
+        onSave={setUserGoals}
+        onClose={() => setShowGoalSetting(false)}
+      />
       {/* Header with XP and Level */}
       <Card className="bg-gradient-to-r from-teal-50 to-blue-50 dark:from-teal-900/20 dark:to-blue-900/20">
         <CardHeader className="text-center">
@@ -281,6 +432,12 @@ export function GamificationDashboard() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
+          {/* Progress Commitment Dashboard */}
+          <ProgressCommitmentDashboard
+            goals={userGoals}
+            onEditGoals={() => setShowGoalSetting(true)}
+          />
+
           {/* Recent Achievements */}
           {summary?.recentAchievements && summary.recentAchievements.length > 0 && (
             <Card>
@@ -307,6 +464,29 @@ export function GamificationDashboard() {
               </CardContent>
             </Card>
           )}
+
+          {/* Motivation Section */}
+          <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+            <CardContent className="p-6 text-center">
+              <h3 className="text-lg font-bold text-purple-700 dark:text-purple-300 mb-2">
+                🎯 Stay Committed to Your Goals
+              </h3>
+              <p className="text-purple-600 dark:text-purple-400 mb-4">
+                Consistency is the key to success. Every workout brings you closer to your fitness goals!
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+                  {summary?.totalWorkouts || 0} workouts completed
+                </Badge>
+                <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300">
+                  Level {summary?.currentLevel || 1} achieved
+                </Badge>
+                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                  {summary?.currentStreak || 0} day streak
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="achievements" className="space-y-6">
