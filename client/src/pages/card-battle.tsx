@@ -18,6 +18,7 @@ import ThemedExerciseCard, {
   getDeckTheme, 
   type DeckTheme 
 } from "@/components/ui/themed-exercise-cards";
+import StrategicCard from "@/components/ui/strategic-card";
 import type { Exercise, Deck } from "@shared/schema";
 
 interface GameCard {
@@ -25,6 +26,9 @@ interface GameCard {
   exercise: Exercise;
   points: number;
   difficulty: number;
+  type: 'cardio' | 'strength' | 'flexibility' | 'mixed';
+  combo?: string; // For combo mechanics
+  special?: 'double' | 'block' | 'steal' | 'bonus'; // Special abilities
 }
 
 interface GameState {
@@ -34,12 +38,18 @@ interface GameState {
   aiHand: GameCard[];
   deckCards: GameCard[];
   currentTurn: 'player' | 'ai';
-  gamePhase: 'drawing' | 'playing' | 'ai-turn' | 'game-over';
+  gamePhase: 'drawing' | 'playing' | 'ai-turn' | 'combo-phase' | 'game-over';
   selectedCard: GameCard | null;
   lastPlayedCard: GameCard | null;
   aiLastPlayedCard: GameCard | null;
   aiEmotion: EmotionType;
   deckTheme: DeckTheme;
+  comboMultiplier: number;
+  playerComboStreak: number;
+  aiComboStreak: number;
+  specialEffectsActive: string[];
+  turnTimer: number;
+  maxTurnTime: number;
 }
 
 export default function CardBattle() {
@@ -62,7 +72,13 @@ export default function CardBattle() {
     lastPlayedCard: null,
     aiLastPlayedCard: null,
     aiEmotion: 'confident',
-    deckTheme: 'cardio'
+    deckTheme: 'cardio',
+    comboMultiplier: 1,
+    playerComboStreak: 0,
+    aiComboStreak: 0,
+    specialEffectsActive: [],
+    turnTimer: 30,
+    maxTurnTime: 30
   });
 
   // Fetch deck with exercises
@@ -87,20 +103,68 @@ export default function CardBattle() {
     }
   }, [exercises, deck]);
 
+  // Turn Timer Effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (gameState.gamePhase === 'playing' && gameState.currentTurn === 'player' && gameState.turnTimer > 0) {
+      interval = setInterval(() => {
+        setGameState(prev => {
+          if (prev.turnTimer <= 1) {
+            // Time's up! Auto-play lowest card or skip
+            if (prev.playerHand.length > 0) {
+              const autoCard = prev.playerHand.reduce((lowest, current) => 
+                current.points < lowest.points ? current : lowest
+              );
+              toast({
+                title: "⏰ Time's Up!",
+                description: `Auto-played ${autoCard.exercise.name}`
+              });
+              setTimeout(() => playCard(autoCard), 100);
+            }
+            return { ...prev, turnTimer: prev.maxTurnTime };
+          }
+          return { ...prev, turnTimer: prev.turnTimer - 1 };
+        });
+      }, 1000);
+    }
+    
+    return () => clearInterval(interval);
+  }, [gameState.gamePhase, gameState.currentTurn, gameState.turnTimer, gameState.playerHand]);
+
   const initializeGame = () => {
-    // Create game cards from exercises (create multiple copies with unique IDs)
+    // Create enhanced game cards with strategic mechanics
     const gameCards: GameCard[] = [];
     exercises.forEach((exercise, index) => {
-      // Add 3-4 copies of each exercise to make a bigger deck
+      // Add multiple copies with variations for strategy
       for (let i = 0; i < 3; i++) {
-        gameCards.push({
-          id: `${exercise.id}-${index}-${i}-${Date.now()}`, // Ensure unique IDs
+        const baseCard: GameCard = {
+          id: `${exercise.id}-${index}-${i}-${Date.now()}`,
           exercise,
           points: calculatePoints(exercise),
           difficulty: getDifficultyLevel(exercise.category),
-        });
+          type: getExerciseType(exercise.category),
+          combo: getComboType(exercise.category),
+          special: getRandomSpecial(0.15) // 15% chance for special abilities
+        };
+        gameCards.push(baseCard);
       }
     });
+    
+    // Add special power cards for deeper strategy (10% of deck)
+    const powerCardCount = Math.max(2, Math.floor(gameCards.length * 0.1));
+    for (let i = 0; i < powerCardCount; i++) {
+      const powerCard: GameCard = {
+        id: `power-${i}-${Date.now()}`,
+        exercise: createPowerExercise(i),
+        points: Math.floor(Math.random() * 3) + 4, // 4-6 points
+        difficulty: Math.floor(Math.random() * 3) + 3, // 3-5 difficulty
+        type: 'mixed',
+        combo: 'power',
+        special: ['double', 'block', 'steal', 'bonus'][Math.floor(Math.random() * 4)] as any
+      };
+      gameCards.push(powerCard);
+    }
 
     // Shuffle deck thoroughly
     const shuffledDeck = [...gameCards].sort(() => Math.random() - 0.5);
@@ -135,8 +199,99 @@ export default function CardBattle() {
       'flexibility': 2,
       'balance': 2,
       'endurance': 4,
+      'mixed': 3,
     };
     return difficultyMap[category] || 3;
+  };
+
+  // Strategic Helper Functions
+  const getExerciseType = (category: string): 'cardio' | 'strength' | 'flexibility' | 'mixed' => {
+    const typeMap: { [key: string]: 'cardio' | 'strength' | 'flexibility' | 'mixed' } = {
+      'cardio': 'cardio',
+      'strength': 'strength', 
+      'flexibility': 'flexibility',
+      'balance': 'flexibility',
+      'endurance': 'cardio',
+      'mixed': 'mixed'
+    };
+    return typeMap[category] || 'mixed';
+  };
+
+  const getComboType = (category: string): string => {
+    const comboMap: { [key: string]: string } = {
+      'cardio': 'energy',
+      'strength': 'power',
+      'flexibility': 'flow',
+      'balance': 'stability'
+    };
+    return comboMap[category] || 'basic';
+  };
+
+  const getRandomSpecial = (chance: number): 'double' | 'block' | 'steal' | 'bonus' | undefined => {
+    if (Math.random() < chance) {
+      const specials: ('double' | 'block' | 'steal' | 'bonus')[] = ['double', 'block', 'steal', 'bonus'];
+      return specials[Math.floor(Math.random() * specials.length)];
+    }
+    return undefined;
+  };
+
+  const createPowerExercise = (index: number): Exercise => {
+    const powerExercises = [
+      { name: "Power Boost", description: "Amplify your next move", category: "mixed", icon: "fas fa-bolt" },
+      { name: "Shield Block", description: "Defend against next attack", category: "mixed", icon: "fas fa-shield-alt" },
+      { name: "Energy Steal", description: "Take points from opponent", category: "mixed", icon: "fas fa-magnet" },
+      { name: "Bonus Round", description: "Extra points this turn", category: "mixed", icon: "fas fa-star" },
+    ];
+    const base = powerExercises[index % powerExercises.length];
+    return {
+      id: index + 1000,
+      name: base.name,
+      description: base.description,
+      category: base.category,
+      difficulty: 2,
+      defaultReps: null,
+      defaultDuration: null,
+      instructions: base.description,
+      icon: base.icon,
+      createdAt: new Date()
+    };
+  };
+
+  const checkComboBonus = (playedCard: GameCard, hand: GameCard[]): number => {
+    if (!playedCard.combo) return 1;
+    
+    const sameComboCards = hand.filter(card => card.combo === playedCard.combo);
+    if (sameComboCards.length >= 1) {
+      return 1.5; // 50% bonus for combo
+    }
+    
+    // Triple combo bonus
+    if (sameComboCards.length >= 2) {
+      return 2.0; // 100% bonus for triple combo
+    }
+    
+    return 1;
+  };
+
+  const applySpecialEffect = (card: GameCard, currentGameState: GameState): Partial<GameState> => {
+    if (!card.special) return {};
+    
+    switch (card.special) {
+      case 'double':
+        return { comboMultiplier: 2 };
+      case 'block':
+        return { specialEffectsActive: [...currentGameState.specialEffectsActive, 'shield'] };
+      case 'steal':
+        const stolenPoints = Math.min(3, currentGameState.aiScore);
+        return { 
+          playerScore: currentGameState.playerScore + stolenPoints,
+          aiScore: currentGameState.aiScore - stolenPoints
+        };
+      case 'bonus':
+        return { playerScore: currentGameState.playerScore + 2 };
+      default:
+        return {};
+    }
   };
 
   const drawCards = () => {
@@ -183,25 +338,70 @@ export default function CardBattle() {
     // Remove card from player hand
     const newPlayerHand = gameState.playerHand.filter(c => c.id !== card.id);
     
-    // Trigger AI emotion based on player's move
-    const newPlayerScore = gameState.playerScore + card.points;
-    const aiEmotion = getEmotionForEvent('player_good_exercise', gameState.aiScore, newPlayerScore);
+    // Calculate combo bonus
+    const comboBonus = checkComboBonus(card, gameState.playerHand);
+    const specialEffects = applySpecialEffect(card, gameState);
+    
+    // Calculate final points with all bonuses
+    let finalPoints = Math.round(card.points * comboBonus * gameState.comboMultiplier);
+    
+    // Check for combo streak
+    const isCombo = comboBonus > 1;
+    const newComboStreak = isCombo ? gameState.playerComboStreak + 1 : 0;
+    
+    // Streak bonus for consecutive combos
+    if (newComboStreak >= 2) {
+      finalPoints += newComboStreak; // Extra points for streak
+      toast({
+        title: `🔥 ${newComboStreak}x Combo Streak!`,
+        description: `+${newComboStreak} streak bonus points!`
+      });
+    }
+    
+    // Special effect notifications
+    if (card.special) {
+      const effectMessages = {
+        double: "⚡ Double Points Next Turn!",
+        block: "🛡️ Shield Activated!",
+        steal: `🎯 Stole ${Math.min(3, gameState.aiScore)} points!`,
+        bonus: "⭐ Bonus Points Gained!"
+      };
+      toast({
+        title: effectMessages[card.special],
+        description: `${card.exercise.name} special effect activated!`
+      });
+    }
+    
+    const baseNewScore = (specialEffects.playerScore !== undefined) 
+      ? specialEffects.playerScore 
+      : gameState.playerScore + finalPoints;
+    
+    // Trigger AI emotion based on player's strategic move
+    const aiEmotion = getEmotionForEvent(
+      isCombo ? 'player_combo' : 'player_good_exercise', 
+      specialEffects.aiScore || gameState.aiScore, 
+      baseNewScore
+    );
     
     setGameState(prev => ({
       ...prev,
       playerHand: newPlayerHand,
       lastPlayedCard: card,
-      playerScore: newPlayerScore,
+      playerScore: baseNewScore,
+      playerComboStreak: newComboStreak,
       currentTurn: 'ai',
       gamePhase: 'ai-turn',
       selectedCard: null,
       aiEmotion,
+      comboMultiplier: 1, // Reset multiplier after use
+      turnTimer: gameState.maxTurnTime, // Reset timer for AI
+      ...specialEffects
     }));
 
-    // AI plays after a short delay
+    // AI plays after strategic delay
     setTimeout(() => {
       playAICard();
-    }, 1500);
+    }, isCombo ? 2000 : 1500); // Longer delay for combos to show effect
   };
 
   const playAICard = () => {
@@ -210,25 +410,70 @@ export default function CardBattle() {
       return;
     }
 
-    // AI strategy: play the highest point card
-    const bestCard = gameState.aiHand.reduce((best, current) => 
-      current.points > best.points ? current : best
-    );
-
-    const newAIHand = gameState.aiHand.filter(c => c.id !== bestCard.id);
-    const newAIScore = gameState.aiScore + bestCard.points;
+    // Enhanced AI strategy with multiple tactics
+    let selectedCard: GameCard;
+    const currentScore = gameState.aiScore;
+    const playerScore = gameState.playerScore;
+    const scoreDiff = playerScore - currentScore;
     
-    // Trigger AI emotion after playing
-    const aiEmotion = getEmotionForEvent('ai_good_exercise', newAIScore, gameState.playerScore);
+    if (scoreDiff > 5) {
+      // Losing badly - play special cards or combos
+      const specialCard = gameState.aiHand.find(card => card.special);
+      const comboCard = gameState.aiHand.find(card => 
+        gameState.aiHand.filter(c => c.combo === card.combo).length > 1
+      );
+      selectedCard = specialCard || comboCard || gameState.aiHand.reduce((best, current) => 
+        current.points > best.points ? current : best
+      );
+    } else if (scoreDiff < -3) {
+      // Winning - play defensively, save good cards
+      selectedCard = gameState.aiHand.reduce((worst, current) => 
+        current.points < worst.points ? current : worst
+      );
+    } else {
+      // Close game - balanced strategy
+      const goodCards = gameState.aiHand.filter(card => card.points >= 4);
+      selectedCard = goodCards.length > 0 
+        ? goodCards[Math.floor(Math.random() * goodCards.length)]
+        : gameState.aiHand[Math.floor(Math.random() * gameState.aiHand.length)];
+    }
+
+    const newAIHand = gameState.aiHand.filter(c => c.id !== selectedCard.id);
+    
+    // Calculate AI combo bonus
+    const aiComboBonus = checkComboBonus(selectedCard, gameState.aiHand);
+    const aiSpecialEffects = applySpecialEffect(selectedCard, gameState);
+    let aiFinalPoints = Math.round(selectedCard.points * aiComboBonus);
+    
+    // AI combo streak
+    const isAICombo = aiComboBonus > 1;
+    const newAIComboStreak = isAICombo ? gameState.aiComboStreak + 1 : 0;
+    if (newAIComboStreak >= 2) {
+      aiFinalPoints += newAIComboStreak;
+    }
+    
+    const baseNewAIScore = (aiSpecialEffects.aiScore !== undefined)
+      ? aiSpecialEffects.aiScore
+      : gameState.aiScore + aiFinalPoints;
+    
+    // Trigger AI emotion after playing with strategy context
+    let emotionContext = 'ai_good_exercise';
+    if (isAICombo) emotionContext = 'ai_combo';
+    if (selectedCard.special) emotionContext = 'ai_special_card';
+    
+    const aiEmotion = getEmotionForEvent(emotionContext, baseNewAIScore, gameState.playerScore);
 
     setGameState(prev => ({
       ...prev,
       aiHand: newAIHand,
-      aiLastPlayedCard: bestCard,
-      aiScore: newAIScore,
+      aiLastPlayedCard: selectedCard,
+      aiScore: baseNewAIScore,
+      aiComboStreak: newAIComboStreak,
       currentTurn: 'player',
       gamePhase: (prev.deckCards.length > 0 && (prev.playerHand.length > 0 || newAIHand.length > 0)) ? 'drawing' : 'game-over',
       aiEmotion,
+      turnTimer: gameState.maxTurnTime, // Reset timer for player
+      ...aiSpecialEffects
     }));
 
     // Check if game should end - no cards left in deck and both players have no cards
@@ -266,7 +511,13 @@ export default function CardBattle() {
       lastPlayedCard: null,
       aiLastPlayedCard: null,
       aiEmotion: 'confident',
-      deckTheme: gameState.deckTheme
+      deckTheme: gameState.deckTheme,
+      comboMultiplier: 1,
+      playerComboStreak: 0,
+      aiComboStreak: 0,
+      specialEffectsActive: [],
+      turnTimer: 30,
+      maxTurnTime: 30
     });
     initializeGame();
   };
@@ -318,14 +569,65 @@ export default function CardBattle() {
           />
         </div>
 
-        {/* Game Phase Indicator */}
+        {/* Game Phase Indicator with Timer */}
         <div className="text-center mb-6">
-          <Badge variant="outline" className="px-4 py-2">
-            {gameState.gamePhase === 'drawing' && 'Draw Phase - Click the deck to draw cards'}
-            {gameState.gamePhase === 'playing' && 'Your Turn - Select a card to play'}
-            {gameState.gamePhase === 'ai-turn' && 'AI is thinking...'}
-            {gameState.gamePhase === 'game-over' && 'Game Over!'}
-          </Badge>
+          <div className="flex justify-center items-center space-x-4">
+            <Badge variant="outline" className="px-4 py-2">
+              {gameState.gamePhase === 'drawing' && 'Draw Phase - Click the deck to draw cards'}
+              {gameState.gamePhase === 'playing' && `Your Turn - ${gameState.turnTimer}s remaining`}
+              {gameState.gamePhase === 'ai-turn' && 'AI is thinking...'}
+              {gameState.gamePhase === 'combo-phase' && 'Combo Effect!'}
+              {gameState.gamePhase === 'game-over' && 'Game Over!'}
+            </Badge>
+            
+            {/* Turn Timer Visual */}
+            {gameState.gamePhase === 'playing' && gameState.currentTurn === 'player' && (
+              <div className="w-16 h-16 relative">
+                <div className="absolute inset-0 rounded-full border-4 border-gray-200">
+                  <div 
+                    className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"
+                    style={{
+                      animationDuration: `${gameState.turnTimer}s`,
+                      animationTimingFunction: 'linear'
+                    }}
+                  />
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-blue-600">
+                  {gameState.turnTimer}
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Combo Streak Display */}
+          {(gameState.playerComboStreak > 0 || gameState.aiComboStreak > 0) && (
+            <div className="mt-2 flex justify-center space-x-4">
+              {gameState.playerComboStreak > 0 && (
+                <Badge variant="default" className="bg-blue-500">
+                  🔥 Player {gameState.playerComboStreak}x Combo
+                </Badge>
+              )}
+              {gameState.aiComboStreak > 0 && (
+                <Badge variant="destructive">
+                  🔥 AI {gameState.aiComboStreak}x Combo
+                </Badge>
+              )}
+            </div>
+          )}
+          
+          {/* Special Effects Active */}
+          {gameState.specialEffectsActive.length > 0 && (
+            <div className="mt-2">
+              <div className="flex justify-center space-x-2">
+                {gameState.specialEffectsActive.map((effect, index) => (
+                  <Badge key={index} variant="outline" className="bg-purple-50">
+                    {effect === 'shield' && '🛡️ Shield'}
+                    {effect === 'double' && '⚡ Double'}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Last Played Cards */}
@@ -406,52 +708,51 @@ export default function CardBattle() {
           </div>
         </div>
 
-        {/* Player Hand */}
+        {/* Player Hand with Strategic Cards */}
         <div className="text-center mb-6">
           <div className="text-sm text-slate-600 mb-2">Your Hand</div>
-          <div className="flex justify-center space-x-4 flex-wrap">
-            {gameState.playerHand.map((card) => (
-              <Card
-                key={card.id}
-                className={`w-40 cursor-pointer transition-all duration-200 ${
-                  gameState.selectedCard?.id === card.id
-                    ? 'ring-2 ring-otter-teal border-otter-teal transform scale-105'
-                    : 'hover:transform hover:scale-105 hover:shadow-lg'
-                } ${gameState.gamePhase !== 'playing' ? 'opacity-50' : ''}`}
-                onClick={() => gameState.gamePhase === 'playing' && selectCard(card)}
-              >
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm text-center">
-                    {card.exercise.name}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-otter-teal mb-2">
-                      {card.points} pts
-                    </div>
-                    <div className="text-xs text-slate-600 mb-2">
-                      {card.exercise.category}
-                    </div>
-                    <div className="text-xs text-slate-500">
-                      {card.exercise.defaultReps && `${card.exercise.defaultReps} reps`}
-                      {card.exercise.defaultDuration && `${card.exercise.defaultDuration}s`}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="flex justify-center space-x-3 flex-wrap gap-y-4">
+            {gameState.playerHand.map((card) => {
+              const comboCount = gameState.playerHand.filter(c => c.combo === card.combo).length;
+              return (
+                <StrategicCard
+                  key={card.id}
+                  card={card}
+                  isSelected={gameState.selectedCard?.id === card.id}
+                  canPlay={gameState.gamePhase === 'playing'}
+                  onSelect={() => gameState.gamePhase === 'playing' && selectCard(card)}
+                  onPlay={() => playCard(card)}
+                  comboCount={comboCount}
+                  showComboHint={comboCount > 1}
+                />
+              );
+            })}
           </div>
+          
+          {/* Hand Strategy Hints */}
+          {gameState.gamePhase === 'playing' && gameState.playerHand.length > 0 && (
+            <div className="mt-4 text-center">
+              <div className="text-xs text-slate-500">
+                💡 Strategy Tips: Look for combo matches and special abilities!
+              </div>
+              {gameState.comboMultiplier > 1 && (
+                <Badge variant="outline" className="mt-1 bg-yellow-50">
+                  ⚡ {gameState.comboMultiplier}x Multiplier Active
+                </Badge>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Game Actions */}
         <div className="flex justify-center space-x-4 mb-6">
-          {gameState.gamePhase === 'playing' && gameState.selectedCard && (
+          {gameState.gamePhase === 'drawing' && (
             <Button
-              onClick={() => playCard(gameState.selectedCard!)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+              onClick={drawCards}
+              className="bg-otter-teal hover:bg-teal-600 text-white px-8 py-3"
+              disabled={gameState.deckCards.length === 0}
             >
-              Play Selected Card
+              🎴 Draw Cards
             </Button>
           )}
 
