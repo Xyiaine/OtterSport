@@ -189,6 +189,12 @@ The architecture prioritizes user experience with fast, responsive interactions 
 - **Cross-Platform Ready**: Full compatibility with Replit, Vercel, Railway, Heroku, and local development environments
 
 ### July 21, 2025
+- **Migration from Replit Agent Completed**: Successfully migrated project to standard Replit environment with database setup, schema deployment, and full functionality
+- **Card Gameplay Enhancement**: Added comprehensive warm-up cards, utility cards, and point scaling system:
+  - **Warm-up Cards**: Joint Warm-Up, Dynamic Stretching, Heart Rate Prep, Flexibility Prep - prepares players for upcoming exercises
+  - **Utility Cards**: Fresh Hand (redraw), Deck Shuffle, Quick Draw (+2 cards), Energy Boost (double next), Strategic Skip (skip+draw)
+  - **Point Scaling System**: Repeated exercises earn progressively fewer points (100% → 60% → 30%) to encourage variety
+  - **Enhanced Visual System**: Distinct styling for utility (blue), warm-up (orange), and power (purple) cards with appropriate icons
 - **Enhanced Card Battle System**: Implemented comprehensive strategic gameplay mechanics featuring:
   - **Simple Rules, Deep Strategy**: Easy-to-learn combo system with special abilities, energy management, and card synergies
   - **Good Pace & Flow**: 30-second turn timer with automatic play, momentum building, and quick tactical decisions  

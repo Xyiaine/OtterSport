@@ -10,7 +10,14 @@ import {
   Heart,
   Dumbbell,
   Waves,
-  Activity
+  Activity,
+  Thermometer,
+  Settings,
+  Shuffle,
+  Plus,
+  Battery,
+  FastForward,
+  Repeat
 } from "lucide-react";
 
 interface GameCard {
@@ -24,9 +31,11 @@ interface GameCard {
   };
   points: number;
   difficulty: number;
-  type: 'cardio' | 'strength' | 'flexibility' | 'mixed';
+  type: 'cardio' | 'strength' | 'flexibility' | 'mixed' | 'warmup' | 'utility';
   combo?: string;
   special?: 'double' | 'block' | 'steal' | 'bonus';
+  cardType?: 'exercise' | 'warmup' | 'utility' | 'power';
+  utilityEffect?: string;
 }
 
 interface StrategicCardProps {
@@ -50,7 +59,17 @@ const typeIcons = {
   cardio: Heart,
   strength: Dumbbell,
   flexibility: Waves,
-  mixed: Activity
+  mixed: Activity,
+  warmup: Thermometer,
+  utility: Settings
+};
+
+const utilityIcons = {
+  redraw_hand: Repeat,
+  shuffle_deck: Shuffle,
+  draw_extra: Plus,
+  double_next: Battery,
+  skip_draw: FastForward
 };
 
 const comboColors = {
@@ -72,7 +91,19 @@ export default function StrategicCard({
 }: StrategicCardProps) {
   const SpecialIcon = card.special ? specialIcons[card.special] : null;
   const TypeIcon = typeIcons[card.type];
+  const UtilityIcon = card.utilityEffect ? utilityIcons[card.utilityEffect as keyof typeof utilityIcons] : null;
   const comboColorClass = comboColors[card.combo as keyof typeof comboColors] || comboColors.basic;
+  
+  const isUtility = card.cardType === 'utility';
+  const isWarmup = card.cardType === 'warmup';
+  
+  const cardBorderClass = isUtility 
+    ? 'border-2 border-blue-400' 
+    : isWarmup 
+      ? 'border-2 border-orange-400'
+      : card.special 
+        ? 'border-2 border-purple-400' 
+        : '';
 
   return (
     <motion.div
@@ -85,9 +116,27 @@ export default function StrategicCard({
       className={`cursor-pointer transition-all duration-200 ${!canPlay && 'opacity-50'}`}
       onClick={onSelect}
     >
-      <Card className={`relative w-32 h-44 ${isSelected ? 'ring-2 ring-blue-500' : ''} ${card.special ? 'border-2 border-purple-400' : ''}`}>
+      <Card className={`relative w-32 h-44 ${isSelected ? 'ring-2 ring-blue-500' : ''} ${cardBorderClass}`}>
+        {/* Utility Effect Indicator */}
+        {isUtility && UtilityIcon && (
+          <div className="absolute -top-2 -right-2 z-10">
+            <Badge className="bg-blue-500 text-white p-1">
+              <UtilityIcon size={12} />
+            </Badge>
+          </div>
+        )}
+        
+        {/* Warmup Indicator */}
+        {isWarmup && (
+          <div className="absolute -top-2 -right-2 z-10">
+            <Badge className="bg-orange-500 text-white p-1">
+              <Thermometer size={12} />
+            </Badge>
+          </div>
+        )}
+
         {/* Special Effect Indicator */}
-        {card.special && (
+        {card.special && !isUtility && !isWarmup && (
           <div className="absolute -top-2 -right-2 z-10">
             <Badge className="bg-purple-500 text-white p-1">
               {SpecialIcon && <SpecialIcon size={12} />}
@@ -106,9 +155,9 @@ export default function StrategicCard({
 
         <CardHeader className="p-3 pb-1">
           <div className="flex items-center justify-between">
-            {/* Points */}
-            <Badge variant="outline" className="text-lg font-bold">
-              {card.points}
+            {/* Points or Utility Label */}
+            <Badge variant="outline" className={`text-lg font-bold ${isUtility ? 'bg-blue-50 text-blue-700' : isWarmup ? 'bg-orange-50 text-orange-700' : ''}`}>
+              {isUtility ? 'UTIL' : isWarmup ? 'PREP' : card.points}
             </Badge>
             
             {/* Type Icon */}

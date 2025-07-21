@@ -26,9 +26,11 @@ interface GameCard {
   exercise: Exercise;
   points: number;
   difficulty: number;
-  type: 'cardio' | 'strength' | 'flexibility' | 'mixed';
+  type: 'cardio' | 'strength' | 'flexibility' | 'mixed' | 'warmup' | 'utility';
   combo?: string; // For combo mechanics
   special?: 'double' | 'block' | 'steal' | 'bonus'; // Special abilities
+  cardType?: 'exercise' | 'warmup' | 'utility' | 'power'; // Card category
+  utilityEffect?: string; // For utility cards
 }
 
 interface GameState {
@@ -50,6 +52,9 @@ interface GameState {
   specialEffectsActive: string[];
   turnTimer: number;
   maxTurnTime: number;
+  exerciseHistory: string[]; // Track repeated exercises for point scaling
+  utilityEffectsActive: string[]; // Track active utility effects
+  playedCards: GameCard[]; // Track all played cards for shuffle mechanics
 }
 
 export default function CardBattle() {
@@ -78,7 +83,10 @@ export default function CardBattle() {
     aiComboStreak: 0,
     specialEffectsActive: [],
     turnTimer: 10, // Only for AI turns
-    maxTurnTime: 10 // 10 seconds for AI
+    maxTurnTime: 10, // 10 seconds for AI
+    exerciseHistory: [],
+    utilityEffectsActive: [],
+    playedCards: []
   });
 
   // Fetch deck with exercises
@@ -128,15 +136,18 @@ export default function CardBattle() {
     const gameCards: GameCard[] = [];
     exercises.forEach((exercise, index) => {
       // Add multiple copies with variations for strategy
-      for (let i = 0; i < 3; i++) {
+      const copies = exercise.cardType === 'utility' ? 1 : (exercise.cardType === 'warmup' ? 2 : 3);
+      for (let i = 0; i < copies; i++) {
         const baseCard: GameCard = {
           id: `${exercise.id}-${index}-${i}-${Date.now()}`,
           exercise,
-          points: calculatePoints(exercise),
+          points: exercise.cardType === 'utility' ? 0 : calculatePoints(exercise),
           difficulty: getDifficultyLevel(exercise.category),
-          type: getExerciseType(exercise.category),
+          type: getExerciseType(exercise.category) as any,
           combo: getComboType(exercise.category),
-          special: getRandomSpecial(0.15) // 15% chance for special abilities
+          special: exercise.cardType === 'utility' ? undefined : getRandomSpecial(0.15),
+          cardType: (exercise.cardType || 'exercise') as any,
+          utilityEffect: exercise.utilityEffect
         };
         gameCards.push(baseCard);
       }
@@ -196,14 +207,16 @@ export default function CardBattle() {
   };
 
   // Strategic Helper Functions
-  const getExerciseType = (category: string): 'cardio' | 'strength' | 'flexibility' | 'mixed' => {
-    const typeMap: { [key: string]: 'cardio' | 'strength' | 'flexibility' | 'mixed' } = {
+  const getExerciseType = (category: string): 'cardio' | 'strength' | 'flexibility' | 'mixed' | 'warmup' | 'utility' => {
+    const typeMap: { [key: string]: 'cardio' | 'strength' | 'flexibility' | 'mixed' | 'warmup' | 'utility' } = {
       'cardio': 'cardio',
       'strength': 'strength', 
       'flexibility': 'flexibility',
       'balance': 'flexibility',
       'endurance': 'cardio',
-      'mixed': 'mixed'
+      'mixed': 'mixed',
+      'warmup': 'warmup',
+      'utility': 'utility'
     };
     return typeMap[category] || 'mixed';
   };
@@ -262,6 +275,83 @@ export default function CardBattle() {
     }
     
     return 1;
+  };
+
+  // ENHANCED POINT SCALING SYSTEM
+  const calculateScaledPoints = (card: GameCard, exerciseHistory: string[]): number => {
+    const basePoints = card.points;
+    const exerciseName = card.exercise.name;
+    
+    // Count how many times this exercise was played recently
+    const recentPlays = exerciseHistory.filter(name => name === exerciseName).length;
+    
+    if (recentPlays === 0) {
+      return basePoints; // Full points for first time
+    } else if (recentPlays === 1) {
+      return Math.max(1, Math.round(basePoints * 0.6)); // 40% penalty for second time
+    } else {
+      return Math.max(1, Math.round(basePoints * 0.3)); // 70% penalty for third+ time
+    }
+  };
+
+  // UTILITY CARD EFFECTS SYSTEM
+  const applyUtilityEffect = (card: GameCard, currentGameState: GameState): Partial<GameState> => {
+    if (card.cardType !== 'utility' || !card.utilityEffect) return {};
+    
+    switch (card.utilityEffect) {
+      case 'redraw_hand':
+        // Player discards hand and draws 3 new cards
+        const newHandSize = Math.min(3, currentGameState.deckCards.length);
+        const newHand = currentGameState.deckCards.slice(0, newHandSize);
+        const remainingDeck = currentGameState.deckCards.slice(newHandSize);
+        return {
+          playerHand: newHand,
+          deckCards: remainingDeck,
+          utilityEffectsActive: [...currentGameState.utilityEffectsActive, 'fresh_hand']
+        };
+        
+      case 'shuffle_deck':
+        // Shuffle played cards back into deck
+        const allCards = [...currentGameState.deckCards, ...currentGameState.playedCards];
+        const shuffledDeck = [...allCards].sort(() => Math.random() - 0.5);
+        return {
+          deckCards: shuffledDeck,
+          playedCards: [],
+          utilityEffectsActive: [...currentGameState.utilityEffectsActive, 'deck_shuffled']
+        };
+        
+      case 'draw_extra':
+        // Draw 2 extra cards
+        const extraCards = Math.min(2, currentGameState.deckCards.length);
+        const drawnCards = currentGameState.deckCards.slice(0, extraCards);
+        const newDeck = currentGameState.deckCards.slice(extraCards);
+        return {
+          playerHand: [...currentGameState.playerHand, ...drawnCards],
+          deckCards: newDeck,
+          utilityEffectsActive: [...currentGameState.utilityEffectsActive, 'extra_cards']
+        };
+        
+      case 'double_next':
+        // Next exercise earns double points
+        return {
+          utilityEffectsActive: [...currentGameState.utilityEffectsActive, 'double_next']
+        };
+        
+      case 'skip_draw':
+        // Skip turn but draw extra card
+        const skipCard = currentGameState.deckCards[0];
+        const skipDeck = currentGameState.deckCards.slice(1);
+        return {
+          playerHand: skipCard ? [...currentGameState.playerHand, skipCard] : currentGameState.playerHand,
+          deckCards: skipDeck,
+          currentTurn: 'ai',
+          gamePhase: 'ai-turn',
+          utilityEffectsActive: [...currentGameState.utilityEffectsActive, 'strategic_skip']
+        };
+        
+      default:
+        return {};
+    }
   };
 
   const applySpecialEffect = (card: GameCard, currentGameState: GameState): Partial<GameState> => {
@@ -326,15 +416,51 @@ export default function CardBattle() {
   const playCard = (card: GameCard) => {
     if (gameState.gamePhase !== 'playing') return;
 
+    // Check for utility card
+    if (card.cardType === 'utility') {
+      const utilityEffects = applyUtilityEffect(card, gameState);
+      const newPlayerHand = gameState.playerHand.filter(c => c.id !== card.id);
+      
+      // Show utility effect notification
+      toast({
+        title: `🔧 Utility: ${card.exercise.name}`,
+        description: card.exercise.description || "Special effect activated!"
+      });
+      
+      setGameState(prev => ({
+        ...prev,
+        playerHand: utilityEffects.playerHand || newPlayerHand,
+        playedCards: [...prev.playedCards, card],
+        ...utilityEffects
+      }));
+      return;
+    }
+
     // Remove card from player hand
     const newPlayerHand = gameState.playerHand.filter(c => c.id !== card.id);
+    
+    // Apply point scaling for repeated exercises
+    const scaledPoints = calculateScaledPoints(card, gameState.exerciseHistory);
+    const pointReduction = card.points - scaledPoints;
+    
+    // Show point reduction warning if applicable
+    if (pointReduction > 0) {
+      toast({
+        title: `⚠️ Repeated Exercise Penalty`,
+        description: `${card.exercise.name}: ${card.points} → ${scaledPoints} points (-${pointReduction} for repetition)`
+      });
+    }
     
     // Calculate combo bonus
     const comboBonus = checkComboBonus(card, gameState.playerHand);
     const specialEffects = applySpecialEffect(card, gameState);
     
+    // Check for double next utility effect
+    const hasDoubleNext = gameState.utilityEffectsActive.includes('double_next');
+    const doubleMultiplier = hasDoubleNext ? 2 : 1;
+    
     // Calculate final points with all bonuses
-    let finalPoints = Math.round(card.points * comboBonus * gameState.comboMultiplier);
+    let finalPoints = Math.round(scaledPoints * comboBonus * gameState.comboMultiplier * doubleMultiplier);
     
     // Check for combo streak
     const isCombo = comboBonus > 1;
@@ -374,6 +500,12 @@ export default function CardBattle() {
       baseNewScore
     );
     
+    // Update exercise history for point scaling (keep last 10 exercises)
+    const newExerciseHistory = [card.exercise.name, ...gameState.exerciseHistory].slice(0, 10);
+    
+    // Remove double_next utility effect after use
+    const newUtilityEffects = gameState.utilityEffectsActive.filter(effect => effect !== 'double_next');
+    
     setGameState(prev => ({
       ...prev,
       playerHand: newPlayerHand,
@@ -386,6 +518,9 @@ export default function CardBattle() {
       aiEmotion,
       comboMultiplier: 1, // Reset multiplier after use
       turnTimer: 10, // Reset to 10 seconds for AI
+      exerciseHistory: newExerciseHistory,
+      utilityEffectsActive: newUtilityEffects,
+      playedCards: [...prev.playedCards, card],
       ...specialEffects
     }));
 

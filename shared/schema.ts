@@ -116,12 +116,14 @@ export const exercises = pgTable("exercises", {
   id: serial("id").primaryKey(),
   name: varchar("name").notNull(), // Exercise name (e.g., "Push-ups")
   description: text("description"), // Brief description
-  category: varchar("category").notNull(), // Options: cardio, strength, flexibility, mixed
+  category: varchar("category").notNull(), // Options: cardio, strength, flexibility, mixed, warmup, utility
   difficulty: real("difficulty").notNull(), // Base difficulty multiplier (0.5 to 2.0)
   defaultReps: integer("default_reps"), // Default number of reps (if rep-based)
   defaultDuration: integer("default_duration"), // Default duration in seconds (if time-based)
   instructions: text("instructions"), // How to perform the exercise
   icon: varchar("icon").default("fas fa-dumbbell"), // Icon class for UI
+  cardType: varchar("card_type").default("exercise"), // Options: exercise, warmup, utility, power
+  utilityEffect: varchar("utility_effect"), // For utility cards: redraw, shuffle, skip, etc.
   createdAt: timestamp("created_at").defaultNow(),
 });
 
