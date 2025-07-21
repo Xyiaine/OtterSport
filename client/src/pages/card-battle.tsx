@@ -19,6 +19,7 @@ import ThemedExerciseCard, {
   type DeckTheme 
 } from "@/components/ui/themed-exercise-cards";
 import StrategicCard from "@/components/ui/strategic-card";
+import ExerciseCardDisplay from "@/components/ui/exercise-card-display";
 import type { Exercise, Deck } from "@shared/schema";
 
 interface GameCard {
@@ -55,6 +56,8 @@ interface GameState {
   exerciseHistory: string[]; // Track repeated exercises for point scaling
   utilityEffectsActive: string[]; // Track active utility effects
   playedCards: GameCard[]; // Track all played cards for shuffle mechanics
+  showExerciseDisplay: boolean; // Show large exercise card
+  currentExerciseCard: GameCard | null; // Card being displayed
 }
 
 export default function CardBattle() {
@@ -86,7 +89,9 @@ export default function CardBattle() {
     maxTurnTime: 10, // 10 seconds for AI
     exerciseHistory: [],
     utilityEffectsActive: [],
-    playedCards: []
+    playedCards: [],
+    showExerciseDisplay: false,
+    currentExerciseCard: null
   });
 
   // Fetch deck with exercises
@@ -376,7 +381,9 @@ export default function CardBattle() {
   };
 
   const drawCards = () => {
+    // Check if deck is empty before attempting to draw
     if (gameState.deckCards.length === 0) {
+      // Game ends when deck is finished
       endGame();
       return;
     }
@@ -397,13 +404,23 @@ export default function CardBattle() {
     // Final remaining deck after both players draw
     const finalRemainingDeck = remainingAfterPlayer.slice(cardsToDrawAI);
 
+    // Check if we've exhausted all cards after drawing
+    const totalCardsLeft = finalRemainingDeck.length;
+    const playerWillHaveCards = gameState.playerHand.length + newPlayerCards.length > 0;
+    const aiWillHaveCards = gameState.aiHand.length + newAICards.length > 0;
+
     setGameState(prev => ({
       ...prev,
       playerHand: [...prev.playerHand, ...newPlayerCards],
       aiHand: [...prev.aiHand, ...newAICards],
       deckCards: finalRemainingDeck,
-      gamePhase: 'playing',
+      gamePhase: totalCardsLeft === 0 && (!playerWillHaveCards || !aiWillHaveCards) ? 'game-over' : 'playing',
     }));
+
+    // End game if no more cards available and players can't continue
+    if (totalCardsLeft === 0 && (!playerWillHaveCards || !aiWillHaveCards)) {
+      setTimeout(() => endGame(), 1000);
+    }
   };
 
   const selectCard = (card: GameCard) => {
@@ -415,6 +432,19 @@ export default function CardBattle() {
 
   const playCard = (card: GameCard) => {
     if (gameState.gamePhase !== 'playing') return;
+
+    // Show the exercise card display first
+    setGameState(prev => ({
+      ...prev,
+      showExerciseDisplay: true,
+      currentExerciseCard: card,
+      selectedCard: null
+    }));
+  };
+
+  const completeExercise = () => {
+    const card = gameState.currentExerciseCard;
+    if (!card) return;
 
     // Check for utility card
     if (card.cardType === 'utility') {
@@ -431,6 +461,8 @@ export default function CardBattle() {
         ...prev,
         playerHand: utilityEffects.playerHand || newPlayerHand,
         playedCards: [...prev.playedCards, card],
+        showExerciseDisplay: false,
+        currentExerciseCard: null,
         ...utilityEffects
       }));
       return;
@@ -521,6 +553,8 @@ export default function CardBattle() {
       exerciseHistory: newExerciseHistory,
       utilityEffectsActive: newUtilityEffects,
       playedCards: [...prev.playedCards, card],
+      showExerciseDisplay: false,
+      currentExerciseCard: null,
       ...specialEffects
     }));
 
@@ -639,7 +673,12 @@ export default function CardBattle() {
       aiComboStreak: 0,
       specialEffectsActive: [],
       turnTimer: 10,
-      maxTurnTime: 10
+      maxTurnTime: 10,
+      exerciseHistory: [],
+      utilityEffectsActive: [],
+      playedCards: [],
+      showExerciseDisplay: false,
+      currentExerciseCard: null
     });
     initializeGame();
   };
@@ -944,6 +983,15 @@ export default function CardBattle() {
             </CardContent>
           </Card>
         )}
+
+        {/* Exercise Card Display Modal */}
+        <ExerciseCardDisplay
+          card={gameState.currentExerciseCard}
+          isOpen={gameState.showExerciseDisplay}
+          onClose={() => setGameState(prev => ({ ...prev, showExerciseDisplay: false, currentExerciseCard: null }))}
+          onComplete={completeExercise}
+          userDifficulty={(user as any)?.currentDifficulty || 5}
+        />
       </div>
     </div>
   );
