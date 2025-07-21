@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { 
   Clock, 
   Repeat, 
@@ -89,6 +90,65 @@ export default function ExerciseCardDisplay({
   onComplete,
   userDifficulty = 5 
 }: ExerciseCardDisplayProps) {
+  const [exercisePhase, setExercisePhase] = useState<'waiting' | 'countdown' | 'active' | 'completed'>('waiting');
+  const [countdown, setCountdown] = useState(3);
+  const [timer, setTimer] = useState(0);
+  const [maxTime, setMaxTime] = useState(0);
+
+  // Reset states when card changes or dialog opens
+  useEffect(() => {
+    if (isOpen && card) {
+      setExercisePhase('waiting');
+      setCountdown(3);
+      setTimer(0);
+      const params = calculateExerciseParams(card.exercise, userDifficulty);
+      if (params.duration) {
+        setMaxTime(params.duration);
+      }
+    }
+  }, [isOpen, card, userDifficulty]);
+
+  // Countdown effect
+  useEffect(() => {
+    if (exercisePhase === 'countdown' && countdown > 0) {
+      const countdownTimer = setTimeout(() => {
+        if (countdown === 1) {
+          setExercisePhase('active');
+        } else {
+          setCountdown(countdown - 1);
+        }
+      }, 1000);
+      return () => clearTimeout(countdownTimer);
+    }
+  }, [exercisePhase, countdown]);
+
+  // Timer effect for duration-based exercises
+  useEffect(() => {
+    if (exercisePhase === 'active' && maxTime > 0) {
+      if (timer >= maxTime) {
+        setExercisePhase('completed');
+        return;
+      }
+      
+      const activeTimer = setTimeout(() => {
+        setTimer(timer + 1);
+      }, 1000);
+      return () => clearTimeout(activeTimer);
+    }
+  }, [exercisePhase, timer, maxTime]);
+
+  const beginExercise = () => {
+    setExercisePhase('countdown');
+    setCountdown(3);
+  };
+
+  const completeExercise = () => {
+    setExercisePhase('completed');
+    if (onComplete) {
+      onComplete();
+    }
+  };
+
   if (!card) return null;
 
   const TypeIcon = typeIcons[card.type];
@@ -198,24 +258,110 @@ export default function ExerciseCardDisplay({
             </CardContent>
           </Card>
 
+          {/* Countdown Display */}
+          {exercisePhase === 'countdown' && (
+            <motion.div 
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-center py-8"
+            >
+              <div className="text-6xl font-bold text-teal-600 mb-4">
+                {countdown > 0 ? countdown : 'GO!'}
+              </div>
+              <p className="text-lg text-gray-600">Get ready...</p>
+            </motion.div>
+          )}
+
+          {/* Timer Display for Duration-Based Exercises */}
+          {exercisePhase === 'active' && exerciseParams.duration && (
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-center py-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg"
+            >
+              <div className="text-4xl font-bold text-green-600 mb-2">
+                {timer}s / {exerciseParams.duration}s
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3 mb-4 mx-auto max-w-xs">
+                <div 
+                  className="bg-green-600 h-3 rounded-full transition-all duration-1000"
+                  style={{ width: `${(timer / exerciseParams.duration) * 100}%` }}
+                />
+              </div>
+              <p className="text-lg text-gray-600">Keep going!</p>
+            </motion.div>
+          )}
+
+          {/* Active Rep-Based Exercise Display */}
+          {exercisePhase === 'active' && exerciseParams.reps && (
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-center py-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg"
+            >
+              <div className="text-3xl font-bold text-blue-600 mb-4">
+                Complete {exerciseParams.reps} reps
+              </div>
+              <p className="text-lg text-gray-600">Take your time and maintain good form!</p>
+            </motion.div>
+          )}
+
+          {/* Completed State */}
+          {exercisePhase === 'completed' && (
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-center py-6 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg"
+            >
+              <div className="text-3xl font-bold text-green-600 mb-4">
+                🎉 Exercise Complete!
+              </div>
+              <p className="text-lg text-gray-600">Great job! You earned your points.</p>
+            </motion.div>
+          )}
+
           {/* Action Buttons */}
           <div className="flex gap-2">
-            {!isUtility && onComplete && (
+            {/* Begin Exercise Button */}
+            {exercisePhase === 'waiting' && !isUtility && (
               <Button 
-                onClick={onComplete} 
+                onClick={beginExercise} 
                 className="flex-1 bg-teal-600 hover:bg-teal-700"
               >
                 <Clock className="w-4 h-4 mr-2" />
-                Complete Exercise
+                Begin Exercise
+              </Button>
+            )}
+
+            {/* Complete Exercise Button for Rep-Based or After Timer */}
+            {((exercisePhase === 'active' && exerciseParams.reps) || exercisePhase === 'completed') && (
+              <Button 
+                onClick={completeExercise} 
+                className="flex-1 bg-green-600 hover:bg-green-700"
+                disabled={exercisePhase === 'completed'}
+              >
+                <Clock className="w-4 h-4 mr-2" />
+                {exercisePhase === 'completed' ? 'Exercise Complete' : 'Complete Exercise'}
+              </Button>
+            )}
+
+            {/* Utility Card Button */}
+            {isUtility && (
+              <Button 
+                onClick={onComplete} 
+                className="flex-1 bg-blue-600 hover:bg-blue-700"
+              >
+                Activate Effect
               </Button>
             )}
             
+            {/* Close Button */}
             <Button 
-              variant={isUtility ? "default" : "outline"} 
+              variant="outline" 
               onClick={onClose}
-              className={isUtility ? "flex-1" : ""}
+              className={isUtility || exercisePhase === 'waiting' ? "" : "flex-1"}
             >
-              {isUtility ? "Continue Game" : "Close"}
+              {isUtility ? "Cancel" : exercisePhase === 'completed' ? "Continue Game" : "Close"}
             </Button>
           </div>
         </motion.div>
