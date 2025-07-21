@@ -53,7 +53,7 @@ interface GameState {
 }
 
 export default function CardBattle() {
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const deckId = params.id ? parseInt(params.id) : null;
   const [, setLocation] = useLocation();
   const { toast } = useToast();
@@ -77,8 +77,8 @@ export default function CardBattle() {
     playerComboStreak: 0,
     aiComboStreak: 0,
     specialEffectsActive: [],
-    turnTimer: 30,
-    maxTurnTime: 30
+    turnTimer: 10, // Only for AI turns
+    maxTurnTime: 10 // 10 seconds for AI
   });
 
   // Fetch deck with exercises
@@ -103,26 +103,17 @@ export default function CardBattle() {
     }
   }, [exercises, deck]);
 
-  // Turn Timer Effect
+  // AI Timer Effect (10 seconds for AI turns only)
   useEffect(() => {
     let interval: NodeJS.Timeout;
     
-    if (gameState.gamePhase === 'playing' && gameState.currentTurn === 'player' && gameState.turnTimer > 0) {
+    if (gameState.gamePhase === 'ai-turn' && gameState.turnTimer > 0) {
       interval = setInterval(() => {
         setGameState(prev => {
           if (prev.turnTimer <= 1) {
-            // Time's up! Auto-play lowest card or skip
-            if (prev.playerHand.length > 0) {
-              const autoCard = prev.playerHand.reduce((lowest, current) => 
-                current.points < lowest.points ? current : lowest
-              );
-              toast({
-                title: "⏰ Time's Up!",
-                description: `Auto-played ${autoCard.exercise.name}`
-              });
-              setTimeout(() => playCard(autoCard), 100);
-            }
-            return { ...prev, turnTimer: prev.maxTurnTime };
+            // AI turn timer expired, force AI to play
+            setTimeout(() => playAICard(), 100);
+            return { ...prev, turnTimer: 10 }; // Reset to 10 seconds for AI
           }
           return { ...prev, turnTimer: prev.turnTimer - 1 };
         });
@@ -130,7 +121,7 @@ export default function CardBattle() {
     }
     
     return () => clearInterval(interval);
-  }, [gameState.gamePhase, gameState.currentTurn, gameState.turnTimer, gameState.playerHand]);
+  }, [gameState.gamePhase, gameState.turnTimer]);
 
   const initializeGame = () => {
     // Create enhanced game cards with strategic mechanics
@@ -378,7 +369,7 @@ export default function CardBattle() {
     
     // Trigger AI emotion based on player's strategic move
     const aiEmotion = getEmotionForEvent(
-      isCombo ? 'player_combo' : 'player_good_exercise', 
+      'player_good_exercise', // Use standard event type
       specialEffects.aiScore || gameState.aiScore, 
       baseNewScore
     );
@@ -394,7 +385,7 @@ export default function CardBattle() {
       selectedCard: null,
       aiEmotion,
       comboMultiplier: 1, // Reset multiplier after use
-      turnTimer: gameState.maxTurnTime, // Reset timer for AI
+      turnTimer: 10, // Reset to 10 seconds for AI
       ...specialEffects
     }));
 
@@ -457,11 +448,7 @@ export default function CardBattle() {
       : gameState.aiScore + aiFinalPoints;
     
     // Trigger AI emotion after playing with strategy context
-    let emotionContext = 'ai_good_exercise';
-    if (isAICombo) emotionContext = 'ai_combo';
-    if (selectedCard.special) emotionContext = 'ai_special_card';
-    
-    const aiEmotion = getEmotionForEvent(emotionContext, baseNewAIScore, gameState.playerScore);
+    const aiEmotion = getEmotionForEvent('ai_good_exercise', baseNewAIScore, gameState.playerScore);
 
     setGameState(prev => ({
       ...prev,
@@ -472,7 +459,7 @@ export default function CardBattle() {
       currentTurn: 'player',
       gamePhase: (prev.deckCards.length > 0 && (prev.playerHand.length > 0 || newAIHand.length > 0)) ? 'drawing' : 'game-over',
       aiEmotion,
-      turnTimer: gameState.maxTurnTime, // Reset timer for player
+      turnTimer: 10, // Keep at 10 seconds for next AI turn
       ...aiSpecialEffects
     }));
 
@@ -516,8 +503,8 @@ export default function CardBattle() {
       playerComboStreak: 0,
       aiComboStreak: 0,
       specialEffectsActive: [],
-      turnTimer: 30,
-      maxTurnTime: 30
+      turnTimer: 10,
+      maxTurnTime: 10
     });
     initializeGame();
   };
@@ -569,30 +556,30 @@ export default function CardBattle() {
           />
         </div>
 
-        {/* Game Phase Indicator with Timer */}
+        {/* Game Phase Indicator with AI Timer */}
         <div className="text-center mb-6">
           <div className="flex justify-center items-center space-x-4">
             <Badge variant="outline" className="px-4 py-2">
               {gameState.gamePhase === 'drawing' && 'Draw Phase - Click the deck to draw cards'}
-              {gameState.gamePhase === 'playing' && `Your Turn - ${gameState.turnTimer}s remaining`}
-              {gameState.gamePhase === 'ai-turn' && 'AI is thinking...'}
+              {gameState.gamePhase === 'playing' && 'Your Turn - Select and play a card when ready'}
+              {gameState.gamePhase === 'ai-turn' && `AI is thinking... ${gameState.turnTimer}s`}
               {gameState.gamePhase === 'combo-phase' && 'Combo Effect!'}
               {gameState.gamePhase === 'game-over' && 'Game Over!'}
             </Badge>
             
-            {/* Turn Timer Visual */}
-            {gameState.gamePhase === 'playing' && gameState.currentTurn === 'player' && (
-              <div className="w-16 h-16 relative">
-                <div className="absolute inset-0 rounded-full border-4 border-gray-200">
+            {/* AI Timer Visual */}
+            {gameState.gamePhase === 'ai-turn' && (
+              <div className="w-12 h-12 relative">
+                <div className="absolute inset-0 rounded-full border-3 border-gray-200">
                   <div 
-                    className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"
+                    className="absolute inset-0 rounded-full border-3 border-red-500 border-t-transparent animate-spin"
                     style={{
                       animationDuration: `${gameState.turnTimer}s`,
                       animationTimingFunction: 'linear'
                     }}
                   />
                 </div>
-                <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-blue-600">
+                <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-red-600">
                   {gameState.turnTimer}
                 </div>
               </div>
@@ -733,7 +720,7 @@ export default function CardBattle() {
           {gameState.gamePhase === 'playing' && gameState.playerHand.length > 0 && (
             <div className="mt-4 text-center">
               <div className="text-xs text-slate-500">
-                💡 Strategy Tips: Look for combo matches and special abilities!
+                💡 Take your time! Look for combo matches and special abilities for maximum points
               </div>
               {gameState.comboMultiplier > 1 && (
                 <Badge variant="outline" className="mt-1 bg-yellow-50">
