@@ -258,10 +258,12 @@ export default function CardBattle() {
       description: base.description,
       category: base.category,
       difficulty: 2,
-      defaultReps: null,
-      defaultDuration: null,
+      defaultReps: 0,
+      defaultDuration: 0,
       instructions: base.description,
       icon: base.icon,
+      cardType: "power",
+      utilityEffect: base.name.toLowerCase().replace(" ", "_"),
       createdAt: new Date()
     };
   };

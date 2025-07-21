@@ -100,6 +100,106 @@ const defaultExercises: InsertExercise[] = [
     icon: "fas fa-minus",
   },
   
+  // WARM-UP CARDS
+  {
+    name: "Joint Warm-Up",
+    description: "Prepare your joints for exercise",
+    category: "warmup",
+    difficulty: 0.3,
+    defaultReps: null,
+    defaultDuration: 30,
+    instructions: "Gentle joint rotations and movements to prepare for exercise.",
+    icon: "fas fa-sync-alt",
+    cardType: "warmup",
+    utilityEffect: "warm_up_preparation"
+  },
+  {
+    name: "Dynamic Stretching", 
+    description: "Active movement preparation",
+    category: "warmup",
+    difficulty: 0.4,
+    defaultReps: 8,
+    defaultDuration: null,
+    instructions: "Dynamic movements to activate muscles and increase range of motion.",
+    icon: "fas fa-arrows-alt",
+    cardType: "warmup",
+    utilityEffect: "movement_preparation"
+  },
+  {
+    name: "Heart Rate Prep",
+    description: "Light cardio activation",
+    category: "warmup",
+    difficulty: 0.5,
+    defaultReps: null,
+    defaultDuration: 20,
+    instructions: "Gentle movements to gradually increase heart rate.",
+    icon: "fas fa-heartbeat",
+    cardType: "warmup",
+    utilityEffect: "cardio_activation"
+  },
+  
+  // UTILITY CARDS
+  {
+    name: "Fresh Hand",
+    description: "Redraw your entire hand",
+    category: "utility",
+    difficulty: 0,
+    defaultReps: null,
+    defaultDuration: null,
+    instructions: "Discard current hand and draw new cards.",
+    icon: "fas fa-sync",
+    cardType: "utility",
+    utilityEffect: "redraw_hand"
+  },
+  {
+    name: "Deck Shuffle",
+    description: "Shuffle played cards back into deck",
+    category: "utility", 
+    difficulty: 0,
+    defaultReps: null,
+    defaultDuration: null,
+    instructions: "Shuffle all played cards back into the deck.",
+    icon: "fas fa-random",
+    cardType: "utility",
+    utilityEffect: "shuffle_deck"
+  },
+  {
+    name: "Quick Draw",
+    description: "Draw 2 extra cards immediately",
+    category: "utility",
+    difficulty: 0,
+    defaultReps: null,
+    defaultDuration: null,
+    instructions: "Add 2 bonus cards to your hand.",
+    icon: "fas fa-plus-circle",
+    cardType: "utility", 
+    utilityEffect: "draw_cards"
+  },
+  {
+    name: "Energy Boost",
+    description: "Double points for next exercise",
+    category: "utility",
+    difficulty: 0,
+    defaultReps: null,
+    defaultDuration: null,
+    instructions: "Next exercise you play earns double points.",
+    icon: "fas fa-bolt",
+    cardType: "utility",
+    utilityEffect: "double_next_points"
+  },
+  {
+    name: "Strategic Skip",
+    description: "Skip turn but draw a card",
+    category: "utility",
+    difficulty: 0,
+    defaultReps: null,
+    defaultDuration: null,
+    instructions: "Pass your turn but gain card advantage.",
+    icon: "fas fa-forward",
+    cardType: "utility",
+    utilityEffect: "skip_and_draw"
+  },
+
   // FLEXIBILITY EXERCISES
   {
     name: "Arm Circles",
