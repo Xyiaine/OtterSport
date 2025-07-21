@@ -716,17 +716,30 @@ export default function CardBattle() {
             })}
           </div>
           
-          {/* Hand Strategy Hints */}
+          {/* Enhanced Hand Strategy Hints */}
           {gameState.gamePhase === 'playing' && gameState.playerHand.length > 0 && (
-            <div className="mt-4 text-center">
-              <div className="text-xs text-slate-500">
-                💡 Take your time! Look for combo matches and special abilities for maximum points
+            <div className="mt-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+              <div className="text-center space-y-2">
+                <div className="text-sm text-blue-700 font-medium flex items-center justify-center space-x-2">
+                  <span>💡</span>
+                  <span>Strategic Tips</span>
+                </div>
+                <div className="text-xs text-blue-600">
+                  Take your time to analyze your cards! Look for combo matches and special abilities for maximum points.
+                </div>
+                <div className="flex justify-center space-x-2 mt-2">
+                  {gameState.comboMultiplier > 1 && (
+                    <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
+                      ⚡ {gameState.comboMultiplier}x Multiplier Active
+                    </Badge>
+                  )}
+                  {gameState.playerHand.some(card => card.special) && (
+                    <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-300">
+                      ✨ Special Cards Available
+                    </Badge>
+                  )}
+                </div>
               </div>
-              {gameState.comboMultiplier > 1 && (
-                <Badge variant="outline" className="mt-1 bg-yellow-50">
-                  ⚡ {gameState.comboMultiplier}x Multiplier Active
-                </Badge>
-              )}
             </div>
           )}
         </div>
