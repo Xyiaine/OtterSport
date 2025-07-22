@@ -172,35 +172,224 @@ const defaultExercises: InsertExercise[] = [
     defaultDuration: null,
     instructions: "Add 2 bonus cards to your hand.",
     icon: "fas fa-plus-circle",
-    cardType: "utility", 
-    utilityEffect: "draw_cards"
+    cardType: "utility",
+    utilityEffect: "draw_extra"
   },
   {
     name: "Energy Boost",
-    description: "Double points for next exercise",
+    description: "Next exercise earns double points",
     category: "utility",
     difficulty: 0,
     defaultReps: null,
     defaultDuration: null,
-    instructions: "Next exercise you play earns double points.",
+    instructions: "Strategic point multiplier for big scores.",
     icon: "fas fa-bolt",
     cardType: "utility",
-    utilityEffect: "double_next_points"
+    utilityEffect: "double_next"
   },
   {
     name: "Strategic Skip",
-    description: "Skip turn but draw a card",
+    description: "Skip turn but draw an extra card",
     category: "utility",
     difficulty: 0,
     defaultReps: null,
     defaultDuration: null,
-    instructions: "Pass your turn but gain card advantage.",
+    instructions: "Sacrifice tempo for card advantage.",
     icon: "fas fa-forward",
     cardType: "utility",
-    utilityEffect: "skip_and_draw"
+    utilityEffect: "skip_draw"
   },
 
-  // FLEXIBILITY EXERCISES
+  // ADDITIONAL WARMUP CARDS (more variety)
+  {
+    name: "Joint Mobility",
+    description: "Gentle joint rotations to prepare the body",
+    category: "warmup",
+    difficulty: 0.5,
+    defaultReps: null,
+    defaultDuration: 60,
+    instructions: "Rotate shoulders, hips, ankles, and wrists slowly in both directions",
+    icon: "fas fa-sync-alt",
+    cardType: "warmup"
+  },
+  {
+    name: "Dynamic Stretching",
+    description: "Active movements to increase blood flow",
+    category: "warmup", 
+    difficulty: 0.6,
+    defaultReps: 8,
+    defaultDuration: null,
+    instructions: "Leg swings, arm circles, torso twists - keep moving!",
+    icon: "fas fa-expand-arrows-alt",
+    cardType: "warmup"
+  },
+  {
+    name: "Heart Rate Activation", 
+    description: "Light cardio to activate cardiovascular system",
+    category: "warmup",
+    difficulty: 0.7,
+    defaultReps: null,
+    defaultDuration: 45,
+    instructions: "Marching in place, light movements to get blood flowing",
+    icon: "fas fa-heartbeat",
+    cardType: "warmup"
+  },
+  {
+    name: "Mind-Body Connection",
+    description: "Focus and breathing preparation",
+    category: "warmup",
+    difficulty: 0.4,
+    defaultReps: null,
+    defaultDuration: 30,
+    instructions: "Deep breathing while visualizing your workout",
+    icon: "fas fa-brain",
+    cardType: "warmup"
+  },
+  {
+    name: "Movement Prep",
+    description: "Practice basic movement patterns",
+    category: "warmup",
+    difficulty: 0.5,
+    defaultReps: 5,
+    defaultDuration: null,
+    instructions: "Air squats, arm swings, gentle movements to prepare",
+    icon: "fas fa-walking",
+    cardType: "warmup"
+  },
+
+  // FLEXIBILITY & RECOVERY EXERCISES  
+  {
+    name: "Cat-Cow Stretch",
+    description: "Spinal mobility and flexibility",
+    category: "flexibility",
+    difficulty: 0.3,
+    defaultReps: 10,
+    defaultDuration: null,
+    instructions: "On hands and knees, arch and round your spine slowly",
+    icon: "fas fa-cat"
+  },
+  {
+    name: "Child's Pose",
+    description: "Relaxing stretch for back and hips", 
+    category: "flexibility",
+    difficulty: 0.2,
+    defaultReps: null,
+    defaultDuration: 30,
+    instructions: "Kneel and sit back on heels, reach arms forward on ground",
+    icon: "fas fa-praying-hands"
+  },
+  {
+    name: "Pigeon Pose",
+    description: "Deep hip opener stretch",
+    category: "flexibility",
+    difficulty: 0.8,
+    defaultReps: null,
+    defaultDuration: 45,
+    instructions: "Deep hip stretch - hold gently and breathe",
+    icon: "fas fa-dove"
+  },
+
+  // CORE-FOCUSED EXERCISES
+  {
+    name: "Plank Hold",
+    description: "Core stability exercise",
+    category: "strength",
+    difficulty: 0.9,
+    defaultReps: null,
+    defaultDuration: 45,
+    instructions: "Hold plank position, keep core tight and body straight",
+    icon: "fas fa-grip-horizontal"
+  },
+  {
+    name: "Russian Twists",
+    description: "Rotational core strength",
+    category: "strength", 
+    difficulty: 1.0,
+    defaultReps: 20,
+    defaultDuration: null,
+    instructions: "Sit with knees bent, lean back slightly, rotate torso side to side",
+    icon: "fas fa-sync"
+  },
+  {
+    name: "Dead Bug",
+    description: "Core stability and coordination",
+    category: "strength",
+    difficulty: 0.7,
+    defaultReps: 10,
+    defaultDuration: null,
+    instructions: "Lie on back, extend opposite arm and leg, return to start",
+    icon: "fas fa-bug"
+  },
+
+  // ENDURANCE & CONDITIONING
+  {
+    name: "Wall Sit",
+    description: "Leg endurance exercise",
+    category: "endurance",
+    difficulty: 1.1,
+    defaultReps: null,
+    defaultDuration: 45,
+    instructions: "Sit against wall with thighs parallel to floor",
+    icon: "fas fa-chair"
+  },
+  {
+    name: "Bear Crawl",
+    description: "Full-body conditioning movement",
+    category: "endurance",
+    difficulty: 1.4,
+    defaultReps: 10,
+    defaultDuration: null,
+    instructions: "Crawl forward on hands and feet, keep knees low",
+    icon: "fas fa-paw"
+  },
+
+  // POWER CARDS (high-value strategic cards)
+  {
+    name: "Explosive Power",
+    description: "Maximum intensity power move",
+    category: "power",
+    difficulty: 2.0,
+    defaultReps: 3,
+    defaultDuration: null,
+    instructions: "Maximum effort explosive movement - give it everything!",
+    icon: "fas fa-rocket",
+    cardType: "power"
+  },
+  {
+    name: "Strength Surge",
+    description: "Heavy strength focus",
+    category: "power",
+    difficulty: 1.8,
+    defaultReps: 5,
+    defaultDuration: null,
+    instructions: "Focus on perfect form with challenging resistance",
+    icon: "fas fa-dumbbell",
+    cardType: "power"
+  },
+  {
+    name: "Endurance Challenge",
+    description: "Extended endurance test",
+    category: "power", 
+    difficulty: 1.6,
+    defaultReps: null,
+    defaultDuration: 90,
+    instructions: "Push your endurance limits with sustained effort",
+    icon: "fas fa-stopwatch",
+    cardType: "power"
+  },
+  {
+    name: "Flow State",
+    description: "Perfect movement sequence",
+    category: "power",
+    difficulty: 1.5,
+    defaultReps: 8,
+    defaultDuration: null,
+    instructions: "Chain movements together in perfect flow",
+    icon: "fas fa-water",
+    cardType: "power"
+  },
+
+  // ADDITIONAL FLEXIBILITY EXERCISES
   {
     name: "Arm Circles",
     description: "Shoulder mobility and warm-up",
@@ -209,7 +398,7 @@ const defaultExercises: InsertExercise[] = [
     defaultReps: 10,
     defaultDuration: null,
     instructions: "Extend arms to sides, make small circles forward for 10 reps, then backward for 10 reps.",
-    icon: "fas fa-sync-alt",
+    icon: "fas fa-sync-alt"
   },
   {
     name: "Leg Swings",
@@ -219,7 +408,7 @@ const defaultExercises: InsertExercise[] = [
     defaultReps: 10,
     defaultDuration: null,
     instructions: "Hold onto support, swing one leg forward and back, then side to side. Switch legs.",
-    icon: "fas fa-sync-alt",
+    icon: "fas fa-sync-alt"
   },
   {
     name: "Shoulder Stretch",
@@ -229,139 +418,15 @@ const defaultExercises: InsertExercise[] = [
     defaultReps: null,
     defaultDuration: 20,
     instructions: "Pull one arm across your chest, hold with opposite hand. Hold for 20 seconds, then switch arms.",
-    icon: "fas fa-hand-paper",
-  },
-  
-  // CORE EXERCISES
-  {
-    name: "Crunches",
-    description: "Abdominal strengthening",
-    category: "strength",
-    difficulty: 0.8,
-    defaultReps: 15,
-    defaultDuration: null,
-    instructions: "Lie on back, knees bent, lift shoulders off ground by contracting abs. Don't pull on neck.",
-    icon: "fas fa-expand-alt",
-  },
-  {
-    name: "Bicycle Crunches",
-    description: "Core exercise targeting obliques",
-    category: "strength",
-    difficulty: 1.0,
-    defaultReps: 20,
-    defaultDuration: null,
-    instructions: "Lie on back, alternate bringing opposite elbow to knee in cycling motion. Keep lower back pressed down.",
-    icon: "fas fa-bicycle",
-  },
-  
-  // WARM-UP CARDS - Prepares for main exercises
-  {
-    name: "Joint Warm-Up",
-    description: "Gentle joint mobility to prepare for cardio",
-    category: "warmup",
-    difficulty: 0.3,
-    defaultReps: 5,
-    defaultDuration: 15,
-    instructions: "Gentle neck rolls, shoulder shrugs, and ankle circles to warm up joints.",
-    icon: "fas fa-thermometer-half",
-    cardType: "warmup",
-  },
-  {
-    name: "Dynamic Stretching",
-    description: "Active stretches to prepare muscles for strength training",
-    category: "warmup", 
-    difficulty: 0.4,
-    defaultReps: 8,
-    defaultDuration: 20,
-    instructions: "Arm swings, leg swings, and torso twists to activate muscles dynamically.",
-    icon: "fas fa-expand-arrows-alt",
-    cardType: "warmup",
-  },
-  {
-    name: "Heart Rate Prep",
-    description: "Light cardio to elevate heart rate before intense exercises",
-    category: "warmup",
-    difficulty: 0.5,
-    defaultReps: 10,
-    defaultDuration: 30,
-    instructions: "Marching in place, gentle bouncing, and light movements to raise heart rate.",
-    icon: "fas fa-heartbeat",
-    cardType: "warmup",
-  },
-  {
-    name: "Flexibility Prep",
-    description: "Gentle stretches to prepare for flexibility training",
-    category: "warmup",
-    difficulty: 0.3,
-    defaultReps: null,
-    defaultDuration: 20,
-    instructions: "Easy shoulder rolls, neck stretches, and gentle spinal movements.",
-    icon: "fas fa-leaf",
-    cardType: "warmup",
-  },
-
-  // UTILITY CARDS - Special gameplay mechanics
-  {
-    name: "Fresh Hand",
-    description: "Draw a completely new hand of cards",
-    category: "utility",
-    difficulty: 0,
-    defaultReps: null,
-    defaultDuration: null,
-    instructions: "Discard your current hand and draw 3 new cards from the deck.",
-    icon: "fas fa-sync",
-    cardType: "utility",
-    utilityEffect: "redraw_hand",
-  },
-  {
-    name: "Deck Shuffle",
-    description: "Shuffle remaining deck and current cards back in",
-    category: "utility",
-    difficulty: 0,
-    defaultReps: null,
-    defaultDuration: null,
-    instructions: "Mix all played cards back into the deck and reshuffle everything.",
-    icon: "fas fa-random",
-    cardType: "utility", 
-    utilityEffect: "shuffle_deck",
-  },
-  {
-    name: "Quick Draw",
-    description: "Draw 2 extra cards this turn",
-    category: "utility",
-    difficulty: 0,
-    defaultReps: null,
-    defaultDuration: null,
-    instructions: "Add 2 bonus cards to your hand for strategic advantage.",
-    icon: "fas fa-plus-square",
-    cardType: "utility",
-    utilityEffect: "draw_extra",
-  },
-  {
-    name: "Energy Boost",
-    description: "Next exercise card played earns double points",
-    category: "utility", 
-    difficulty: 0,
-    defaultReps: null,
-    defaultDuration: null,
-    instructions: "Activate energy boost - your next exercise will be worth 2x points.",
-    icon: "fas fa-battery-full",
-    cardType: "utility",
-    utilityEffect: "double_next",
-  },
-  {
-    name: "Strategic Skip",
-    description: "Skip your turn but draw an extra card",
-    category: "utility",
-    difficulty: 0,
-    defaultReps: null,
-    defaultDuration: null,
-    instructions: "Pass this turn to AI but gain a card advantage for next round.",
-    icon: "fas fa-fast-forward",
-    cardType: "utility",
-    utilityEffect: "skip_draw",
-  },
+    icon: "fas fa-hand-paper"
+  }
 ];
+
+/**
+ * WORKOUT DECK CONFIGURATIONS
+ * 
+ * Pre-built workout decks for different fitness levels and goals.
+ */
 
 /**
  * WORKOUT DECK CONFIGURATIONS

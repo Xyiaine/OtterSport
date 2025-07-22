@@ -297,6 +297,136 @@ export class MemoryStorage implements IStorage {
         utilityEffect: null,
         createdAt: new Date() 
       },
+
+      // UTILITY CARDS - Strategic gameplay mechanics
+      { 
+        id: 12, 
+        name: "Fresh Hand", 
+        description: "Discard your hand and draw 3 new cards", 
+        category: "utility", 
+        difficulty: 0, 
+        defaultReps: null, 
+        defaultDuration: null, 
+        instructions: "Strategic card refresh for better options", 
+        icon: "fas fa-sync", 
+        cardType: "utility",
+        utilityEffect: "redraw_hand",
+        createdAt: new Date() 
+      },
+      { 
+        id: 13, 
+        name: "Deck Shuffle", 
+        description: "Shuffle all played cards back into the deck", 
+        category: "utility", 
+        difficulty: 0, 
+        defaultReps: null, 
+        defaultDuration: null, 
+        instructions: "Reset the deck for extended gameplay", 
+        icon: "fas fa-random", 
+        cardType: "utility",
+        utilityEffect: "shuffle_deck",
+        createdAt: new Date() 
+      },
+      { 
+        id: 14, 
+        name: "Quick Draw", 
+        description: "Draw 2 extra cards immediately", 
+        category: "utility", 
+        difficulty: 0, 
+        defaultReps: null, 
+        defaultDuration: null, 
+        instructions: "Expand your hand for better options", 
+        icon: "fas fa-plus-circle", 
+        cardType: "utility",
+        utilityEffect: "draw_extra",
+        createdAt: new Date() 
+      },
+      { 
+        id: 15, 
+        name: "Energy Boost", 
+        description: "Next exercise earns double points", 
+        category: "utility", 
+        difficulty: 0, 
+        defaultReps: null, 
+        defaultDuration: null, 
+        instructions: "Strategic point multiplier for big scores", 
+        icon: "fas fa-bolt", 
+        cardType: "utility",
+        utilityEffect: "double_next",
+        createdAt: new Date() 
+      },
+      { 
+        id: 16, 
+        name: "Strategic Skip", 
+        description: "Skip turn but draw an extra card", 
+        category: "utility", 
+        difficulty: 0, 
+        defaultReps: null, 
+        defaultDuration: null, 
+        instructions: "Sacrifice tempo for card advantage", 
+        icon: "fas fa-forward", 
+        cardType: "utility",
+        utilityEffect: "skip_draw",
+        createdAt: new Date() 
+      },
+
+      // POWER CARDS - High-value strategic cards
+      { 
+        id: 17, 
+        name: "Explosive Power", 
+        description: "Maximum intensity power move", 
+        category: "power", 
+        difficulty: 2.0, 
+        defaultReps: 3, 
+        defaultDuration: null, 
+        instructions: "Maximum effort explosive movement - give it everything!", 
+        icon: "fas fa-rocket", 
+        cardType: "power",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 18, 
+        name: "Strength Surge", 
+        description: "Heavy strength focus", 
+        category: "power", 
+        difficulty: 1.8, 
+        defaultReps: 5, 
+        defaultDuration: null, 
+        instructions: "Focus on perfect form with challenging resistance", 
+        icon: "fas fa-dumbbell", 
+        cardType: "power",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 19, 
+        name: "Endurance Challenge", 
+        description: "Extended endurance test", 
+        category: "power", 
+        difficulty: 1.6, 
+        defaultReps: null, 
+        defaultDuration: 90, 
+        instructions: "Push your endurance limits with sustained effort", 
+        icon: "fas fa-stopwatch", 
+        cardType: "power",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 20, 
+        name: "Flow State", 
+        description: "Perfect movement sequence", 
+        category: "power", 
+        difficulty: 1.5, 
+        defaultReps: 8, 
+        defaultDuration: null, 
+        instructions: "Chain movements together in perfect flow", 
+        icon: "fas fa-water", 
+        cardType: "power",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
     ];
 
     defaultExercises.forEach(exercise => {
