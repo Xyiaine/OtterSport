@@ -34,6 +34,15 @@ interface GameCard {
   utilityEffect?: string; // For utility cards
 }
 
+// Warmup scoring state interface
+interface WarmupScoringState {
+  warmupCardsPlayed: string[];
+  totalCardsPlayed: number;
+  gamePhase: 'early' | 'mid' | 'late';
+  comboMultiplier: number;
+  warmupComboActive: boolean;
+}
+
 interface GameState {
   playerScore: number;
   aiScore: number;
@@ -58,6 +67,9 @@ interface GameState {
   playedCards: GameCard[]; // Track all played cards for shuffle mechanics
   showExerciseDisplay: boolean; // Show large exercise card
   currentExerciseCard: GameCard | null; // Card being displayed
+  // Enhanced warmup scoring states
+  playerScoringState: WarmupScoringState;
+  aiScoringState: WarmupScoringState;
 }
 
 export default function CardBattle() {
@@ -66,6 +78,15 @@ export default function CardBattle() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { user } = useAuth();
+
+  // Initialize warmup scoring states
+  const createInitialScoringState = (): WarmupScoringState => ({
+    warmupCardsPlayed: [],
+    totalCardsPlayed: 0,
+    gamePhase: 'early',
+    comboMultiplier: 1.0,
+    warmupComboActive: false
+  });
 
   // Game state
   const [gameState, setGameState] = useState<GameState>({
@@ -91,7 +112,9 @@ export default function CardBattle() {
     utilityEffectsActive: [],
     playedCards: [],
     showExerciseDisplay: false,
-    currentExerciseCard: null
+    currentExerciseCard: null,
+    playerScoringState: createInitialScoringState(),
+    aiScoringState: createInitialScoringState()
   });
 
   // Fetch deck with exercises
@@ -444,7 +467,7 @@ export default function CardBattle() {
     }));
   };
 
-  const completeExercise = () => {
+  const completeExercise = async () => {
     const card = gameState.currentExerciseCard;
     if (!card) return;
 
@@ -473,41 +496,68 @@ export default function CardBattle() {
     // Remove card from player hand
     const newPlayerHand = gameState.playerHand.filter(c => c.id !== card.id);
     
-    // Apply point scaling for repeated exercises
-    const scaledPoints = calculateScaledPoints(card, gameState.exerciseHistory);
-    const pointReduction = card.points - scaledPoints;
-    
-    // Show point reduction warning if applicable
-    if (pointReduction > 0) {
-      toast({
-        title: `⚠️ Repeated Exercise Penalty`,
-        description: `${card.exercise.name}: ${card.points} → ${scaledPoints} points (-${pointReduction} for repetition)`
+    try {
+      // Calculate points using new warmup scoring system
+      const scoringResponse = await apiRequest('/api/card-battle/score', {
+        method: 'POST',
+        body: JSON.stringify({
+          cardName: card.exercise.name,
+          cardType: card.exercise.cardType || 'exercise',
+          cardCategory: card.exercise.category,
+          difficulty: card.exercise.difficulty,
+          scoringState: gameState.playerScoringState
+        })
       });
-    }
-    
-    // Calculate combo bonus
-    const comboBonus = checkComboBonus(card, gameState.playerHand);
-    const specialEffects = applySpecialEffect(card, gameState);
-    
-    // Check for double next utility effect
-    const hasDoubleNext = gameState.utilityEffectsActive.includes('double_next');
-    const doubleMultiplier = hasDoubleNext ? 2 : 1;
-    
-    // Calculate final points with all bonuses
-    let finalPoints = Math.round(scaledPoints * comboBonus * gameState.comboMultiplier * doubleMultiplier);
-    
-    // Check for combo streak
-    const isCombo = comboBonus > 1;
-    const newComboStreak = isCombo ? gameState.playerComboStreak + 1 : 0;
-    
-    // Streak bonus for consecutive combos
-    if (newComboStreak >= 2) {
-      finalPoints += newComboStreak; // Extra points for streak
-      toast({
-        title: `🔥 ${newComboStreak}x Combo Streak!`,
-        description: `+${newComboStreak} streak bonus points!`
+
+      if (!scoringResponse.ok) {
+        throw new Error('Failed to calculate score');
+      }
+
+      const scoringResult = await scoringResponse.json();
+      
+      // Show warmup combo bonus notifications
+      if (scoringResult.comboBonus > 0) {
+        toast({
+          title: `🔥 Warmup Combo Bonus! +${scoringResult.comboBonus} pts`,
+          description: `${card.exercise.name} completed a warmup sequence!`
+        });
+      }
+      
+      // Apply special effects and utility bonuses
+      const specialEffects = applySpecialEffect(card, gameState);
+      const hasDoubleNext = gameState.utilityEffectsActive.includes('double_next');
+      const doubleMultiplier = hasDoubleNext ? 2 : 1;
+      
+      // Calculate final points with all bonuses
+      let finalPoints = Math.round(scoringResult.points * doubleMultiplier);
+      
+      // Update player scoring state
+      const stateUpdateResponse = await apiRequest('/api/card-battle/update-state', {
+        method: 'POST',
+        body: JSON.stringify({
+          currentState: gameState.playerScoringState,
+          playedCard: { name: card.exercise.name, cardType: card.exercise.cardType || 'exercise' },
+          deckSize: gameState.deckCards.length + gameState.playerHand.length + gameState.aiHand.length
+        })
       });
-    }
+
+      let newPlayerScoringState = gameState.playerScoringState;
+      if (stateUpdateResponse.ok) {
+        newPlayerScoringState = await stateUpdateResponse.json();
+      }
+
+      // Show game phase notifications
+      if (newPlayerScoringState.gamePhase !== gameState.playerScoringState.gamePhase) {
+        const phaseMessages = {
+          early: "🌅 Early Game - Warmup cards worth maximum points!",
+          mid: "⚡ Mid Game - Exercise cards gain bonus points!",
+          late: "🏁 Late Game - Time for your strongest moves!"
+        };
+        toast({
+          title: `Game Phase: ${newPlayerScoringState.gamePhase.toUpperCase()}`,
+          description: phaseMessages[newPlayerScoringState.gamePhase]
+        });
+      }
     
     // Special effect notifications
     if (card.special) {
@@ -534,31 +584,67 @@ export default function CardBattle() {
       baseNewScore
     );
     
-    // Update exercise history for point scaling (keep last 10 exercises)
-    const newExerciseHistory = [card.exercise.name, ...gameState.exerciseHistory].slice(0, 10);
-    
-    // Remove double_next utility effect after use
-    const newUtilityEffects = gameState.utilityEffectsActive.filter(effect => effect !== 'double_next');
-    
-    setGameState(prev => ({
-      ...prev,
-      playerHand: newPlayerHand,
-      lastPlayedCard: card,
-      playerScore: baseNewScore,
-      playerComboStreak: newComboStreak,
-      currentTurn: 'ai',
-      gamePhase: 'ai-turn',
-      selectedCard: null,
-      aiEmotion,
-      comboMultiplier: 1, // Reset multiplier after use
-      turnTimer: 10, // Reset to 10 seconds for AI
-      exerciseHistory: newExerciseHistory,
-      utilityEffectsActive: newUtilityEffects,
-      playedCards: [...prev.playedCards, card],
-      showExerciseDisplay: false,
-      currentExerciseCard: null,
-      ...specialEffects
-    }));
+      // Update exercise history for point scaling (keep last 10 exercises)
+      const newExerciseHistory = [card.exercise.name, ...gameState.exerciseHistory].slice(0, 10);
+      
+      // Remove double_next utility effect after use
+      const newUtilityEffects = gameState.utilityEffectsActive.filter(effect => effect !== 'double_next');
+      
+      setGameState(prev => ({
+        ...prev,
+        playerHand: newPlayerHand,
+        lastPlayedCard: card,
+        playerScore: baseNewScore,
+        currentTurn: 'ai',
+        gamePhase: 'ai-turn',
+        selectedCard: null,
+        aiEmotion,
+        comboMultiplier: 1, // Reset multiplier after use
+        turnTimer: 10, // Reset to 10 seconds for AI
+        exerciseHistory: newExerciseHistory,
+        utilityEffectsActive: newUtilityEffects,
+        playedCards: [...prev.playedCards, card],
+        showExerciseDisplay: false,
+        currentExerciseCard: null,
+        playerScoringState: newPlayerScoringState,
+        ...specialEffects
+      }));
+
+    } catch (error) {
+      // Fallback to basic scoring if API fails
+      console.error('Warmup scoring API failed, using fallback:', error);
+      const scaledPoints = calculateScaledPoints(card, gameState.exerciseHistory);
+      const comboBonus = checkComboBonus(card, gameState.playerHand);
+      const finalPoints = Math.round(scaledPoints * comboBonus * gameState.comboMultiplier);
+      const specialEffects = applySpecialEffect(card, gameState);
+      
+      const baseNewScore = (specialEffects.playerScore !== undefined) 
+        ? specialEffects.playerScore 
+        : gameState.playerScore + finalPoints;
+        
+      const aiEmotion = getEmotionForEvent('player_good_exercise', specialEffects.aiScore || gameState.aiScore, baseNewScore);
+      const newExerciseHistory = [card.exercise.name, ...gameState.exerciseHistory].slice(0, 10);
+      const newUtilityEffects = gameState.utilityEffectsActive.filter(effect => effect !== 'double_next');
+      
+      setGameState(prev => ({
+        ...prev,
+        playerHand: newPlayerHand,
+        lastPlayedCard: card,
+        playerScore: baseNewScore,
+        currentTurn: 'ai',
+        gamePhase: 'ai-turn',
+        selectedCard: null,
+        aiEmotion,
+        comboMultiplier: 1,
+        turnTimer: 10,
+        exerciseHistory: newExerciseHistory,
+        utilityEffectsActive: newUtilityEffects,
+        playedCards: [...prev.playedCards, card],
+        showExerciseDisplay: false,
+        currentExerciseCard: null,
+        ...specialEffects
+      }));
+    }
 
     // AI plays after strategic delay
     setTimeout(() => {
@@ -716,6 +802,35 @@ export default function CardBattle() {
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600">{gameState.aiScore}</div>
               <div className="text-sm text-slate-600">AI Score</div>
+            </div>
+          </div>
+          
+          {/* Game Phase & Warmup Status */}
+          <div className="mt-4 space-y-2">
+            <div className="flex justify-center items-center space-x-4">
+              <Badge variant="outline" className={`
+                ${gameState.playerScoringState.gamePhase === 'early' ? 'bg-green-50 border-green-300 text-green-700' : ''}
+                ${gameState.playerScoringState.gamePhase === 'mid' ? 'bg-blue-50 border-blue-300 text-blue-700' : ''}
+                ${gameState.playerScoringState.gamePhase === 'late' ? 'bg-orange-50 border-orange-300 text-orange-700' : ''}
+              `}>
+                {gameState.playerScoringState.gamePhase === 'early' && '🌅 Early Game'}
+                {gameState.playerScoringState.gamePhase === 'mid' && '⚡ Mid Game'}
+                {gameState.playerScoringState.gamePhase === 'late' && '🏁 Late Game'}
+              </Badge>
+              
+              {/* Warmup combo status */}
+              {gameState.playerScoringState.warmupComboActive && (
+                <Badge className="bg-gradient-to-r from-orange-400 to-yellow-500 text-white">
+                  🔥 Warmup Combo Active!
+                </Badge>
+              )}
+              
+              {/* Warmup cards played indicator */}
+              {gameState.playerScoringState.warmupCardsPlayed.length > 0 && (
+                <Badge variant="secondary">
+                  🔥 {gameState.playerScoringState.warmupCardsPlayed.length}/5 Warmups
+                </Badge>
+              )}
             </div>
           </div>
         </div>
@@ -878,16 +993,29 @@ export default function CardBattle() {
             {gameState.playerHand.map((card) => {
               const comboCount = gameState.playerHand.filter(c => c.combo === card.combo).length;
               return (
-                <StrategicCard
-                  key={card.id}
-                  card={card}
-                  isSelected={gameState.selectedCard?.id === card.id}
-                  canPlay={gameState.gamePhase === 'playing'}
-                  onSelect={() => gameState.gamePhase === 'playing' && selectCard(card)}
-                  onPlay={() => playCard(card)}
-                  comboCount={comboCount}
-                  showComboHint={comboCount > 1}
-                />
+                <div className="relative" key={card.id}>
+                  <StrategicCard
+                    card={card}
+                    isSelected={gameState.selectedCard?.id === card.id}
+                    canPlay={gameState.gamePhase === 'playing'}
+                    onSelect={() => gameState.gamePhase === 'playing' && selectCard(card)}
+                    onPlay={() => playCard(card)}
+                    comboCount={comboCount}
+                    showComboHint={comboCount > 1}
+                  />
+                  {/* Warmup card indicator */}
+                  {card.exercise.cardType === 'warmup' && (
+                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                      <span className="text-white text-xs font-bold">🔥</span>
+                    </div>
+                  )}
+                  {/* Early game warmup bonus indicator */}
+                  {card.exercise.cardType === 'warmup' && gameState.playerScoringState.gamePhase === 'early' && (
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg">
+                      HIGH PTS!
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>

@@ -17,6 +17,14 @@ import { databaseOptimizer } from "./database-optimizer";
 import { migrationTools } from "./migration-tools";
 import { gamificationRouter } from "./gamification-routes";
 import { processWorkoutCompletion } from "./gamification";
+import { 
+  calculateCardScore, 
+  updateScoringState, 
+  createInitialScoringState,
+  determineGamePhase,
+  type WarmupScoringState,
+  type ScoringResult 
+} from "./warmup-scoring";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
@@ -247,6 +255,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching user workouts:", error);
       res.status(500).json({ message: "Failed to fetch workouts" });
+    }
+  });
+
+  // ============================================================================
+  // CARD BATTLE & WARMUP SCORING ROUTES
+  // ============================================================================
+  
+  /**
+   * POST /api/card-battle/score
+   * Calculate score for a played card with warmup combo logic
+   */
+  app.post('/api/card-battle/score', async (req: any, res) => {
+    try {
+      const { cardName, cardType, cardCategory, difficulty, scoringState } = req.body;
+      
+      // Calculate points using warmup scoring system
+      const result = calculateCardScore(
+        cardName,
+        cardType,
+        cardCategory, 
+        difficulty,
+        scoringState
+      );
+      
+      res.json(result);
+    } catch (error) {
+      console.error("Error calculating card score:", error);
+      res.status(500).json({ message: "Failed to calculate card score" });
+    }
+  });
+
+  /**
+   * POST /api/card-battle/update-state
+   * Update game scoring state after playing a card
+   */
+  app.post('/api/card-battle/update-state', async (req: any, res) => {
+    try {
+      const { currentState, playedCard, deckSize } = req.body;
+      
+      // Update scoring state with warmup logic
+      const newState = updateScoringState(currentState, playedCard, deckSize);
+      
+      res.json(newState);
+    } catch (error) {
+      console.error("Error updating scoring state:", error);
+      res.status(500).json({ message: "Failed to update scoring state" });
+    }
+  });
+
+  /**
+   * GET /api/card-battle/initial-state
+   * Get initial scoring state for new game
+   */
+  app.get('/api/card-battle/initial-state', async (req: any, res) => {
+    try {
+      const initialState = createInitialScoringState();
+      res.json(initialState);
+    } catch (error) {
+      console.error("Error creating initial state:", error);
+      res.status(500).json({ message: "Failed to create initial state" });
     }
   });
 

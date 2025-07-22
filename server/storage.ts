@@ -136,8 +136,9 @@ export class MemoryStorage implements IStorage {
   }
 
   private initializeDefaultData() {
-    // Add some default exercises with complete schema structure
+    // Add comprehensive exercises including warmup cards for each deck
     const defaultExercises: Exercise[] = [
+      // Main Exercise Cards
       { 
         id: 1, 
         name: "Push-ups", 
@@ -180,39 +181,204 @@ export class MemoryStorage implements IStorage {
         utilityEffect: null,
         createdAt: new Date() 
       },
+      
+      // Warmup Cards - High value early game, combo potential
+      { 
+        id: 4, 
+        name: "Joint Mobility", 
+        description: "Gentle joint rotations to prepare the body", 
+        category: "warmup", 
+        difficulty: 0.5, 
+        defaultReps: null, 
+        defaultDuration: 60, 
+        instructions: "Rotate shoulders, hips, ankles, and wrists slowly in both directions", 
+        icon: "fas fa-sync-alt", 
+        cardType: "warmup",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 5, 
+        name: "Dynamic Stretching", 
+        description: "Active movements to increase blood flow", 
+        category: "warmup", 
+        difficulty: 0.6, 
+        defaultReps: 8, 
+        defaultDuration: null, 
+        instructions: "Leg swings, arm circles, torso twists - keep moving!", 
+        icon: "fas fa-expand-arrows-alt", 
+        cardType: "warmup",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 6, 
+        name: "Heart Rate Activation", 
+        description: "Light cardio to activate cardiovascular system", 
+        category: "warmup", 
+        difficulty: 0.7, 
+        defaultReps: null, 
+        defaultDuration: 45, 
+        instructions: "Marching in place, light movements to get blood flowing", 
+        icon: "fas fa-heartbeat", 
+        cardType: "warmup",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 7, 
+        name: "Mind-Body Connection", 
+        description: "Focus and breathing preparation", 
+        category: "warmup", 
+        difficulty: 0.4, 
+        defaultReps: null, 
+        defaultDuration: 30, 
+        instructions: "Deep breathing while visualizing your workout", 
+        icon: "fas fa-brain", 
+        cardType: "warmup",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 8, 
+        name: "Movement Prep", 
+        description: "Practice basic movement patterns", 
+        category: "warmup", 
+        difficulty: 0.5, 
+        defaultReps: 5, 
+        defaultDuration: null, 
+        instructions: "Air squats, arm swings, gentle movements to prepare", 
+        icon: "fas fa-walking", 
+        cardType: "warmup",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      
+      // Additional main exercises for variety
+      { 
+        id: 9, 
+        name: "Lunges", 
+        description: "Alternating leg lunges", 
+        category: "strength", 
+        difficulty: 1.1, 
+        defaultReps: 12, 
+        defaultDuration: null, 
+        instructions: "Step forward into lunge position, alternate legs", 
+        icon: "fas fa-dumbbell", 
+        cardType: "exercise",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 10, 
+        name: "Mountain Climbers", 
+        description: "High-intensity cardio exercise", 
+        category: "cardio", 
+        difficulty: 1.3, 
+        defaultReps: 20, 
+        defaultDuration: 30, 
+        instructions: "Plank position, bring knees to chest alternating quickly", 
+        icon: "fas fa-mountain", 
+        cardType: "exercise",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 11, 
+        name: "Plank Hold", 
+        description: "Core stability exercise", 
+        category: "strength", 
+        difficulty: 0.9, 
+        defaultReps: null, 
+        defaultDuration: 45, 
+        instructions: "Hold plank position, keep core tight and body straight", 
+        icon: "fas fa-grip-horizontal", 
+        cardType: "exercise",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
     ];
 
     defaultExercises.forEach(exercise => {
       this.exercises.set(exercise.id, exercise);
     });
 
-    // Add a default deck with complete schema structure
-    const defaultDeck: Deck = {
-      id: 1,
-      name: "Quick Start",
-      description: "Perfect for beginners",
-      category: "mixed",
-      difficulty: 1.0,
-      estimatedMinutes: 15,
-      isCustom: false,
-      createdBy: null,
-      createdAt: new Date()
-    };
+    // Add multiple decks with warmup cards included
+    const defaultDecks: Deck[] = [
+      {
+        id: 1,
+        name: "Quick Start Warmup Deck",
+        description: "Perfect for beginners with comprehensive warmup",
+        category: "mixed",
+        difficulty: 1.0,
+        estimatedMinutes: 20,
+        isCustom: false,
+        createdBy: null,
+        createdAt: new Date()
+      },
+      {
+        id: 2,
+        name: "Cardio Power Deck",
+        description: "High-energy cardio with warmup preparation",
+        category: "cardio",
+        difficulty: 1.2,
+        estimatedMinutes: 25,
+        isCustom: false,
+        createdBy: null,
+        createdAt: new Date()
+      },
+      {
+        id: 3,
+        name: "Strength Builder Deck",
+        description: "Strength-focused workout with proper warmup",
+        category: "strength",
+        difficulty: 1.1,
+        estimatedMinutes: 22,
+        isCustom: false,
+        createdBy: null,
+        createdAt: new Date()
+      }
+    ];
 
-    this.decks.set(defaultDeck.id, defaultDeck);
+    defaultDecks.forEach(deck => {
+      this.decks.set(deck.id, deck);
+    });
 
-    // Add exercises to the deck with complete schema structure
+    // Add exercises to decks - each deck gets warmup cards plus specific exercises
     const deckExercisesList: DeckExercise[] = [
-      { id: 1, deckId: 1, exerciseId: 1, order: 1, customReps: null, customDuration: null },
-      { id: 2, deckId: 1, exerciseId: 2, order: 2, customReps: null, customDuration: null },
-      { id: 3, deckId: 1, exerciseId: 3, order: 3, customReps: null, customDuration: null },
+      // Quick Start Warmup Deck (ID: 1) - All warmup cards + basic exercises
+      { id: 1, deckId: 1, exerciseId: 4, order: 1, customReps: null, customDuration: null }, // Joint Mobility
+      { id: 2, deckId: 1, exerciseId: 5, order: 2, customReps: null, customDuration: null }, // Dynamic Stretching
+      { id: 3, deckId: 1, exerciseId: 6, order: 3, customReps: null, customDuration: null }, // Heart Rate Activation
+      { id: 4, deckId: 1, exerciseId: 7, order: 4, customReps: null, customDuration: null }, // Mind-Body Connection
+      { id: 5, deckId: 1, exerciseId: 8, order: 5, customReps: null, customDuration: null }, // Movement Prep
+      { id: 6, deckId: 1, exerciseId: 1, order: 6, customReps: null, customDuration: null }, // Push-ups
+      { id: 7, deckId: 1, exerciseId: 3, order: 7, customReps: null, customDuration: null }, // Squats
+      { id: 8, deckId: 1, exerciseId: 11, order: 8, customReps: null, customDuration: null }, // Plank Hold
+
+      // Cardio Power Deck (ID: 2) - Select warmup cards + cardio exercises
+      { id: 9, deckId: 2, exerciseId: 4, order: 1, customReps: null, customDuration: null }, // Joint Mobility
+      { id: 10, deckId: 2, exerciseId: 5, order: 2, customReps: null, customDuration: null }, // Dynamic Stretching
+      { id: 11, deckId: 2, exerciseId: 6, order: 3, customReps: null, customDuration: null }, // Heart Rate Activation
+      { id: 12, deckId: 2, exerciseId: 2, order: 4, customReps: null, customDuration: null }, // Jumping Jacks
+      { id: 13, deckId: 2, exerciseId: 10, order: 5, customReps: null, customDuration: null }, // Mountain Climbers
+      { id: 14, deckId: 2, exerciseId: 9, order: 6, customReps: null, customDuration: null }, // Lunges
+
+      // Strength Builder Deck (ID: 3) - Select warmup cards + strength exercises
+      { id: 15, deckId: 3, exerciseId: 4, order: 1, customReps: null, customDuration: null }, // Joint Mobility
+      { id: 16, deckId: 3, exerciseId: 8, order: 2, customReps: null, customDuration: null }, // Movement Prep
+      { id: 17, deckId: 3, exerciseId: 7, order: 3, customReps: null, customDuration: null }, // Mind-Body Connection
+      { id: 18, deckId: 3, exerciseId: 1, order: 4, customReps: null, customDuration: null }, // Push-ups
+      { id: 19, deckId: 3, exerciseId: 3, order: 5, customReps: null, customDuration: null }, // Squats
+      { id: 20, deckId: 3, exerciseId: 9, order: 6, customReps: null, customDuration: null }, // Lunges
+      { id: 21, deckId: 3, exerciseId: 11, order: 7, customReps: null, customDuration: null }, // Plank Hold
     ];
 
     deckExercisesList.forEach(de => {
       this.deckExercises.set(de.id, de);
     });
 
-    this.nextId = 4;
+    this.nextId = 22;
   }
 
   private getNextId(): number {
