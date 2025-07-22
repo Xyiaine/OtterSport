@@ -136,19 +136,58 @@ export class MemoryStorage implements IStorage {
   }
 
   private initializeDefaultData() {
-    // Add some default exercises
-    const defaultExercises = [
-      { id: 1, name: "Push-ups", description: "Standard push-ups", category: "strength", difficulty: 1.0, defaultReps: 10, defaultDuration: null, instructions: "Place hands on ground, keep body straight, lower and raise", icon: "fas fa-dumbbell", createdAt: new Date() },
-      { id: 2, name: "Jumping Jacks", description: "Cardio exercise", category: "cardio", difficulty: 0.8, defaultReps: 20, defaultDuration: 30, instructions: "Jump with arms and legs spread", icon: "fas fa-running", createdAt: new Date() },
-      { id: 3, name: "Squats", description: "Lower body strength", category: "strength", difficulty: 1.2, defaultReps: 15, defaultDuration: null, instructions: "Stand with feet shoulder-width apart, lower body", icon: "fas fa-dumbbell", createdAt: new Date() },
+    // Add some default exercises with complete schema structure
+    const defaultExercises: Exercise[] = [
+      { 
+        id: 1, 
+        name: "Push-ups", 
+        description: "Standard push-ups", 
+        category: "strength", 
+        difficulty: 1.0, 
+        defaultReps: 10, 
+        defaultDuration: null, 
+        instructions: "Place hands on ground, keep body straight, lower and raise", 
+        icon: "fas fa-dumbbell", 
+        cardType: "exercise",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 2, 
+        name: "Jumping Jacks", 
+        description: "Cardio exercise", 
+        category: "cardio", 
+        difficulty: 0.8, 
+        defaultReps: 20, 
+        defaultDuration: 30, 
+        instructions: "Jump with arms and legs spread", 
+        icon: "fas fa-running", 
+        cardType: "exercise",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
+      { 
+        id: 3, 
+        name: "Squats", 
+        description: "Lower body strength", 
+        category: "strength", 
+        difficulty: 1.2, 
+        defaultReps: 15, 
+        defaultDuration: null, 
+        instructions: "Stand with feet shoulder-width apart, lower body", 
+        icon: "fas fa-dumbbell", 
+        cardType: "exercise",
+        utilityEffect: null,
+        createdAt: new Date() 
+      },
     ];
 
     defaultExercises.forEach(exercise => {
       this.exercises.set(exercise.id, exercise);
     });
 
-    // Add a default deck
-    const defaultDeck = {
+    // Add a default deck with complete schema structure
+    const defaultDeck: Deck = {
       id: 1,
       name: "Quick Start",
       description: "Perfect for beginners",
@@ -162,8 +201,8 @@ export class MemoryStorage implements IStorage {
 
     this.decks.set(defaultDeck.id, defaultDeck);
 
-    // Add exercises to the deck
-    const deckExercisesList = [
+    // Add exercises to the deck with complete schema structure
+    const deckExercisesList: DeckExercise[] = [
       { id: 1, deckId: 1, exerciseId: 1, order: 1, customReps: null, customDuration: null },
       { id: 2, deckId: 1, exerciseId: 2, order: 2, customReps: null, customDuration: null },
       { id: 3, deckId: 1, exerciseId: 3, order: 3, customReps: null, customDuration: null },
@@ -192,11 +231,16 @@ export class MemoryStorage implements IStorage {
   async upsertUser(userData: UpsertUser): Promise<User> {
     this.validateUserId(userData.id);
     
+    const existingUser = this.users.get(userData.id);
     const user: User = {
       ...userData,
       updatedAt: new Date(),
-      createdAt: this.users.get(userData.id)?.createdAt || new Date(),
-      // Set defaults for fitness fields
+      createdAt: existingUser?.createdAt || new Date(),
+      // Set defaults for all required fields
+      email: userData.email || null,
+      firstName: userData.firstName || null,
+      lastName: userData.lastName || null,
+      profileImageUrl: userData.profileImageUrl || null,
       fitnessGoal: userData.fitnessGoal || null,
       fitnessLevel: userData.fitnessLevel || null,
       workoutFrequency: userData.workoutFrequency || null,
@@ -206,6 +250,14 @@ export class MemoryStorage implements IStorage {
       totalMinutes: userData.totalMinutes || 0,
       currentDifficultyLevel: userData.currentDifficultyLevel || 1.0,
       lastWorkoutFeedback: userData.lastWorkoutFeedback || null,
+      experiencePoints: userData.experiencePoints || 0,
+      currentLevel: userData.currentLevel || 1,
+      xpToNextLevel: userData.xpToNextLevel || 100,
+      lastWorkoutDate: userData.lastWorkoutDate || null,
+      streakFreezeUses: userData.streakFreezeUses || 0,
+      livesRemaining: userData.livesRemaining || 5,
+      lastLifeLoss: userData.lastLifeLoss || null,
+      livesRefillAt: userData.livesRefillAt || null,
     };
     
     this.users.set(userData.id, user);
@@ -235,7 +287,9 @@ export class MemoryStorage implements IStorage {
       defaultReps: exercise.defaultReps ?? null,
       defaultDuration: exercise.defaultDuration ?? null,
       instructions: exercise.instructions ?? null,
-      icon: exercise.icon ?? null,
+      icon: exercise.icon ?? "fas fa-dumbbell",
+      cardType: exercise.cardType ?? "exercise",
+      utilityEffect: exercise.utilityEffect ?? null,
     };
     this.exercises.set(newExercise.id, newExercise);
     return newExercise;
@@ -281,7 +335,7 @@ export class MemoryStorage implements IStorage {
       createdAt: new Date(),
       description: deck.description ?? null,
       estimatedMinutes: deck.estimatedMinutes ?? null,
-      isCustom: deck.isCustom ?? null,
+      isCustom: deck.isCustom ?? false,
       createdBy: deck.createdBy ?? null,
     };
     this.decks.set(newDeck.id, newDeck);
