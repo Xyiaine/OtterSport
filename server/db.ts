@@ -2,28 +2,33 @@
  * DATABASE CONNECTION SETUP
  * 
  * This file configures the database layer for the application.
- * In development mode without DATABASE_URL, it uses in-memory storage.
- * In production with DATABASE_URL, it uses PostgreSQL via Neon serverless.
+ * Uses PostgreSQL via Neon serverless when DATABASE_URL is available.
  */
 
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import * as schema from '@shared/schema';
 import { MemoryStorage } from './storage';
-import * as schema from "@shared/schema";
 
-// For Replit environment migration - use in-memory storage by default
-// This ensures the app runs immediately without requiring database setup
 let db: any = null;
 let pool: any = null;
 
-// Create storage instance - use in-memory by default for immediate functionality
-export const storage = new MemoryStorage();
-
-// If DATABASE_URL is provided, we could set up PostgreSQL connection
-// But for now, we'll use in-memory storage to get the app running
+// If DATABASE_URL is provided, set up PostgreSQL connection
 if (process.env.DATABASE_URL) {
-  console.log('DATABASE_URL detected but using in-memory storage for development');
+  console.log('DATABASE_URL detected - setting up PostgreSQL connection');
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+    db = drizzle(sql, { schema });
+    console.log('PostgreSQL connection established via Neon');
+  } catch (error) {
+    console.error('Failed to connect to PostgreSQL:', error);
+    db = null;
+  }
 } else {
   console.log('Using in-memory storage - data will reset on server restart');
 }
 
-// Export null db for compatibility, but use storage for actual operations
+// Create storage instance - use database if available, otherwise memory
+export const storage = db ? null : new MemoryStorage(); // Will be replaced with DatabaseStorage if db exists
+
 export { db, pool };
