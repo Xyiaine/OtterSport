@@ -67,60 +67,93 @@ const essentialExercises: InsertExercise[] = [
     cardType: "exercise"
   },
 
-  // WARMUP CARDS (5 total for comprehensive warmup system)
+  // MUSCLE-SPECIFIC WARMUP CARDS (8 total for targeted injury prevention)
   {
-    name: "Joint Mobility",
-    description: "Gentle joint rotations to prepare the body",
+    name: "Shoulder & Chest Prep",
+    description: "Prepares shoulders, chest, and triceps for push movements",
     category: "warmup",
     difficulty: 0.5,
-    defaultReps: null,
-    defaultDuration: 60,
-    instructions: "Rotate shoulders, hips, ankles, and wrists slowly in both directions",
-    icon: "fas fa-sync-alt",
-    cardType: "warmup"
-  },
-  {
-    name: "Dynamic Stretching",
-    description: "Active movements to increase blood flow",
-    category: "warmup", 
-    difficulty: 0.6,
-    defaultReps: 8,
+    defaultReps: 10,
     defaultDuration: null,
-    instructions: "Leg swings, arm circles, torso twists - keep moving!",
+    instructions: "Arm circles, shoulder rolls, wall push-ups, chest stretches. Prepare shoulders and chest for pushing exercises.",
     icon: "fas fa-expand-arrows-alt",
     cardType: "warmup"
   },
   {
-    name: "Heart Rate Activation", 
-    description: "Light cardio to activate cardiovascular system",
+    name: "Hip & Glute Activation",
+    description: "Activates hip flexors, glutes, and leg muscles for squats",
+    category: "warmup",
+    difficulty: 0.6,
+    defaultReps: 8,
+    defaultDuration: null,
+    instructions: "Hip circles, glute bridges, leg swings, ankle circles. Activate hips and legs for squatting movements.",
+    icon: "fas fa-sync-alt",
+    cardType: "warmup"
+  },
+  {
+    name: "Core Stability Prep",
+    description: "Activates core muscles and stabilizes spine",
+    category: "warmup",
+    difficulty: 0.4,
+    defaultReps: null,
+    defaultDuration: 45,
+    instructions: "Gentle core breathing, pelvic tilts, cat-cow stretches. Activate core muscles safely before planks.",
+    icon: "fas fa-grip-horizontal",
+    cardType: "warmup"
+  },
+  {
+    name: "Cardio System Warmup",
+    description: "Gradually increases heart rate for cardio exercises",
     category: "warmup",
     difficulty: 0.7,
     defaultReps: null,
-    defaultDuration: 45,
-    instructions: "Marching in place, light movements to get blood flowing",
+    defaultDuration: 60,
+    instructions: "Light marching, gentle arm swings, breathing exercises. Prepare cardiovascular system for high-intensity movement.",
     icon: "fas fa-heartbeat",
     cardType: "warmup"
   },
   {
-    name: "Mind-Body Connection",
-    description: "Focus and breathing preparation",
+    name: "Joint Mobility Flow",
+    description: "Comprehensive joint preparation for full-body movement",
     category: "warmup",
-    difficulty: 0.4,
+    difficulty: 0.5,
+    defaultReps: null,
+    defaultDuration: 60,
+    instructions: "Neck rolls, shoulder shrugs, wrist circles, ankle rotations. Prepare all major joints for movement.",
+    icon: "fas fa-sync-alt",
+    cardType: "warmup"
+  },
+  {
+    name: "Dynamic Movement Prep",
+    description: "Movement patterns that mirror workout exercises",
+    category: "warmup",
+    difficulty: 0.6,
+    defaultReps: 5,
+    defaultDuration: null,
+    instructions: "Air squats, wall push-ups, knee raises, arm swings. Practice movement patterns at low intensity.",
+    icon: "fas fa-walking",
+    cardType: "warmup"
+  },
+  {
+    name: "Mental Focus Prep",
+    description: "Mental preparation and breathing for workout focus",
+    category: "warmup",
+    difficulty: 0.3,
     defaultReps: null,
     defaultDuration: 30,
-    instructions: "Deep breathing while visualizing your workout",
+    instructions: "Deep breathing, visualization, intention setting. Prepare mind-body connection for effective training.",
     icon: "fas fa-brain",
     cardType: "warmup"
   },
   {
-    name: "Movement Prep",
-    description: "Practice basic movement patterns",
+    name: "Injury Prevention Check",
+    description: "Quick body scan to identify any limitations before exercising",
     category: "warmup",
-    difficulty: 0.5,
-    defaultReps: 5,
-    defaultDuration: null,
-    instructions: "Air squats, arm swings, gentle movements to prepare",
-    icon: "fas fa-walking",
+    difficulty: 0.4,
+    defaultReps: null,
+    defaultDuration: 30,
+    instructions: "Gentle joint tests, muscle tension check, pain assessment. Ensure body is ready for safe exercise.",
+    icon: "fas fa-shield-alt",
     cardType: "warmup"
   },
 
@@ -333,13 +366,13 @@ export async function seedEssentialData(): Promise<void> {
     // Set up deck exercises
     console.log("[SeedData] Setting up deck exercises...");
     
-    // Quick Start Warmup Deck - includes warmup cards + basic exercises
+    // Quick Start Warmup Deck - muscle-specific warmup for strength exercises
     const quickStartExercises = [
-      { name: "Joint Mobility", order: 1 },
-      { name: "Dynamic Stretching", order: 2 },
-      { name: "Heart Rate Activation", order: 3 },
-      { name: "Mind-Body Connection", order: 4 },
-      { name: "Movement Prep", order: 5 },
+      { name: "Joint Mobility Flow", order: 1 },
+      { name: "Shoulder & Chest Prep", order: 2 },
+      { name: "Hip & Glute Activation", order: 3 },
+      { name: "Core Stability Prep", order: 4 },
+      { name: "Dynamic Movement Prep", order: 5 },
       { name: "Push-ups", order: 6 },
       { name: "Squats", order: 7 },
       { name: "Plank Hold", order: 8 }
@@ -361,11 +394,74 @@ export async function seedEssentialData(): Promise<void> {
       }
     }
     
+    // Cardio Power Deck - cardiovascular and high-intensity movement prep
+    const cardioPowerExercises = [
+      { name: "Cardio System Warmup", order: 1 },
+      { name: "Joint Mobility Flow", order: 2 },
+      { name: "Dynamic Movement Prep", order: 3 },
+      { name: "Injury Prevention Check", order: 4 },
+      { name: "Jumping Jacks", order: 5 },
+      { name: "High Knees", order: 6 },
+      { name: "Explosive Power", order: 7 },
+      { name: "Endurance Challenge", order: 8 }
+    ];
+    
+    const cardioDeck = insertedDecks.find(d => d.name === "Cardio Power Deck");
+    if (cardioDeck) {
+      for (const config of cardioPowerExercises) {
+        const exercise = insertedExercises.find(e => e.name === config.name);
+        if (exercise) {
+          await db.insert(deckExercises).values({
+            deckId: cardioDeck.id,
+            exerciseId: exercise.id,
+            order: config.order,
+            customReps: null,
+            customDuration: null
+          });
+        }
+      }
+    }
+    
+    // Strength Builder Deck - comprehensive strength preparation
+    const strengthBuilderExercises = [
+      { name: "Injury Prevention Check", order: 1 },
+      { name: "Shoulder & Chest Prep", order: 2 },
+      { name: "Hip & Glute Activation", order: 3 },
+      { name: "Core Stability Prep", order: 4 },
+      { name: "Mental Focus Prep", order: 5 },
+      { name: "Push-ups", order: 6 },
+      { name: "Squats", order: 7 },
+      { name: "Plank Hold", order: 8 },
+      { name: "Strength Surge", order: 9 },
+      { name: "Flow State", order: 10 }
+    ];
+    
+    const strengthDeck = insertedDecks.find(d => d.name === "Strength Builder Deck");
+    if (strengthDeck) {
+      for (const config of strengthBuilderExercises) {
+        const exercise = insertedExercises.find(e => e.name === config.name);
+        if (exercise) {
+          await db.insert(deckExercises).values({
+            deckId: strengthDeck.id,
+            exerciseId: exercise.id,
+            order: config.order,
+            customReps: null,
+            customDuration: null
+          });
+        }
+      }
+    }
+
     console.log("[SeedData] ✅ Essential seeding completed successfully!");
     console.log(`[SeedData] Summary:`);
-    console.log(`  - ${insertedExercises.length} exercises (including warmup, utility, and power cards)`);
-    console.log(`  - ${insertedDecks.length} decks`);
+    console.log(`  - ${insertedExercises.length} exercises (including muscle-specific warmup, utility, and power cards)`);
+    console.log(`  - ${insertedDecks.length} decks with targeted muscle preparation`);
     console.log(`  - ${insertedAchievements.length} achievements`);
+    
+    console.log("[SeedData] 🎯 Muscle-Specific Warmup Analysis:");
+    console.log("  Quick Start Deck: Upper body (shoulders, chest, triceps) + Lower body (hips, glutes, quads) + Core");
+    console.log("  Cardio Power Deck: Cardiovascular system + Hip flexors + Full body coordination");
+    console.log("  Strength Builder Deck: All major muscle groups with comprehensive injury prevention");
     
   } catch (error) {
     console.error("[SeedData] Error during essential seeding:", error);
