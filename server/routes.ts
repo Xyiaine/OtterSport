@@ -53,11 +53,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
    * GET /api/auth/user
    * Returns the current authenticated user's data
    */
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  app.get('/api/auth/user', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
+      // If user is authenticated, return user data
+      if (req.user && req.user.claims && req.user.claims.sub) {
+        const userId = req.user.claims.sub;
+        const user = await storage.getUser(userId);
+        res.json(user);
+      } else {
+        // Return anonymous user data for non-authenticated users
+        res.json({
+          id: 'anonymous',
+          email: 'anonymous@ottersport.com',
+          name: 'Anonymous User',
+          isAnonymous: true
+        });
+      }
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
@@ -88,8 +99,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
    * GET /api/user/stats
    * Returns user fitness statistics (workouts, streaks, etc.)
    */
-  app.get('/api/user/stats', isAuthenticated, async (req: any, res) => {
+  app.get('/api/user/stats', async (req: any, res) => {
     try {
+      // Return anonymous stats for non-authenticated users
+      if (!req.user || !req.user.claims || !req.user.claims.sub) {
+        res.json({
+          totalWorkouts: 0,
+          currentStreak: 0,
+          achievements: 0,
+          isAnonymous: true
+        });
+        return;
+      }
+      
       const userId = req.user.claims.sub;
       const stats = await storage.getUserStats(userId);
       res.json(stats);
@@ -246,8 +268,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/user/workouts', isAuthenticated, async (req: any, res) => {
+  app.get('/api/user/workouts', async (req: any, res) => {
     try {
+      // Return empty workouts for anonymous users
+      if (!req.user || !req.user.claims || !req.user.claims.sub) {
+        res.json([]);
+        return;
+      }
+      
       const userId = req.user.claims.sub;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
       const workouts = await storage.getUserWorkouts(userId, limit);
@@ -329,8 +357,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/user/achievements', isAuthenticated, async (req: any, res) => {
+  app.get('/api/user/achievements', async (req: any, res) => {
     try {
+      // Return empty achievements for anonymous users
+      if (!req.user || !req.user.claims || !req.user.claims.sub) {
+        res.json([]);
+        return;
+      }
+      
       const userId = req.user.claims.sub;
       const achievements = await storage.getUserAchievements(userId);
       res.json(achievements);

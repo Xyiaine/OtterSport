@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 import type { Exercise } from "@shared/schema";
 
 /**
@@ -37,10 +38,18 @@ export default function ExerciseCard({
   onComplete, 
   onSkip 
 }: ExerciseCardProps) {
+  // Authentication hook for admin features
+  const { user } = useAuth();
+  
   // Timer state management for time-based exercises
   const [timer, setTimer] = useState(duration || 0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  
+  // Check if user is admin (for skip button access)
+  const isAdmin = (user as any)?.email?.includes('@replit.com') || 
+                 (user as any)?.email?.includes('admin') || 
+                 import.meta.env.DEV;
 
   /**
    * Timer Effect Hook
@@ -85,6 +94,12 @@ export default function ExerciseCard({
     setTimer(duration || 0);
     setIsTimerRunning(false);
     setIsCompleted(false);
+  };
+
+  const skipExercise = () => {
+    setIsTimerRunning(false);
+    setIsCompleted(true);
+    onComplete();
   };
 
   /**
@@ -175,6 +190,20 @@ export default function ExerciseCard({
                 >
                   <i className="fas fa-redo mr-1"></i>
                   Reset
+                </Button>
+              )}
+              
+              {/* Admin Skip Button for Time-based Exercises */}
+              {isAdmin && duration && !isCompleted && (
+                <Button
+                  onClick={skipExercise}
+                  variant="outline"
+                  size="sm"
+                  className="hover:bg-red-50 hover:border-red-500 hover:text-red-600"
+                  title="Admin: Skip timer for testing"
+                >
+                  <i className="fas fa-fast-forward mr-1"></i>
+                  Skip
                 </Button>
               )}
             </div>
