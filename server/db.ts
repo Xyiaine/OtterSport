@@ -75,15 +75,104 @@ export const storage = db ? new (class DatabaseStorage {
     return await db.select().from(schema.exercises);
   }
   
+  async getExercisesByCategory(category: string) {
+    return await db.select().from(schema.exercises).where(eq(schema.exercises.category, category));
+  }
+  
+  async createExercise(exerciseData: any) {
+    const [exercise] = await db.insert(schema.exercises).values(exerciseData).returning();
+    return exercise;
+  }
+  
   async getDecks() {
     return await db.select().from(schema.decks);
+  }
+  
+  async getDeck(id: number) {
+    const [deck] = await db.select().from(schema.decks).where(eq(schema.decks.id, id));
+    return deck || undefined;
+  }
+  
+  async getDeckWithExercises(id: number) {
+    const deck = await this.getDeck(id);
+    if (!deck) return undefined;
+    
+    const deckExercisesWithDetails = await db
+      .select({
+        id: schema.deckExercises.id,
+        deckId: schema.deckExercises.deckId,
+        exerciseId: schema.deckExercises.exerciseId,
+        order: schema.deckExercises.order,
+        exercise: schema.exercises
+      })
+      .from(schema.deckExercises)
+      .innerJoin(schema.exercises, eq(schema.deckExercises.exerciseId, schema.exercises.id))
+      .where(eq(schema.deckExercises.deckId, id));
+    
+    return {
+      ...deck,
+      exercises: deckExercisesWithDetails
+    };
+  }
+  
+  async createDeck(deckData: any) {
+    const [deck] = await db.insert(schema.decks).values(deckData).returning();
+    return deck;
+  }
+  
+  async addExerciseToDeck(deckExerciseData: any) {
+    const [deckExercise] = await db.insert(schema.deckExercises).values(deckExerciseData).returning();
+    return deckExercise;
+  }
+  
+  async getUserCustomDecks(userId: string) {
+    return await db.select().from(schema.decks).where(eq(schema.decks.createdBy, userId));
+  }
+  
+  async createWorkout(workoutData: any) {
+    const [workout] = await db.insert(schema.workouts).values(workoutData).returning();
+    return workout;
+  }
+  
+  async completeWorkout(workoutId: number, feedback: any, duration?: number, calories?: number) {
+    const [workout] = await db.update(schema.workouts)
+      .set({ 
+        completed: true, 
+        completedAt: new Date(),
+        duration,
+        calories,
+        feedback: JSON.stringify(feedback)
+      })
+      .where(eq(schema.workouts.id, workoutId))
+      .returning();
+    return workout;
+  }
+  
+  async getUserWorkouts(userId: string, limit?: number) {
+    let query = db.select().from(schema.workouts).where(eq(schema.workouts.userId, userId));
+    if (limit) {
+      query = query.limit(limit);
+    }
+    return await query;
   }
   
   async getAchievements() {
     return await db.select().from(schema.achievements);
   }
   
-  // Add more methods as needed...
+  async getUserAchievements(userId: string) {
+    return await db
+      .select({
+        id: schema.userAchievements.id,
+        userId: schema.userAchievements.userId,
+        achievementId: schema.userAchievements.achievementId,
+        unlockedAt: schema.userAchievements.unlockedAt,
+        achievement: schema.achievements
+      })
+      .from(schema.userAchievements)
+      .innerJoin(schema.achievements, eq(schema.userAchievements.achievementId, schema.achievements.id))
+      .where(eq(schema.userAchievements.userId, userId));
+  }
 })() : new MemoryStorage();
 
 export { db, pool };
