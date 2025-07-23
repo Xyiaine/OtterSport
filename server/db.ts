@@ -7,6 +7,7 @@
 
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
+import { eq } from 'drizzle-orm';
 import * as schema from '@shared/schema';
 import { MemoryStorage } from './storage';
 
@@ -29,6 +30,60 @@ if (process.env.DATABASE_URL) {
 }
 
 // Create storage instance - use database if available, otherwise memory
-export const storage = db ? null : new MemoryStorage(); // Will be replaced with DatabaseStorage if db exists
+export const storage = db ? new (class DatabaseStorage {
+  async getUser(id: string) {
+    const [user] = await db.select().from(schema.users).where(eq(schema.users.id, id));
+    return user || undefined;
+  }
+  
+  async upsertUser(userData: any) {
+    const now = new Date();
+    const userToInsert = {
+      ...userData,
+      updatedAt: now,
+      createdAt: now,
+    };
+    
+    const [user] = await db.insert(schema.users)
+      .values(userToInsert)
+      .onConflictDoUpdate({
+        target: schema.users.id,
+        set: { ...userData, updatedAt: now }
+      })
+      .returning();
+    return user;
+  }
+  
+  async updateUserProgress(id: string, updates: any) {
+    const [user] = await db.update(schema.users)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(schema.users.id, id))
+      .returning();
+    return user;
+  }
+  
+  async getUserStats(id: string) {
+    // Simple implementation for now
+    return {
+      totalWorkouts: 0,
+      currentStreak: 0,
+      achievements: 0
+    };
+  }
+  
+  async getExercises() {
+    return await db.select().from(schema.exercises);
+  }
+  
+  async getDecks() {
+    return await db.select().from(schema.decks);
+  }
+  
+  async getAchievements() {
+    return await db.select().from(schema.achievements);
+  }
+  
+  // Add more methods as needed...
+})() : new MemoryStorage();
 
 export { db, pool };

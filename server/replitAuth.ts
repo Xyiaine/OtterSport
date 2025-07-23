@@ -13,7 +13,7 @@ import session from "express-session";
 import type { Express, RequestHandler } from "express";
 import memoize from "memoizee";
 import MemoryStore from "memorystore";
-import { storage } from "./storage";
+import { storage } from "./db";
 
 // Ensure required environment variables are set
 if (!process.env.REPLIT_DOMAINS) {
@@ -72,13 +72,19 @@ function updateUserSession(
 async function upsertUser(
   claims: any,
 ) {
-  await storage.upsertUser({
-    id: claims["sub"],
-    email: claims["email"],
-    firstName: claims["first_name"],
-    lastName: claims["last_name"],
-    profileImageUrl: claims["profile_image_url"],
-  });
+  try {
+    if (storage && storage.upsertUser) {
+      await storage.upsertUser({
+        id: claims["sub"],
+        email: claims["email"],
+        firstName: claims["first_name"],
+        lastName: claims["last_name"],
+        profileImageUrl: claims["profile_image_url"],
+      });
+    }
+  } catch (error) {
+    console.error("Error upserting user:", error);
+  }
 }
 
 export async function setupAuth(app: Express) {
