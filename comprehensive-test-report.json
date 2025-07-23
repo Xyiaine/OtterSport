@@ -1,0 +1,316 @@
+{
+  "summary": {
+    "totalTests": 16,
+    "successfulTests": 13,
+    "failedTests": 3,
+    "overallSuccessRate": 81.25,
+    "avgResponseTime": 131.62,
+    "testDate": "2025-07-23T11:50:10.417Z"
+  },
+  "detailedResults": [
+    {
+      "name": "Anonymous User Access",
+      "endpoint": "/api/auth/user",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 34,
+      "dataSize": 96,
+      "timestamp": "2025-07-23T11:49:52.026Z"
+    },
+    {
+      "name": "User Stats (Anonymous)",
+      "endpoint": "/api/user/stats",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 3,
+      "dataSize": 73,
+      "timestamp": "2025-07-23T11:49:52.038Z"
+    },
+    {
+      "name": "Exercise Library",
+      "endpoint": "/api/exercises",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 149,
+      "dataSize": 8143,
+      "timestamp": "2025-07-23T11:49:52.193Z"
+    },
+    {
+      "name": "Exercise Categories",
+      "endpoint": "/api/exercises?category=cardio",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 162,
+      "dataSize": 789,
+      "timestamp": "2025-07-23T11:49:52.806Z"
+    },
+    {
+      "name": "Exercise by ID",
+      "endpoint": "/api/exercises/334",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 5,
+      "dataSize": 43608,
+      "timestamp": "2025-07-23T11:49:53.260Z"
+    },
+    {
+      "name": "Deck Collection",
+      "endpoint": "/api/decks",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 149,
+      "dataSize": 679,
+      "timestamp": "2025-07-23T11:49:53.436Z"
+    },
+    {
+      "name": "Deck with Exercises",
+      "endpoint": "/api/decks/43",
+      "method": "GET",
+      "status": 404,
+      "success": false,
+      "duration": 150,
+      "dataSize": 28,
+      "timestamp": "2025-07-23T11:49:54.038Z"
+    },
+    {
+      "name": "Deck Categories",
+      "endpoint": "/api/decks?category=strength",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 151,
+      "dataSize": 679,
+      "timestamp": "2025-07-23T11:49:54.189Z"
+    },
+    {
+      "name": "Achievement List",
+      "endpoint": "/api/achievements",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 152,
+      "dataSize": 758,
+      "timestamp": "2025-07-23T11:49:54.788Z"
+    },
+    {
+      "name": "User Achievements",
+      "endpoint": "/api/user/achievements",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 3,
+      "dataSize": 2,
+      "timestamp": "2025-07-23T11:49:55.243Z"
+    },
+    {
+      "name": "Gamification Summary",
+      "endpoint": "/api/gamification/summary",
+      "method": "GET",
+      "status": 401,
+      "success": false,
+      "duration": 2,
+      "dataSize": 26,
+      "timestamp": "2025-07-23T11:49:55.253Z"
+    },
+    {
+      "name": "Leaderboard",
+      "endpoint": "/api/gamification/leaderboard",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 152,
+      "dataSize": 2,
+      "timestamp": "2025-07-23T11:49:55.405Z"
+    },
+    {
+      "name": "User Progress",
+      "endpoint": "/api/gamification/progress",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 5,
+      "dataSize": 43608,
+      "timestamp": "2025-07-23T11:49:55.862Z"
+    },
+    {
+      "name": "Database Health",
+      "endpoint": "/api/dev/health",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 737,
+      "dataSize": 344,
+      "timestamp": "2025-07-23T11:49:56.626Z"
+    },
+    {
+      "name": "Performance Metrics",
+      "endpoint": "/api/dev/performance",
+      "method": "GET",
+      "status": "ERROR",
+      "success": false,
+      "duration": 10009,
+      "error": "timeout of 10000ms exceeded",
+      "timestamp": "2025-07-23T11:50:08.840Z"
+    },
+    {
+      "name": "System Status",
+      "endpoint": "/api/dev/status",
+      "method": "GET",
+      "status": 200,
+      "success": true,
+      "duration": 9,
+      "dataSize": 43608,
+      "timestamp": "2025-07-23T11:50:08.850Z"
+    }
+  ],
+  "performanceMetrics": [
+    {
+      "feature": "authentication",
+      "endpoint": "/api/auth/user",
+      "average": 2.6666666666666665,
+      "min": 2,
+      "max": 4,
+      "successRate": 100
+    },
+    {
+      "feature": "authentication",
+      "endpoint": "/api/user/stats",
+      "average": 2,
+      "min": 2,
+      "max": 2,
+      "successRate": 100
+    },
+    {
+      "feature": "exercises",
+      "endpoint": "/api/exercises",
+      "average": 150.33333333333334,
+      "min": 150,
+      "max": 151,
+      "successRate": 100
+    },
+    {
+      "feature": "exercises",
+      "endpoint": "/api/exercises?category=cardio",
+      "average": 149.33333333333334,
+      "min": 149,
+      "max": 150,
+      "successRate": 100
+    },
+    {
+      "feature": "exercises",
+      "endpoint": "/api/exercises/334",
+      "average": 8.666666666666666,
+      "min": 4,
+      "max": 16,
+      "successRate": 100
+    },
+    {
+      "feature": "decks",
+      "endpoint": "/api/decks",
+      "average": 150.66666666666666,
+      "min": 149,
+      "max": 154,
+      "successRate": 100
+    },
+    {
+      "feature": "decks",
+      "endpoint": "/api/decks?category=strength",
+      "average": 149,
+      "min": 149,
+      "max": 149,
+      "successRate": 100
+    },
+    {
+      "feature": "achievements",
+      "endpoint": "/api/achievements",
+      "average": 150.33333333333334,
+      "min": 150,
+      "max": 151,
+      "successRate": 100
+    },
+    {
+      "feature": "achievements",
+      "endpoint": "/api/user/achievements",
+      "average": 2.6666666666666665,
+      "min": 2,
+      "max": 3,
+      "successRate": 100
+    },
+    {
+      "feature": "gamification",
+      "endpoint": "/api/gamification/leaderboard",
+      "average": 150.66666666666666,
+      "min": 149,
+      "max": 152,
+      "successRate": 100
+    },
+    {
+      "feature": "gamification",
+      "endpoint": "/api/gamification/progress",
+      "average": 8.333333333333334,
+      "min": 7,
+      "max": 10,
+      "successRate": 100
+    },
+    {
+      "feature": "development",
+      "endpoint": "/api/dev/health",
+      "average": 734.6666666666666,
+      "min": 734,
+      "max": 736,
+      "successRate": 100
+    },
+    {
+      "feature": "development",
+      "endpoint": "/api/dev/status",
+      "average": 10.666666666666666,
+      "min": 7,
+      "max": 17,
+      "successRate": 100
+    }
+  ],
+  "recommendations": [
+    {
+      "type": "bug-fix",
+      "priority": "high",
+      "description": "3 endpoints failing - requires immediate attention",
+      "endpoints": [
+        "/api/decks/43",
+        "/api/gamification/summary",
+        "/api/dev/performance"
+      ]
+    },
+    {
+      "type": "performance",
+      "priority": "medium",
+      "description": "1 endpoints responding slowly (>500ms)",
+      "endpoints": [
+        {
+          "endpoint": "/api/dev/health",
+          "duration": 737
+        }
+      ]
+    },
+    {
+      "type": "database",
+      "priority": "medium",
+      "description": "Database queries need optimization",
+      "details": [
+        {
+          "feature": "development",
+          "endpoint": "/api/dev/health",
+          "average": 734.6666666666666,
+          "min": 734,
+          "max": 736,
+          "successRate": 100
+        }
+      ]
+    }
+  ]
+}

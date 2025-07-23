@@ -33,9 +33,15 @@ export const gamificationRouter = Router();
 // Get user's current XP and level info
 gamificationRouter.get("/xp", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
+      // Return anonymous user data for unauthenticated users
+      return res.json({
+        experiencePoints: 0,
+        currentLevel: 1,
+        xpToNextLevel: 100,
+        isAnonymous: true
+      });
     }
 
     const [user] = await db
@@ -80,9 +86,17 @@ gamificationRouter.get("/xp-activities", async (req: Request, res: Response) => 
 // Get all achievements with user progress
 gamificationRouter.get("/achievements", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
+      // Return all achievements with unlocked=false for anonymous users
+      const allAchievements = await db.select().from(achievements);
+      const achievementsWithProgress = allAchievements.map(achievement => ({
+        ...achievement,
+        unlocked: false,
+        unlockedAt: null,
+        isAnonymous: true
+      }));
+      return res.json(achievementsWithProgress);
     }
 
     // Get all achievements
@@ -380,9 +394,23 @@ gamificationRouter.get("/badges/earned", async (req: Request, res: Response) => 
 // Get complete gamification status for user
 gamificationRouter.get("/summary", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
+      // Return anonymous user gamification data
+      return res.json({
+        experiencePoints: 0,
+        currentLevel: 1,
+        xpToNextLevel: 100,
+        currentStreak: 0,
+        longestStreak: 0,
+        totalWorkouts: 0,
+        totalMinutes: 0,
+        livesRemaining: 3,
+        streakFreezeUses: 0,
+        weeklyRank: null,
+        recentAchievements: [],
+        isAnonymous: true
+      });
     }
 
     const [user] = await db
