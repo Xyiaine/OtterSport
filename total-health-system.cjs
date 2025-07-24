@@ -114,15 +114,87 @@ class TotalHealthEngine {
     // Phase 3: Code optimization
     await this.optimizeCodebase();
     
-    // Phase 4: Feature enhancement
+    // Phase 4: Windows installer validation
+    await this.checkWindowsInstaller();
+    
+    // Phase 5: Feature enhancement
     await this.addMissingFeatures();
     
-    // Phase 5: Continuous monitoring
+    // Phase 6: Continuous monitoring
     await this.startContinuousOptimization();
     
     return this.generateComprehensiveReport();
   }
   
+  /**
+   * WINDOWS INSTALLER TESTING MODULE
+   * Tests and validates desktop installer components
+   */
+  async checkWindowsInstaller() {
+    console.log('\n🪟 WINDOWS INSTALLER HEALTH CHECK');
+    console.log('================================');
+    
+    const results = [];
+    
+    try {
+      // Check Electron dependencies
+      const electronCheck = await this.runHealthCheck('electron-dependencies', () => {
+        const fs = require('fs');
+        
+        const requiredFiles = [
+          'electron-main.js',
+          'installer-config.js', 
+          'build-installer.js',
+          'installer-script.nsh',
+          'create-installer.bat',
+          'README-INSTALLER.md'
+        ];
+        
+        const missing = requiredFiles.filter(file => !fs.existsSync(file));
+        if (missing.length > 0) {
+          throw new Error(`Missing installer files: ${missing.join(', ')}`);
+        }
+        
+        return { status: 'healthy', files: requiredFiles.length };
+      });
+      results.push(electronCheck);
+      
+      // Test installer configuration
+      const configCheck = await this.runHealthCheck('installer-config', () => {
+        const config = require('./installer-config.js');
+        
+        if (!config.appId || !config.productName) {
+          throw new Error('Invalid installer configuration');
+        }
+        
+        return { status: 'healthy', appId: config.appId };
+      });
+      results.push(configCheck);
+      
+      // Check build environment
+      const environmentCheck = await this.runHealthCheck('build-environment', async () => {
+        const { execSync } = require('child_process');
+        
+        try {
+          const nodeVersion = execSync('node --version', { encoding: 'utf8' }).trim();
+          return { status: 'healthy', node: nodeVersion };
+        } catch (error) {
+          throw new Error(`Build environment check failed: ${error.message}`);
+        }
+      });
+      results.push(environmentCheck);
+      
+      const healthyChecks = results.filter(r => r.status === 'healthy').length;
+      console.log(`✅ Windows Installer: ${healthyChecks}/${results.length} checks passed`);
+      
+      return results;
+      
+    } catch (error) {
+      console.error('❌ Windows Installer Check Failed:', error.message);
+      return [{ status: 'error', error: error.message }];
+    }
+  }
+
   /**
    * PHASE 1: SELF-CHECK AND VALIDATION
    * Validates the Total Health system itself
@@ -155,6 +227,15 @@ class TotalHealthEngine {
     }
   }
   
+  async runHealthCheck(name, checkFunction) {
+    try {
+      const result = await checkFunction();
+      return { name, status: 'healthy', ...result };
+    } catch (error) {
+      return { name, status: 'error', error: error.message };
+    }
+  }
+
   async testSelfFunctionality() {
     try {
       // Test core functions
