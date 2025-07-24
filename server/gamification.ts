@@ -10,7 +10,7 @@
  * - Badge awarding
  */
 
-import { db } from "./db";
+import { db, storage } from "./db";
 import { 
   users, 
   workouts, 
@@ -591,24 +591,56 @@ export async function processWorkoutCompletion(workoutId: number, userId: string
   newAchievements: Achievement[];
   livesRestored: number;
 }> {
-  // Get workout details
-  const [workout] = await db
-    .select()
-    .from(workouts)
-    .where(eq(workouts.id, workoutId));
-
-  if (!workout) {
-    throw new Error('Workout not found');
+  // Total Health System - Workout Completion Monitoring
+  console.log(`[Total Health] Processing workout completion - ID: ${workoutId}, User: ${userId}`);
+  
+  // Health Check: Verify database connection
+  if (!db && !storage) {
+    console.error('[Total Health] Critical Error: No database or storage available');
+    throw new Error('Database connection failed - Total Health System preventing data loss');
   }
 
-  // Get user details
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, userId));
+  let workout: any;
+  let user: any;
 
-  if (!user) {
-    throw new Error('User not found');
+  try {
+    // Use database if available, otherwise use storage interface
+    if (db) {
+      console.log('[Total Health] Using PostgreSQL database for workout retrieval');
+      const [workoutResult] = await db
+        .select()
+        .from(workouts)
+        .where(eq(workouts.id, workoutId));
+      workout = workoutResult;
+
+      const [userResult] = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, userId));
+      user = userResult;
+    } else {
+      console.log('[Total Health] Using in-memory storage for workout retrieval');
+      // Use storage interface for in-memory operations
+      workout = await storage.getWorkout?.(workoutId);
+      user = await storage.getUser?.(userId);
+    }
+
+    // Health Check: Validate workout data
+    if (!workout) {
+      console.error(`[Total Health] Workout not found - ID: ${workoutId}`);
+      throw new Error('Workout not found - Total Health System preventing invalid operation');
+    }
+
+    // Health Check: Validate user data
+    if (!user) {
+      console.error(`[Total Health] User not found - ID: ${userId}`);
+      throw new Error('User not found - Total Health System preventing invalid operation');
+    }
+
+    console.log(`[Total Health] Successfully retrieved workout and user data`);
+  } catch (error) {
+    console.error(`[Total Health] Error retrieving workout/user data:`, error);
+    throw new Error(`Failed to retrieve workout data - Total Health System error: ${error.message}`);
   }
 
   // Calculate and award XP

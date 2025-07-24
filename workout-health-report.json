@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-07-24T20:47:25.015Z",
+  "monitorId": "workout-1753390044967",
+  "healthScore": 100,
+  "databaseHealth": {
+    "connectionStatus": "healthy",
+    "responseTime": 0,
+    "lastCheck": 1753390045007,
+    "errorCount": 0,
+    "reconnectAttempts": 0
+  },
+  "memoryHealth": {
+    "status": "healthy",
+    "heapUsed": 4131176,
+    "heapTotal": 4694016,
+    "usagePercentage": 88.00941453970331,
+    "available": 562840
+  },
+  "workoutCapacity": {
+    "maxConcurrentWorkouts": 100,
+    "currentActiveWorkouts": 6,
+    "processingCapacity": 95,
+    "queueLength": 0
+  },
+  "preventedErrors": [],
+  "healthIssues": [],
+  "performanceMetrics": {
+    "workoutSaveTime": [],
+    "databaseResponseTime": [],
+    "memoryUsage": [],
+    "errorRate": 0
+  },
+  "initializationTime": 45,
+  "isMonitoring": true
+}

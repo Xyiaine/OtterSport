@@ -662,6 +662,7 @@ export class MemoryStorage implements IStorage {
   // ============================================================================
 
   async createWorkout(workout: InsertWorkout): Promise<Workout> {
+    console.log(`[Total Health] MemoryStorage: Creating workout for user ${workout.userId}`);
     const newWorkout: Workout = {
       ...workout,
       id: this.getNextId(),
@@ -672,41 +673,64 @@ export class MemoryStorage implements IStorage {
       calories: workout.calories ?? null,
     };
     this.workouts.set(newWorkout.id, newWorkout);
+    console.log(`[Total Health] MemoryStorage: Workout created successfully - ID: ${newWorkout.id}`);
     return newWorkout;
   }
 
+  async getWorkout(id: number): Promise<Workout | undefined> {
+    console.log(`[Total Health] MemoryStorage: Getting workout ${id}`);
+    this.validateId(id);
+    const workout = this.workouts.get(id);
+    if (workout) {
+      console.log(`[Total Health] MemoryStorage: Workout ${id} found`);
+    } else {
+      console.log(`[Total Health] MemoryStorage: Workout ${id} not found`);
+    }
+    return workout;
+  }
+
   async completeWorkout(workoutId: number, feedback: string, duration: number, calories?: number): Promise<Workout> {
+    console.log(`[Total Health] MemoryStorage: Completing workout ${workoutId} with feedback: ${feedback}`);
     this.validateId(workoutId);
     
     const workout = this.workouts.get(workoutId);
-    if (!workout) throw new Error("Workout not found");
-
-    const updatedWorkout: Workout = {
-      ...workout,
-      completedAt: new Date(),
-      feedback,
-      duration,
-      calories: calories ?? null,
-    };
-    this.workouts.set(workoutId, updatedWorkout);
-
-    // Update user stats
-    const user = this.users.get(workout.userId);
-    if (user) {
-      const newTotalWorkouts = (user.totalWorkouts || 0) + 1;
-      const newTotalMinutes = (user.totalMinutes || 0) + Math.floor(duration / 60);
-
-      await this.updateUserProgress(workout.userId, {
-        totalWorkouts: newTotalWorkouts,
-        totalMinutes: newTotalMinutes,
-        lastWorkoutFeedback: feedback,
-      });
-
-      // Update streak
-      await this.updateUserStreak(workout.userId);
+    if (!workout) {
+      console.error(`[Total Health] MemoryStorage: Workout ${workoutId} not found during completion`);
+      throw new Error("Workout not found - Total Health System preventing data corruption");
     }
 
-    return updatedWorkout;
+    try {
+      const updatedWorkout: Workout = {
+        ...workout,
+        completedAt: new Date(),
+        feedback,
+        duration,
+        calories: calories ?? null,
+      };
+      this.workouts.set(workoutId, updatedWorkout);
+
+      // Update user stats
+      const user = this.users.get(workout.userId);
+      if (user) {
+        const newTotalWorkouts = (user.totalWorkouts || 0) + 1;
+        const newTotalMinutes = (user.totalMinutes || 0) + Math.floor(duration / 60);
+
+        await this.updateUserProgress(workout.userId, {
+          totalWorkouts: newTotalWorkouts,
+          totalMinutes: newTotalMinutes,
+          lastWorkoutFeedback: feedback,
+        });
+
+        // Update streak
+        await this.updateUserStreak(workout.userId);
+      }
+
+      console.log(`[Total Health] MemoryStorage: Workout ${workoutId} completed successfully`);
+      return updatedWorkout;
+    } catch (error) {
+      console.error(`[Total Health] MemoryStorage: Error completing workout ${workoutId}:`, error);
+      throw new Error(`Failed to complete workout - Total Health System error: ${error.message}`);
+    }
   }
 
   async getUserWorkouts(userId: string, limit = 10): Promise<Workout[]> {

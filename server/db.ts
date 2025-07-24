@@ -70,6 +70,36 @@ export const storage = db ? new (class DatabaseStorage {
       achievements: 0
     };
   }
+
+  async getWorkout(id: number) {
+    console.log(`[Total Health] DatabaseStorage: Getting workout ${id}`);
+    const [workout] = await db.select().from(schema.workouts).where(eq(schema.workouts.id, id));
+    return workout || undefined;
+  }
+
+  async completeWorkout(workoutId: number, feedback: string, duration: number, calories?: number) {
+    console.log(`[Total Health] DatabaseStorage: Completing workout ${workoutId}`);
+    const now = new Date();
+    const [workout] = await db.update(schema.workouts)
+      .set({
+        completedAt: now,
+        feedback,
+        duration,
+        calories: calories || 0,
+        updatedAt: now
+      })
+      .where(eq(schema.workouts.id, workoutId))
+      .returning();
+    return workout;
+  }
+
+  async createWorkout(workoutData: any) {
+    console.log(`[Total Health] DatabaseStorage: Creating workout for user ${workoutData.userId}`);
+    const [workout] = await db.insert(schema.workouts)
+      .values(workoutData)
+      .returning();
+    return workout;
+  }
   
   async getExercises() {
     return await db.select().from(schema.exercises);
