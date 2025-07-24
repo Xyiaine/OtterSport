@@ -328,6 +328,12 @@ const essentialAchievements: InsertAchievement[] = [
 export async function seedEssentialData(): Promise<void> {
   console.log("[SeedData] Starting essential data seeding...");
   
+  // Check if database is available
+  if (!db) {
+    console.log("[SeedData] No database connection - skipping seed data (using in-memory storage)");
+    return;
+  }
+  
   try {
     // Clear existing data
     console.log("[SeedData] Clearing existing data...");
