@@ -1,0 +1,130 @@
+{
+  "timestamp": "2025-07-24T07:55:58.421Z",
+  "startTime": 1753343758422,
+  "basicHealth": {
+    "status": "healthy",
+    "data": {
+      "timestamp": "2025-07-24T07:55:58.424Z",
+      "responseTime": 1,
+      "overallHealth": "degraded",
+      "components": {
+        "storage": {
+          "type": "memory",
+          "status": "healthy",
+          "stats": {
+            "users": 0,
+            "exercises": 20,
+            "decks": 3,
+            "workouts": 0,
+            "achievements": 0
+          }
+        },
+        "features": {
+          "exercises": {
+            "status": "healthy",
+            "count": 20
+          },
+          "decks": {
+            "status": "healthy",
+            "count": 3
+          },
+          "achievements": {
+            "status": "degraded",
+            "count": 0
+          }
+        },
+        "system": {
+          "memory": {
+            "rss": 628375552,
+            "heapTotal": 288145408,
+            "heapUsed": 254696240,
+            "external": 11791289,
+            "arrayBuffers": 1394346
+          },
+          "uptime": 18.825578764,
+          "nodeVersion": "v20.19.3"
+        }
+      }
+    },
+    "responseTime": 1
+  },
+  "performance": {
+    "responseTime": 5,
+    "timestamp": "2025-07-24T07:55:58.430Z",
+    "system": {
+      "timestamp": "2025-07-24T07:55:58.426Z",
+      "responseTime": {
+        "storage": 0,
+        "total": 0
+      },
+      "dataMetrics": {
+        "decksCount": 3,
+        "memoryUsage": {
+          "rss": 628375552,
+          "heapTotal": 288145408,
+          "heapUsed": 254771904,
+          "external": 11791313,
+          "arrayBuffers": 1394370
+        },
+        "uptime": 18.828163584
+      },
+      "health": {
+        "storage": "excellent",
+        "memory": "high"
+      }
+    },
+    "database": {
+      "status": "memory-storage",
+      "message": "Using in-memory storage - no database connection",
+      "responseTime": 0,
+      "healthy": true
+    },
+    "status": "healthy"
+  },
+  "security": {
+    "timestamp": "2025-07-24T07:55:58.445Z",
+    "checks": [
+      {
+        "name": "Authentication System",
+        "status": "secure",
+        "details": "Authentication endpoint accessible and responsive",
+        "riskLevel": "low"
+      },
+      {
+        "name": "Session Management",
+        "status": "secure",
+        "details": "Session endpoints functioning correctly",
+        "riskLevel": "low"
+      },
+      {
+        "name": "API Endpoint Security",
+        "status": "secure",
+        "details": "Checked 3 endpoints, 0 issues found",
+        "riskLevel": "low",
+        "vulnerabilities": []
+      },
+      {
+        "name": "Data Validation",
+        "status": "secure",
+        "details": "Data endpoints responding with valid data structures",
+        "riskLevel": "low"
+      }
+    ],
+    "overallRisk": "low",
+    "recommendations": [
+      "All security checks passed - maintain current security practices"
+    ]
+  },
+  "predictions": {},
+  "endTime": 1753343758447,
+  "duration": 25,
+  "overallStatus": "healthy",
+  "summary": {
+    "overallStatus": "healthy",
+    "criticalIssues": 0,
+    "recommendations": [
+      "System is performing well - continue regular monitoring"
+    ],
+    "nextCheckRecommended": "2025-07-24T07:56:28.447Z"
+  }
+}

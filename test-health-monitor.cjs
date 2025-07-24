@@ -50,8 +50,9 @@ async function testHealthEndpoints() {
   
   // Test the comprehensive health monitor
   try {
-    const { runFullSystemCheck } = require('./system-health-monitor.js');
-    const healthReport = await runFullSystemCheck();
+    const { AdvancedSystemAnalyzer } = require('./advanced-health-monitor.cjs');
+    const analyzer = new AdvancedSystemAnalyzer();
+    const healthReport = await analyzer.runComprehensiveAnalysis();
     
     console.log(`\n🎯 Overall System Status: ${healthReport.overallStatus.toUpperCase()}`);
     console.log(`📈 Healthy Features: ${healthReport.healthyFeatures}/${healthReport.totalFeatures}`);
