@@ -5,7 +5,7 @@
 
 module.exports = {
   appId: "com.ottersport.app",
-  productName: "OtterSport",
+  productName: "TotalInstallerOtterSport",
   directories: {
     output: "dist-installer"
   },
@@ -39,12 +39,13 @@ module.exports = {
     verifyUpdateCodeSignature: false
   },
   nsis: {
-    oneClick: false,
-    allowToChangeInstallationDirectory: true,
+    oneClick: true,
+    allowToChangeInstallationDirectory: false,
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
-    shortcutName: "OtterSport",
-    include: "installer-script.nsh"
+    shortcutName: "TotalInstallerOtterSport",
+    include: "installer-script.nsh",
+    installerHeaderIcon: "game-assets/interface/logo.png"
   },
   mac: {
     target: [

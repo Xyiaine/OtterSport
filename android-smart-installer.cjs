@@ -15,9 +15,9 @@ const execAsync = util.promisify(exec);
 const { SmartInstallerHealthSystem } = require('./smart-installer-health-system.cjs');
 
 const ANDROID_INSTALLER_CONFIG = {
-  name: "OtterSport Android Smart Installer",
+  name: "TotalInstallerOtterSport Android",
   version: "1.0.0",
-  packageName: "com.ottersport.fitness",
+  packageName: "com.ottersport.totalinstaller",
   
   android: {
     minSdkVersion: 21,
