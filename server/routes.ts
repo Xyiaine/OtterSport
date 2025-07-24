@@ -25,6 +25,7 @@ import {
   type WarmupScoringState,
   type ScoringResult 
 } from "./warmup-scoring";
+import healthRoutes from "./system-health-routes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
@@ -44,6 +45,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register gamification routes
   app.use('/api/gamification', gamificationRouter);
+
+  // Register system health monitoring routes
+  app.use('/api/dev', healthRoutes);
 
   // ============================================================================
   // AUTH ROUTES

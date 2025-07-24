@@ -1,0 +1,355 @@
+{
+  "timestamp": "2025-07-24T07:24:39.803Z",
+  "systemInfo": {
+    "nodeVersion": "v20.19.3",
+    "platform": "linux",
+    "checkDuration": 413
+  },
+  "overallStatus": "healthy",
+  "criticalIssues": 0,
+  "totalFeatures": 10,
+  "healthyFeatures": 10,
+  "degradedFeatures": 0,
+  "failingFeatures": 0,
+  "features": {
+    "Core Authentication": {
+      "name": "Core Authentication",
+      "description": "User authentication and session management",
+      "critical": true,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/auth/user",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/auth/login",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/auth/logout",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 3,
+        "successfulEndpoints": 3,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "User Management": {
+      "name": "User Management",
+      "description": "User profiles, progress tracking, and statistics",
+      "critical": true,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/user/stats",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/user/profile",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "Exercise Library": {
+      "name": "Exercise Library",
+      "description": "Complete exercise database with categories and metadata",
+      "critical": true,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/exercises",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/exercises/category/cardio",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "Deck System": {
+      "name": "Deck System",
+      "description": "Card-based workout deck management and selection",
+      "critical": true,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/decks",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/decks/1/exercises",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "Workout Engine": {
+      "name": "Workout Engine",
+      "description": "Workout session creation and completion tracking",
+      "critical": true,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/workouts",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/workouts/create",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "Achievement System": {
+      "name": "Achievement System",
+      "description": "Gamification with user achievement tracking",
+      "critical": false,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/achievements",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/achievements/user",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "Card Battle Mode": {
+      "name": "Card Battle Mode",
+      "description": "Competitive card-based gameplay against AI",
+      "critical": false,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/card-battle/start",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/card-battle/state",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "Analytics Dashboard": {
+      "name": "Analytics Dashboard",
+      "description": "Performance metrics and progress analytics",
+      "critical": false,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/analytics/overview",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/analytics/performance",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "Database Health": {
+      "name": "Database Health",
+      "description": "Database connectivity and integrity checks",
+      "critical": true,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/dev/database/health",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/dev/database/status",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    },
+    "Migration Tools": {
+      "name": "Migration Tools",
+      "description": "Cross-platform migration and deployment tools",
+      "critical": false,
+      "status": "healthy",
+      "endpoints": [
+        {
+          "endpoint": "/api/migration/health",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        },
+        {
+          "endpoint": "/api/migration/status",
+          "status": 200,
+          "success": true,
+          "responseTime": "unknown",
+          "error": null
+        }
+      ],
+      "overallHealth": "excellent",
+      "issues": [],
+      "metrics": {
+        "totalEndpoints": 2,
+        "successfulEndpoints": 2,
+        "failedEndpoints": 0,
+        "averageResponseTime": 0
+      }
+    }
+  },
+  "database": {
+    "name": "Database Infrastructure",
+    "connectionStatus": "connected",
+    "schemaIntegrity": "valid",
+    "dataConsistency": "valid",
+    "performanceMetrics": {
+      "connectionTime": "unknown",
+      "dataHealth": {
+        "users": 0,
+        "exercises": 20,
+        "decks": 3,
+        "workouts": 0,
+        "achievements": 0,
+        "consistent": true,
+        "lastCheck": "2025-07-24T07:24:40.133Z"
+      }
+    },
+    "repairsAttempted": [],
+    "issues": []
+  },
+  "frontend": {
+    "name": "Frontend Application",
+    "loadStatus": "loaded",
+    "viteConnection": "connected",
+    "componentLoad": "unknown",
+    "jsErrors": [],
+    "performance": {
+      "pageLoadTime": "unknown"
+    }
+  },
+  "recommendations": [],
+  "autoRepairs": []
+}

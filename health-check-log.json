@@ -1,0 +1,10 @@
+[
+  {
+    "timestamp": "2025-07-24T07:24:39.803Z",
+    "overallStatus": "healthy",
+    "criticalIssues": 0,
+    "healthyFeatures": 10,
+    "totalFeatures": 10,
+    "checkDuration": 413
+  }
+]
