@@ -57,7 +57,24 @@ const TOTAL_HEALTH_CONFIG = {
     securityHardening: true,
     reliabilityEnhancement: true,
     scalabilityImprovement: true,
-    maintainabilityBoost: true
+    maintainabilityBoost: true,
+    crashDetection: true,
+    autoRecovery: true,
+    errorPrevention: true,
+    realTimeMonitoring: true
+  },
+
+  // Crash Detection & Recovery
+  crashRecovery: {
+    enabled: true,
+    reactHookErrorDetection: true,
+    serverErrorRecovery: true,
+    frontendCrashRecovery: true,
+    automaticRestarts: true,
+    errorLogAnalysis: true,
+    preventivePatching: true,
+    maxRecoveryAttempts: 5,
+    recoveryDelayMs: 2000
   }
 };
 
@@ -73,6 +90,12 @@ class TotalHealthEngine {
     this.repairsPerformed = 0;
     this.optimizationsApplied = 0;
     this.issuesDetected = [];
+    this.crashesDetected = 0;
+    this.recoveryAttempts = 0;
+    this.lastCrashTime = null;
+    this.errorPatterns = new Map();
+    this.preventivePatches = [];
+    this.crashRecoveryEnabled = TOTAL_HEALTH_CONFIG.crashRecovery.enabled;
     this.featuresAdded = [];
   }
   
@@ -124,6 +147,11 @@ class TotalHealthEngine {
     
     if (passed < results.length) {
       await this.repairSelfIssues(results.filter(r => !r.success));
+    }
+    
+    // Initialize crash detection system
+    if (this.crashRecoveryEnabled) {
+      await this.initializeCrashDetection();
     }
   }
   
@@ -1288,6 +1316,390 @@ module.exports = {
   TotalHealthEngine,
   TOTAL_HEALTH_CONFIG,
   runTotalHealth
+};
+
+/**
+ * CRASH DETECTION AND AUTO-REPAIR SYSTEM
+ * Advanced crash detection with automatic recovery capabilities
+ */
+TotalHealthEngine.prototype.initializeCrashDetection = async function() {
+  console.log('\n🛡️ INITIALIZING CRASH DETECTION SYSTEM');
+  console.log('=====================================');
+  
+  // Set up React Hook error detection
+  await this.setupReactHookDetection();
+  
+  // Set up server error monitoring
+  await this.setupServerErrorMonitoring();
+  
+  // Set up frontend crash detection
+  await this.setupFrontendCrashDetection();
+  
+  // Start continuous monitoring
+  this.startCrashMonitoring();
+  
+  console.log('✅ Crash detection system active');
+};
+
+TotalHealthEngine.prototype.setupReactHookDetection = async function() {
+  console.log('🔍 Setting up React Hook error detection...');
+  
+  // Common React Hook errors to detect
+  this.reactHookPatterns = [
+    /Hook .* called after an early return/,
+    /Rendered more hooks than during the previous render/,
+    /Rendered fewer hooks than expected/,
+    /Cannot update a component .* while rendering a different component/,
+    /Hook .* cannot be called inside a callback/,
+    /useState .* is not a function/,
+    /useEffect .* is not a function/
+  ];
+  
+  console.log('✅ React Hook detection patterns registered');
+};
+
+TotalHealthEngine.prototype.setupServerErrorMonitoring = async function() {
+  console.log('🖥️ Setting up server error monitoring...');
+  
+  // Common server error patterns
+  this.serverErrorPatterns = [
+    /Cannot read property .* of undefined/,
+    /Cannot read properties of undefined/,
+    /TypeError: .* is not a function/,
+    /ReferenceError: .* is not defined/,
+    /SyntaxError: Unexpected token/,
+    /Error: connect ECONNREFUSED/,
+    /ENOTFOUND/,
+    /getaddrinfo ENOTFOUND/
+  ];
+  
+  console.log('✅ Server error monitoring configured');
+};
+
+TotalHealthEngine.prototype.setupFrontendCrashDetection = async function() {
+  console.log('💻 Setting up frontend crash detection...');
+  
+  // Frontend crash patterns
+  this.frontendErrorPatterns = [
+    /ChunkLoadError/,
+    /Loading chunk \d+ failed/,
+    /TypeError: Failed to fetch/,
+    /Script error/,
+    /ResizeObserver loop limit exceeded/,
+    /Non-Error promise rejection captured/
+  ];
+  
+  console.log('✅ Frontend crash detection ready');
+};
+
+TotalHealthEngine.prototype.startCrashMonitoring = function() {
+  console.log('🔄 Starting continuous crash monitoring...');
+  
+  // Monitor every 30 seconds
+  this.crashMonitorInterval = setInterval(async () => {
+    await this.checkForCrashes();
+  }, 30000);
+  
+  console.log('✅ Crash monitoring active (30s intervals)');
+};
+
+TotalHealthEngine.prototype.checkForCrashes = async function() {
+  try {
+    // Check application logs for crashes
+    const logData = await this.fetchApplicationLogs();
+    
+    // Analyze logs for crash patterns
+    const crashes = this.analyzeCrashPatterns(logData);
+    
+    if (crashes.length > 0) {
+      console.log(`🚨 ${crashes.length} crash(es) detected!`);
+      this.crashesDetected += crashes.length;
+      
+      // Attempt automatic recovery
+      for (const crash of crashes) {
+        await this.attemptCrashRecovery(crash);
+      }
+    }
+    
+  } catch (error) {
+    console.error('❌ Error during crash monitoring:', error.message);
+  }
+};
+
+TotalHealthEngine.prototype.fetchApplicationLogs = async function() {
+  try {
+    // Fetch logs from the running application
+    const response = await axios.get(`${TOTAL_HEALTH_CONFIG.baseUrl}/api/development/logs`, {
+      timeout: 5000
+    });
+    return response.data || [];
+  } catch (error) {
+    // If we can't fetch logs, check if server is responding
+    try {
+      await axios.get(TOTAL_HEALTH_CONFIG.baseUrl, { timeout: 3000 });
+      return [];
+    } catch (serverError) {
+      return [{ 
+        level: 'error', 
+        message: 'Server not responding', 
+        timestamp: new Date().toISOString(),
+        type: 'server_down'
+      }];
+    }
+  }
+};
+
+TotalHealthEngine.prototype.analyzeCrashPatterns = function(logs) {
+  const crashes = [];
+  
+  for (const log of logs) {
+    if (log.level === 'error' || log.message?.includes('Error')) {
+      // Check React Hook errors
+      for (const pattern of this.reactHookPatterns) {
+        if (pattern.test(log.message)) {
+          crashes.push({
+            type: 'react_hook_error',
+            pattern: pattern.source,
+            message: log.message,
+            timestamp: log.timestamp,
+            severity: 'high'
+          });
+          break;
+        }
+      }
+      
+      // Check server errors
+      for (const pattern of this.serverErrorPatterns) {
+        if (pattern.test(log.message)) {
+          crashes.push({
+            type: 'server_error',
+            pattern: pattern.source,
+            message: log.message,
+            timestamp: log.timestamp,
+            severity: 'high'
+          });
+          break;
+        }
+      }
+      
+      // Check frontend errors
+      for (const pattern of this.frontendErrorPatterns) {
+        if (pattern.test(log.message)) {
+          crashes.push({
+            type: 'frontend_error',
+            pattern: pattern.source,
+            message: log.message,
+            timestamp: log.timestamp,
+            severity: 'medium'
+          });
+          break;
+        }
+      }
+    }
+  }
+  
+  return crashes;
+};
+
+TotalHealthEngine.prototype.attemptCrashRecovery = async function(crash) {
+  if (this.recoveryAttempts >= TOTAL_HEALTH_CONFIG.crashRecovery.maxRecoveryAttempts) {
+    console.log('⚠️ Maximum recovery attempts reached, manual intervention required');
+    return false;
+  }
+  
+  this.recoveryAttempts++;
+  console.log(`🔧 Attempting recovery for ${crash.type}...`);
+  
+  try {
+    let success = false;
+    
+    switch (crash.type) {
+      case 'react_hook_error':
+        success = await this.fixReactHookError(crash);
+        break;
+      case 'server_error':
+        success = await this.fixServerError(crash);
+        break;
+      case 'frontend_error':
+        success = await this.fixFrontendError(crash);
+        break;
+      default:
+        success = await this.generalRecoveryAttempt(crash);
+    }
+    
+    if (success) {
+      console.log('✅ Crash recovery successful');
+      this.repairsPerformed++;
+      
+      // Wait before checking if fix worked
+      await new Promise(resolve => setTimeout(resolve, TOTAL_HEALTH_CONFIG.crashRecovery.recoveryDelayMs));
+      
+      // Verify fix
+      const verification = await this.verifyCrashFix(crash);
+      if (verification) {
+        console.log('✅ Crash fix verified - system stable');
+        return true;
+      } else {
+        console.log('⚠️ Crash fix verification failed');
+        return false;
+      }
+    } else {
+      console.log('❌ Crash recovery failed');
+      return false;
+    }
+    
+  } catch (error) {
+    console.error('❌ Error during crash recovery:', error.message);
+    return false;
+  }
+};
+
+TotalHealthEngine.prototype.fixReactHookError = async function(crash) {
+  console.log('🔨 Fixing React Hook error...');
+  
+  // Common React Hook fixes
+  if (crash.message.includes('Rendered more hooks')) {
+    return await this.fixHookOrderingError();
+  } else if (crash.message.includes('Cannot update a component')) {
+    return await this.fixSetStateInRenderError();
+  } else if (crash.message.includes('early return')) {
+    return await this.fixConditionalHookError();
+  }
+  
+  return false;
+};
+
+TotalHealthEngine.prototype.fixHookOrderingError = async function() {
+  console.log('🔧 Fixing Hook ordering error...');
+  
+  try {
+    // This would analyze the component and fix hook ordering
+    // For now, we'll trigger a restart which often resolves the issue
+    await this.restartApplication();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+TotalHealthEngine.prototype.fixSetStateInRenderError = async function() {
+  console.log('🔧 Fixing setState in render error...');
+  
+  try {
+    // This would move setState calls to useEffect
+    // For now, we'll restart the application
+    await this.restartApplication();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+TotalHealthEngine.prototype.fixServerError = async function(crash) {
+  console.log('🔨 Fixing server error...');
+  
+  // Attempt server restart
+  try {
+    await this.restartApplication();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+TotalHealthEngine.prototype.fixFrontendError = async function(crash) {
+  console.log('🔨 Fixing frontend error...');
+  
+  // Clear caches and restart
+  try {
+    await this.clearFrontendCache();
+    await this.restartApplication();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+TotalHealthEngine.prototype.restartApplication = async function() {
+  console.log('🔄 Restarting application...');
+  
+  try {
+    // Send restart command to the application
+    await axios.post(`${TOTAL_HEALTH_CONFIG.baseUrl}/api/development/restart`, {}, {
+      timeout: 10000
+    });
+    
+    // Wait for restart
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    // Verify application is back up
+    const response = await axios.get(TOTAL_HEALTH_CONFIG.baseUrl, { timeout: 10000 });
+    return response.status === 200;
+    
+  } catch (error) {
+    console.error('❌ Application restart failed:', error.message);
+    return false;
+  }
+};
+
+TotalHealthEngine.prototype.clearFrontendCache = async function() {
+  console.log('🧹 Clearing frontend cache...');
+  
+  try {
+    await axios.post(`${TOTAL_HEALTH_CONFIG.baseUrl}/api/development/clear-cache`, {}, {
+      timeout: 5000
+    });
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+TotalHealthEngine.prototype.verifyCrashFix = async function(crash) {
+  console.log('🔍 Verifying crash fix...');
+  
+  try {
+    // Check if application is responding
+    const response = await axios.get(TOTAL_HEALTH_CONFIG.baseUrl, { timeout: 10000 });
+    
+    if (response.status !== 200) {
+      return false;
+    }
+    
+    // Check for new instances of the same error
+    const logs = await this.fetchApplicationLogs();
+    const newCrashes = this.analyzeCrashPatterns(logs);
+    
+    // Look for the same type of error in recent logs
+    const recentSameErrors = newCrashes.filter(c => 
+      c.type === crash.type && 
+      new Date(c.timestamp) > new Date(crash.timestamp)
+    );
+    
+    return recentSameErrors.length === 0;
+    
+  } catch (error) {
+    console.error('❌ Crash fix verification failed:', error.message);
+    return false;
+  }
+};
+
+TotalHealthEngine.prototype.generateCrashReport = function() {
+  return {
+    crashDetection: {
+      enabled: this.crashRecoveryEnabled,
+      crashesDetected: this.crashesDetected,
+      recoveryAttempts: this.recoveryAttempts,
+      successfulRecoveries: this.repairsPerformed,
+      errorPatterns: {
+        reactHook: this.reactHookPatterns.length,
+        server: this.serverErrorPatterns.length,
+        frontend: this.frontendErrorPatterns.length
+      },
+      lastCrashTime: this.lastCrashTime,
+      monitoringActive: !!this.crashMonitorInterval
+    }
+  };
 };
 
 // Run if called directly

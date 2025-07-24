@@ -106,13 +106,60 @@ export function GamificationDashboard() {
   // Animation data
   const [levelUpData, setLevelUpData] = useState({ newLevel: 1, xpGained: 0 });
   const [newAchievement, setNewAchievement] = useState(null);
+
+  // Mock goals data - in real app, this would come from API
+  const [userGoals, setUserGoals] = useState([
+    {
+      id: '1',
+      type: 'daily' as const,
+      target: 1,
+      current: 0,
+      unit: 'workouts',
+      description: 'Complete daily workout'
+    },
+    {
+      id: '2', 
+      type: 'weekly' as const,
+      target: 5,
+      current: 2,
+      unit: 'workouts',
+      description: 'Weekly workout target'
+    }
+  ]);
+
+  // Fetch gamification summary
+  const { data: summary, isLoading: summaryLoading } = useQuery<GamificationSummary>({
+    queryKey: ['/api/gamification/summary'],
+    refetchInterval: 30000, // Refresh every 30 seconds
+  });
+
+  // Fetch achievements
+  const { data: achievements, isLoading: achievementsLoading } = useQuery<Achievement[]>({
+    queryKey: ['/api/gamification/achievements'],
+  });
+
+  // Fetch leaderboard
+  const { data: leaderboard, isLoading: leaderboardLoading } = useQuery<LeaderboardEntry[]>({
+    queryKey: ['/api/gamification/leaderboard/weekly'],
+  });
+
+  // Fetch streak info
+  const { data: streakInfo, isLoading: streakLoading } = useQuery<StreakInfo>({
+    queryKey: ['/api/gamification/streak'],
+  });
+
+  // Fetch lives info
+  const { data: livesInfo, isLoading: livesLoading } = useQuery<LivesInfo>({
+    queryKey: ['/api/gamification/lives'],
+    refetchInterval: 60000, // Refresh every minute
+  });
   
   // Initialize notifications
   useEffect(() => {
     notificationService.initialize();
     
     // Listen for notification events
-    const handleNotification = (event) => {
+    const handleNotification = (event: any) => {
       setNotifications(prev => [...prev, event.detail]);
     };
     
@@ -120,32 +167,21 @@ export function GamificationDashboard() {
     return () => window.removeEventListener('ottersport-notification', handleNotification);
   }, []);
 
-  // Fetch gamification summary
-  const { data: summary, isLoading: summaryLoading } = useQuery({
-    queryKey: ['/api/gamification/summary'],
-    refetchInterval: 30000, // Refresh every 30 seconds
-  });
+  // Check for streak warnings
+  useEffect(() => {
+    if (streakInfo?.isAtRisk && streakInfo.currentStreak >= 3) {
+      notificationService.sendStreakBreakWarning(streakInfo.currentStreak, 12); // Assume 12 hours left
+      setShowStreakWarning(true);
+    }
+  }, [streakInfo]);
 
-  // Fetch achievements
-  const { data: achievements, isLoading: achievementsLoading } = useQuery({
-    queryKey: ['/api/gamification/achievements'],
-  });
-
-  // Fetch leaderboard
-  const { data: leaderboard, isLoading: leaderboardLoading } = useQuery({
-    queryKey: ['/api/gamification/leaderboard/weekly'],
-  });
-
-  // Fetch streak info
-  const { data: streakInfo, isLoading: streakLoading } = useQuery({
-    queryKey: ['/api/gamification/streak'],
-  });
-
-  // Fetch lives info
-  const { data: livesInfo, isLoading: livesLoading } = useQuery({
-    queryKey: ['/api/gamification/lives'],
-    refetchInterval: 60000, // Refresh every minute
-  });
+  // Check for lives warnings
+  useEffect(() => {
+    if (livesInfo?.livesRemaining <= 2) {
+      notificationService.sendLivesLowWarning(livesInfo.livesRemaining);
+      setShowLivesWarning(true);
+    }
+  }, [livesInfo]);
 
   // Streak freeze mutation
   const streakFreezeMutation = useMutation({
@@ -209,42 +245,6 @@ export function GamificationDashboard() {
       </div>
     );
   }
-
-  // Check for streak warnings
-  useEffect(() => {
-    if (streakInfo?.isAtRisk && streakInfo.currentStreak >= 3) {
-      notificationService.sendStreakBreakWarning(streakInfo.currentStreak, 12); // Assume 12 hours left
-      setShowStreakWarning(true);
-    }
-  }, [streakInfo]);
-
-  // Check for lives warnings
-  useEffect(() => {
-    if (livesInfo?.livesRemaining <= 2) {
-      notificationService.sendLivesLowWarning(livesInfo.livesRemaining);
-      setShowLivesWarning(true);
-    }
-  }, [livesInfo]);
-
-  // Mock goals data - in real app, this would come from API
-  const [userGoals, setUserGoals] = useState([
-    {
-      id: '1',
-      type: 'daily',
-      target: 1,
-      current: 0,
-      unit: 'workouts',
-      description: 'Complete daily workout'
-    },
-    {
-      id: '2', 
-      type: 'weekly',
-      target: 5,
-      current: 2,
-      unit: 'workouts',
-      description: 'Weekly workout target'
-    }
-  ]);
 
   const handleWorkoutNow = () => {
     window.location.href = '/workout';
