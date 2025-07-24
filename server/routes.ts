@@ -9,6 +9,13 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./db";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { 
+  handleAdminLogin, 
+  handleAdminLogout, 
+  getAdminStatus, 
+  requireAdmin, 
+  isAdmin 
+} from "./adminAuth";
 import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeckExerciseSchema } from "@shared/schema";
 import { z } from "zod";
 import { registerTestRoutes } from "./api-test-routes";
@@ -52,6 +59,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ============================================================================
   // AUTH ROUTES
   // ============================================================================
+  
+  // Admin authentication routes
+  app.post("/api/admin/login", handleAdminLogin);
+  app.post("/api/admin/logout", handleAdminLogout);
+  app.get("/api/admin/status", getAdminStatus);
   
   /**
    * GET /api/auth/user

@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { useAdmin } from "@/hooks/useAdmin";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { apiRequest } from "@/lib/queryClient";
 import ExerciseCard from "@/components/ui/exercise-card";
@@ -47,6 +48,7 @@ export default function WorkoutPage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { user } = useAuth();
+  const { canSkipExercises, isAdmin } = useAdmin();
   const queryClient = useQueryClient();
 
   // Get URL parameters for game mode
@@ -510,6 +512,24 @@ export default function WorkoutPage() {
             <i className="fas fa-forward mr-2"></i>
             Skip
           </Button>
+          {/* Admin Skip Button for Timed Exercises */}
+          {canSkipExercises && isTimerRunning && (
+            <Button
+              onClick={() => {
+                setTimer(0);
+                setIsTimerRunning(false);
+                toast({
+                  title: "Admin skip activated",
+                  description: "Timer skipped for testing purposes",
+                });
+              }}
+              variant="outline"
+              className="px-3 py-3 bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100"
+              title="Admin: Skip timer instantly"
+            >
+              <i className="fas fa-bolt"></i>
+            </Button>
+          )}
         </div>
       </div>
 

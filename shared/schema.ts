@@ -74,6 +74,11 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
   
+  // Admin authentication
+  isAdmin: boolean("is_admin").default(false),
+  adminLogin: varchar("admin_login"),
+  adminPasswordHash: varchar("admin_password_hash"),
+  
   // Fitness profile settings
   fitnessGoal: varchar("fitness_goal"), // Options: lose_weight, gain_muscle, improve_endurance, stay_consistent, increase_mobility
   fitnessLevel: varchar("fitness_level"), // Options: beginner, casual, fit, athlete

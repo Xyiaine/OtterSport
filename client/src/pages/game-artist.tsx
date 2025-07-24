@@ -34,6 +34,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useGameArtist } from "@/contexts/GameArtistContext";
 import { useLocation } from "wouter";
+import { useAdmin } from "@/hooks/useAdmin";
+import AdminLogin from "@/components/ui/admin-login";
 import VisualEditor from "@/components/ui/visual-editor";
 import ColorPaletteManager from "@/components/ui/color-palette-manager";
 import LayerPanel from "@/components/ui/layer-panel";
