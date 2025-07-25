@@ -1,0 +1,9 @@
+{
+  "environment": "production",
+  "port": 5000,
+  "healthMonitoring": true,
+  "autoStart": true,
+  "platform": "Linux",
+  "installedAt": "2025-07-25T07:55:29.476Z",
+  "version": "1.0.0"
+}
