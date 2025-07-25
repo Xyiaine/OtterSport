@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-07-25T07:50:26.495Z",
+  "timestamp": "2025-07-25T08:46:57.489Z",
   "version": "3.0.0",
-  "duration": 605,
+  "duration": 192,
   "healthScore": 91,
   "status": "excellent",
   "metrics": {
@@ -9,74 +9,74 @@
       {
         "endpoint": "/api/auth/user",
         "status": "healthy",
-        "responseTime": 172,
+        "responseTime": 65,
         "statusCode": 200
       },
       {
         "endpoint": "/api/user/stats",
         "status": "healthy",
-        "responseTime": 7,
+        "responseTime": 3,
         "statusCode": 200
       },
       {
         "endpoint": "/api/exercises",
         "status": "healthy",
-        "responseTime": 8,
+        "responseTime": 3,
         "statusCode": 200
       },
       {
         "endpoint": "/api/decks",
         "status": "healthy",
-        "responseTime": 4,
+        "responseTime": 5,
         "statusCode": 200
       },
       {
         "endpoint": "/api/achievements",
         "status": "healthy",
-        "responseTime": 4,
+        "responseTime": 3,
         "statusCode": 200
       },
       {
         "endpoint": "/api/dev/health/summary",
         "status": "healthy",
-        "responseTime": 4,
+        "responseTime": 6,
         "statusCode": 200
       },
       {
         "endpoint": "/api/dev/system/performance",
         "status": "healthy",
-        "responseTime": 73,
+        "responseTime": 6,
         "statusCode": 200
       }
     ],
     "system": {
-      "timestamp": "2025-07-25T07:50:26.173Z",
+      "timestamp": "2025-07-25T08:46:57.393Z",
       "cpu": {
         "usage": {
-          "user": 153061,
-          "system": 51935
+          "user": 132817,
+          "system": 52635
         },
         "loadAvg": [
-          5.39,
-          5.56,
-          5.97
+          4.7,
+          4.56,
+          5.39
         ],
         "cores": 8
       },
       "memory": {
         "total": 67436748800,
-        "free": 15883616256,
+        "free": 18787545088,
         "process": {
-          "rss": 66285568,
+          "rss": 66555904,
           "heapTotal": 13692928,
-          "heapUsed": 9313040,
-          "external": 3357723,
-          "arrayBuffers": 83326
+          "heapUsed": 9260560,
+          "external": 3350910,
+          "arrayBuffers": 76513
         },
-        "utilization": "76.45"
+        "utilization": "72.14"
       },
       "system": {
-        "uptime": 17592.01,
+        "uptime": 20983.23,
         "platform": "linux",
         "arch": "x64",
         "nodeVersion": "v20.19.3"
@@ -155,13 +155,13 @@
         ]
       },
       "resources": {
-        "cpu": 221123,
+        "cpu": 198181,
         "memory": {
-          "rss": 66416640,
+          "rss": 66686976,
           "heapTotal": 13955072,
-          "heapUsed": 9980912,
-          "external": 3374356,
-          "arrayBuffers": 99919
+          "heapUsed": 9929312,
+          "external": 3367543,
+          "arrayBuffers": 93106
         },
         "handles": 2
       }
@@ -181,14 +181,14 @@
         "totalRequests": 10,
         "successfulRequests": 10,
         "successRate": 100,
-        "averageResponseTime": 19.7,
-        "totalDuration": 197
+        "averageResponseTime": 2.4,
+        "totalDuration": 24
       }
     },
     "optimization": {
       "memoryOptimization": {
         "status": "optimal",
-        "heapUtilization": "78.32%",
+        "heapUtilization": "78.59%",
         "recommendation": "Memory usage is optimal"
       },
       "cpuOptimization": {
