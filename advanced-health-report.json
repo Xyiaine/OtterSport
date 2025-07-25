@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-07-25T07:48:31.759Z",
-  "startTime": 1753429711760,
+  "timestamp": "2025-07-25T08:56:49.902Z",
+  "startTime": 1753433809931,
   "basicHealth": {
     "status": "healthy",
     "data": {
-      "timestamp": "2025-07-25T07:48:31.802Z",
-      "responseTime": 3,
+      "timestamp": "2025-07-25T08:56:50.083Z",
+      "responseTime": 1,
       "overallHealth": "degraded",
       "components": {
         "storage": {
@@ -35,38 +35,38 @@
         },
         "system": {
           "memory": {
-            "rss": 277430272,
-            "heapTotal": 110817280,
-            "heapUsed": 107095456,
-            "external": 11247955,
-            "arrayBuffers": 851052
+            "rss": 233132032,
+            "heapTotal": 112390144,
+            "heapUsed": 107376624,
+            "external": 11112703,
+            "arrayBuffers": 715760
           },
-          "uptime": 172.718670752,
+          "uptime": 225.674326819,
           "nodeVersion": "v20.19.3"
         }
       }
     },
-    "responseTime": 3
+    "responseTime": 1
   },
   "performance": {
-    "responseTime": 11,
-    "timestamp": "2025-07-25T07:48:31.825Z",
+    "responseTime": 84,
+    "timestamp": "2025-07-25T08:56:50.191Z",
     "system": {
-      "timestamp": "2025-07-25T07:48:31.818Z",
+      "timestamp": "2025-07-25T08:56:50.181Z",
       "responseTime": {
-        "storage": 0,
-        "total": 0
+        "storage": 1,
+        "total": 1
       },
       "dataMetrics": {
         "decksCount": 3,
         "memoryUsage": {
-          "rss": 277561344,
-          "heapTotal": 110817280,
-          "heapUsed": 107200416,
-          "external": 11248019,
-          "arrayBuffers": 851076
+          "rss": 234180608,
+          "heapTotal": 112390144,
+          "heapUsed": 107429432,
+          "external": 11112727,
+          "arrayBuffers": 715784
         },
-        "uptime": 172.73436507
+        "uptime": 225.772203437
       },
       "health": {
         "storage": "excellent",
@@ -82,7 +82,7 @@
     "status": "healthy"
   },
   "security": {
-    "timestamp": "2025-07-25T07:48:31.868Z",
+    "timestamp": "2025-07-25T08:56:50.284Z",
     "checks": [
       {
         "name": "Authentication System",
@@ -116,8 +116,8 @@
     ]
   },
   "predictions": {},
-  "endTime": 1753429711870,
-  "duration": 110,
+  "endTime": 1753433810286,
+  "duration": 355,
   "overallStatus": "healthy",
   "summary": {
     "overallStatus": "healthy",
@@ -125,6 +125,6 @@
     "recommendations": [
       "System is performing well - continue regular monitoring"
     ],
-    "nextCheckRecommended": "2025-07-25T07:49:01.870Z"
+    "nextCheckRecommended": "2025-07-25T08:57:20.287Z"
   }
 }

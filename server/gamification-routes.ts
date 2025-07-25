@@ -129,7 +129,7 @@ gamificationRouter.get("/achievements", async (req: Request, res: Response) => {
 // Get user's unlocked achievements only
 gamificationRouter.get("/achievements/unlocked", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -161,7 +161,7 @@ gamificationRouter.get("/achievements/unlocked", async (req: Request, res: Respo
 // Get user's streak information
 gamificationRouter.get("/streak", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -206,7 +206,7 @@ gamificationRouter.get("/streak", async (req: Request, res: Response) => {
 // Use streak freeze
 gamificationRouter.post("/streak/freeze", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -256,7 +256,7 @@ gamificationRouter.get("/leaderboard/weekly", async (req: Request, res: Response
 // Get user's current weekly rank
 gamificationRouter.get("/leaderboard/my-rank", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -287,7 +287,7 @@ gamificationRouter.get("/leaderboard/my-rank", async (req: Request, res: Respons
 // Get user's current lives
 gamificationRouter.get("/lives", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -324,7 +324,7 @@ gamificationRouter.get("/lives", async (req: Request, res: Response) => {
 // Deduct a life (for mistakes/failures)
 gamificationRouter.post("/lives/deduct", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -359,7 +359,7 @@ gamificationRouter.get("/badges", async (req: Request, res: Response) => {
 // Get user's earned badges
 gamificationRouter.get("/badges/earned", async (req: Request, res: Response) => {
   try {
-    const userId = req.session?.passport?.user?.id;
+    const userId = (req as any).user?.claims?.sub;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }

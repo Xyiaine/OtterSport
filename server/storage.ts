@@ -508,7 +508,65 @@ export class MemoryStorage implements IStorage {
       this.deckExercises.set(de.id, de);
     });
 
-    this.nextId = 22;
+    // Add achievements
+    const defaultAchievements: Achievement[] = [
+      {
+        id: 1,
+        name: "First Workout",
+        description: "Complete your first workout",
+        icon: "fas fa-trophy",
+        requirement: "Complete 1 workout",
+        requiredValue: 1,
+        category: "milestone",
+        createdAt: new Date()
+      },
+      {
+        id: 2,
+        name: "Streak Master",
+        description: "Maintain a 7-day workout streak",
+        icon: "fas fa-fire",
+        requirement: "Maintain 7-day streak",
+        requiredValue: 7,
+        category: "streak",
+        createdAt: new Date()
+      },
+      {
+        id: 3,
+        name: "Consistency Champion",
+        description: "Complete 10 workouts",
+        icon: "fas fa-medal",
+        requirement: "Complete 10 workouts",
+        requiredValue: 10,
+        category: "milestone",
+        createdAt: new Date()
+      },
+      {
+        id: 4,
+        name: "Cardio King",
+        description: "Complete 5 cardio workouts",
+        icon: "fas fa-heartbeat",
+        requirement: "Complete 5 cardio workouts",
+        requiredValue: 5,
+        category: "category",
+        createdAt: new Date()
+      },
+      {
+        id: 5,
+        name: "Strength Warrior",
+        description: "Complete 5 strength workouts",
+        icon: "fas fa-dumbbell",
+        requirement: "Complete 5 strength workouts",
+        requiredValue: 5,
+        category: "category",
+        createdAt: new Date()
+      }
+    ];
+
+    defaultAchievements.forEach(achievement => {
+      this.achievements.set(achievement.id, achievement);
+    });
+
+    this.nextId = 23;
   }
 
   private getNextId(): number {
