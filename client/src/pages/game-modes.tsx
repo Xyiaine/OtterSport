@@ -10,6 +10,15 @@ import { useAuth } from "@/hooks/useAuth";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { apiRequest } from "@/lib/queryClient";
 import OtterCharacter from "@/components/ui/otter-character";
+import { 
+  AnimatedButton, 
+  AnimatedCard, 
+  AnimatedMenuItem,
+  PageTransition, 
+  StaggeredList,
+  AnimatedSpinner
+} from "@/components/ui/menu-animations";
+import { motion } from "framer-motion";
 import type { Deck, Exercise, DeckExercise } from "@shared/schema";
 
 type DeckWithExercises = Deck & { 
