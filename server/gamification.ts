@@ -122,7 +122,7 @@ export async function calculateWorkoutXP(workout: Workout, user: User): Promise<
     .where(
       and(
         eq(workouts.userId, user.id),
-        gte(workouts.completedAt, today.toISOString())
+        gte(workouts.completedAt, today)
       )
     );
 
@@ -402,7 +402,7 @@ async function checkPerfectWeek(userId: string): Promise<boolean> {
     .where(
       and(
         eq(workouts.userId, userId),
-        gte(workouts.completedAt, sevenDaysAgo.toISOString())
+        gte(workouts.completedAt, sevenDaysAgo)
       )
     )
     .orderBy(desc(workouts.completedAt));
