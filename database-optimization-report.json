@@ -2,7 +2,7 @@
   "metadata": {
     "application": "OtterSport Fitness App",
     "platform": "Neon PostgreSQL (Serverless)",
-    "optimizedAt": "2025-07-19T19:25:22.554Z",
+    "optimizedAt": "2025-07-27T14:43:37.321Z",
     "version": "1.0.0"
   },
   "summary": {
@@ -147,7 +147,7 @@
             "effective_cache_size": "1GB"
           }
         },
-        "appliedAt": "2025-07-19T19:25:22.553Z"
+        "appliedAt": "2025-07-27T14:43:37.320Z"
       }
     ]
   },

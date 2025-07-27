@@ -1,11 +1,11 @@
 {
   "summary": {
     "totalTests": 16,
-    "successfulTests": 13,
-    "failedTests": 3,
-    "overallSuccessRate": 81.25,
-    "avgResponseTime": 131.62,
-    "testDate": "2025-07-23T11:50:10.417Z"
+    "successfulTests": 14,
+    "failedTests": 2,
+    "overallSuccessRate": 87.5,
+    "avgResponseTime": 75.14,
+    "testDate": "2025-07-27T14:43:25.531Z"
   },
   "detailedResults": [
     {
@@ -14,9 +14,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 34,
+      "duration": 38,
       "dataSize": 96,
-      "timestamp": "2025-07-23T11:49:52.026Z"
+      "timestamp": "2025-07-27T14:43:11.655Z"
     },
     {
       "name": "User Stats (Anonymous)",
@@ -26,7 +26,7 @@
       "success": true,
       "duration": 3,
       "dataSize": 73,
-      "timestamp": "2025-07-23T11:49:52.038Z"
+      "timestamp": "2025-07-27T14:43:11.667Z"
     },
     {
       "name": "Exercise Library",
@@ -34,9 +34,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 149,
+      "duration": 210,
       "dataSize": 8143,
-      "timestamp": "2025-07-23T11:49:52.193Z"
+      "timestamp": "2025-07-27T14:43:11.886Z"
     },
     {
       "name": "Exercise Categories",
@@ -44,9 +44,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 162,
+      "duration": 82,
       "dataSize": 789,
-      "timestamp": "2025-07-23T11:49:52.806Z"
+      "timestamp": "2025-07-27T14:43:12.160Z"
     },
     {
       "name": "Exercise by ID",
@@ -54,9 +54,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 5,
+      "duration": 7,
       "dataSize": 43608,
-      "timestamp": "2025-07-23T11:49:53.260Z"
+      "timestamp": "2025-07-27T14:43:12.356Z"
     },
     {
       "name": "Deck Collection",
@@ -64,9 +64,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 149,
+      "duration": 62,
       "dataSize": 679,
-      "timestamp": "2025-07-23T11:49:53.436Z"
+      "timestamp": "2025-07-27T14:43:12.459Z"
     },
     {
       "name": "Deck with Exercises",
@@ -74,9 +74,9 @@
       "method": "GET",
       "status": 404,
       "success": false,
-      "duration": 150,
+      "duration": 63,
       "dataSize": 28,
-      "timestamp": "2025-07-23T11:49:54.038Z"
+      "timestamp": "2025-07-27T14:43:12.705Z"
     },
     {
       "name": "Deck Categories",
@@ -84,9 +84,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 151,
+      "duration": 63,
       "dataSize": 679,
-      "timestamp": "2025-07-23T11:49:54.189Z"
+      "timestamp": "2025-07-27T14:43:12.769Z"
     },
     {
       "name": "Achievement List",
@@ -94,9 +94,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 152,
+      "duration": 62,
       "dataSize": 758,
-      "timestamp": "2025-07-23T11:49:54.788Z"
+      "timestamp": "2025-07-27T14:43:13.017Z"
     },
     {
       "name": "User Achievements",
@@ -106,17 +106,17 @@
       "success": true,
       "duration": 3,
       "dataSize": 2,
-      "timestamp": "2025-07-23T11:49:55.243Z"
+      "timestamp": "2025-07-27T14:43:13.207Z"
     },
     {
       "name": "Gamification Summary",
       "endpoint": "/api/gamification/summary",
       "method": "GET",
-      "status": 401,
-      "success": false,
-      "duration": 2,
-      "dataSize": 26,
-      "timestamp": "2025-07-23T11:49:55.253Z"
+      "status": 200,
+      "success": true,
+      "duration": 3,
+      "dataSize": 231,
+      "timestamp": "2025-07-27T14:43:13.217Z"
     },
     {
       "name": "Leaderboard",
@@ -124,9 +124,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 152,
+      "duration": 78,
       "dataSize": 2,
-      "timestamp": "2025-07-23T11:49:55.405Z"
+      "timestamp": "2025-07-27T14:43:13.300Z"
     },
     {
       "name": "User Progress",
@@ -134,9 +134,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 5,
+      "duration": 7,
       "dataSize": 43608,
-      "timestamp": "2025-07-23T11:49:55.862Z"
+      "timestamp": "2025-07-27T14:43:13.501Z"
     },
     {
       "name": "Database Health",
@@ -144,9 +144,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 737,
-      "dataSize": 344,
-      "timestamp": "2025-07-23T11:49:56.626Z"
+      "duration": 424,
+      "dataSize": 343,
+      "timestamp": "2025-07-27T14:43:13.962Z"
     },
     {
       "name": "Performance Metrics",
@@ -154,9 +154,9 @@
       "method": "GET",
       "status": "ERROR",
       "success": false,
-      "duration": 10009,
+      "duration": 10005,
       "error": "timeout of 10000ms exceeded",
-      "timestamp": "2025-07-23T11:50:08.840Z"
+      "timestamp": "2025-07-27T14:43:24.860Z"
     },
     {
       "name": "System Status",
@@ -164,9 +164,9 @@
       "method": "GET",
       "status": 200,
       "success": true,
-      "duration": 9,
+      "duration": 10,
       "dataSize": 43608,
-      "timestamp": "2025-07-23T11:50:08.850Z"
+      "timestamp": "2025-07-27T14:43:24.870Z"
     }
   ],
   "performanceMetrics": [
@@ -181,97 +181,105 @@
     {
       "feature": "authentication",
       "endpoint": "/api/user/stats",
-      "average": 2,
-      "min": 2,
-      "max": 2,
-      "successRate": 100
-    },
-    {
-      "feature": "exercises",
-      "endpoint": "/api/exercises",
-      "average": 150.33333333333334,
-      "min": 150,
-      "max": 151,
-      "successRate": 100
-    },
-    {
-      "feature": "exercises",
-      "endpoint": "/api/exercises?category=cardio",
-      "average": 149.33333333333334,
-      "min": 149,
-      "max": 150,
-      "successRate": 100
-    },
-    {
-      "feature": "exercises",
-      "endpoint": "/api/exercises/334",
-      "average": 8.666666666666666,
-      "min": 4,
-      "max": 16,
-      "successRate": 100
-    },
-    {
-      "feature": "decks",
-      "endpoint": "/api/decks",
-      "average": 150.66666666666666,
-      "min": 149,
-      "max": 154,
-      "successRate": 100
-    },
-    {
-      "feature": "decks",
-      "endpoint": "/api/decks?category=strength",
-      "average": 149,
-      "min": 149,
-      "max": 149,
-      "successRate": 100
-    },
-    {
-      "feature": "achievements",
-      "endpoint": "/api/achievements",
-      "average": 150.33333333333334,
-      "min": 150,
-      "max": 151,
-      "successRate": 100
-    },
-    {
-      "feature": "achievements",
-      "endpoint": "/api/user/achievements",
       "average": 2.6666666666666665,
       "min": 2,
       "max": 3,
       "successRate": 100
     },
     {
+      "feature": "exercises",
+      "endpoint": "/api/exercises",
+      "average": 64,
+      "min": 61,
+      "max": 68,
+      "successRate": 100
+    },
+    {
+      "feature": "exercises",
+      "endpoint": "/api/exercises?category=cardio",
+      "average": 63,
+      "min": 62,
+      "max": 64,
+      "successRate": 100
+    },
+    {
+      "feature": "exercises",
+      "endpoint": "/api/exercises/334",
+      "average": 13.666666666666666,
+      "min": 7,
+      "max": 19,
+      "successRate": 100
+    },
+    {
+      "feature": "decks",
+      "endpoint": "/api/decks",
+      "average": 61,
+      "min": 61,
+      "max": 61,
+      "successRate": 100
+    },
+    {
+      "feature": "decks",
+      "endpoint": "/api/decks?category=strength",
+      "average": 62,
+      "min": 62,
+      "max": 62,
+      "successRate": 100
+    },
+    {
+      "feature": "achievements",
+      "endpoint": "/api/achievements",
+      "average": 62.333333333333336,
+      "min": 62,
+      "max": 63,
+      "successRate": 100
+    },
+    {
+      "feature": "achievements",
+      "endpoint": "/api/user/achievements",
+      "average": 2.3333333333333335,
+      "min": 2,
+      "max": 3,
+      "successRate": 100
+    },
+    {
+      "feature": "gamification",
+      "endpoint": "/api/gamification/summary",
+      "average": 1.6666666666666667,
+      "min": 1,
+      "max": 2,
+      "successRate": 100
+    },
+    {
       "feature": "gamification",
       "endpoint": "/api/gamification/leaderboard",
-      "average": 150.66666666666666,
-      "min": 149,
-      "max": 152,
+      "average": 64.33333333333333,
+      "min": 63,
+      "max": 67,
       "successRate": 100
     },
     {
       "feature": "gamification",
       "endpoint": "/api/gamification/progress",
-      "average": 8.333333333333334,
-      "min": 7,
-      "max": 10,
+      "average": 10.333333333333334,
+      "min": 10,
+      "max": 11,
       "successRate": 100
     },
     {
       "feature": "development",
       "endpoint": "/api/dev/health",
-      "average": 734.6666666666666,
-      "min": 734,
-      "max": 736,
+      "average": 297.3333333333333,
+      "min": 295,
+      "max": 299,
       "successRate": 100
     },
     {
       "feature": "development",
       "endpoint": "/api/dev/status",
-      "average": 10.666666666666666,
+      "average": 8,
       "min": 7,
-      "max": 17,
+      "max": 10,
       "successRate": 100
     }
   ],
@@ -279,37 +287,10 @@
     {
       "type": "bug-fix",
       "priority": "high",
-      "description": "3 endpoints failing - requires immediate attention",
+      "description": "2 endpoints failing - requires immediate attention",
       "endpoints": [
         "/api/decks/43",
-        "/api/gamification/summary",
         "/api/dev/performance"
-      ]
-    },
-    {
-      "type": "performance",
-      "priority": "medium",
-      "description": "1 endpoints responding slowly (>500ms)",
-      "endpoints": [
-        {
-          "endpoint": "/api/dev/health",
-          "duration": 737
-        }
-      ]
-    },
-    {
-      "type": "database",
-      "priority": "medium",
-      "description": "Database queries need optimization",
-      "details": [
-        {
-          "feature": "development",
-          "endpoint": "/api/dev/health",
-          "average": 734.6666666666666,
-          "min": 734,
-          "max": 736,
-          "successRate": 100
-        }
       ]
     }
   ]

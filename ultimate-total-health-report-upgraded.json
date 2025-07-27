@@ -1,91 +1,91 @@
 {
-  "timestamp": "2025-07-25T08:55:04.937Z",
+  "timestamp": "2025-07-27T14:43:06.205Z",
   "version": "3.0.0",
-  "duration": 290,
-  "healthScore": 91,
+  "duration": 1315,
+  "healthScore": 93,
   "status": "excellent",
   "metrics": {
     "endpoints": [
       {
         "endpoint": "/api/auth/user",
         "status": "healthy",
-        "responseTime": 80,
+        "responseTime": 50,
         "statusCode": 200
       },
       {
         "endpoint": "/api/user/stats",
         "status": "healthy",
-        "responseTime": 25,
+        "responseTime": 4,
         "statusCode": 200
       },
       {
         "endpoint": "/api/exercises",
         "status": "healthy",
-        "responseTime": 6,
+        "responseTime": 495,
         "statusCode": 200
       },
       {
         "endpoint": "/api/decks",
         "status": "healthy",
-        "responseTime": 6,
+        "responseTime": 66,
         "statusCode": 200
       },
       {
         "endpoint": "/api/achievements",
         "status": "healthy",
-        "responseTime": 4,
+        "responseTime": 65,
         "statusCode": 200
       },
       {
         "endpoint": "/api/dev/health/summary",
         "status": "healthy",
-        "responseTime": 8,
+        "responseTime": 194,
         "statusCode": 200
       },
       {
         "endpoint": "/api/dev/system/performance",
         "status": "healthy",
-        "responseTime": 9,
+        "responseTime": 62,
         "statusCode": 200
       }
     ],
     "system": {
-      "timestamp": "2025-07-25T08:55:04.793Z",
+      "timestamp": "2025-07-27T14:43:05.833Z",
       "cpu": {
         "usage": {
-          "user": 160941,
-          "system": 508747
+          "user": 149623,
+          "system": 49547
         },
         "loadAvg": [
-          55.21,
-          48.63,
-          25.63
+          3.91,
+          5.59,
+          6.33
         ],
         "cores": 8
       },
       "memory": {
         "total": 67436752896,
-        "free": 3018280960,
+        "free": 19576782848,
         "process": {
-          "rss": 65568768,
-          "heapTotal": 13430784,
-          "heapUsed": 9264768,
-          "external": 3350906,
-          "arrayBuffers": 76509
+          "rss": 66465792,
+          "heapTotal": 13168640,
+          "heapUsed": 9259024,
+          "external": 3353847,
+          "arrayBuffers": 79450
         },
-        "utilization": "95.52"
+        "utilization": "70.97"
       },
       "system": {
-        "uptime": 12906.82,
+        "uptime": 18276.67,
         "platform": "linux",
         "arch": "x64",
         "nodeVersion": "v20.19.3"
       }
     },
     "database": {
-      "connectionStatus": "memory-storage",
+      "connectionStatus": "connected",
       "responseTime": 0,
-      "storageType": "in-memory",
+      "storageType": "database",
       "backupStatus": {
         "enabled": true,
         "lastBackup": "Available",
@@ -117,7 +117,7 @@
       {
         "name": "Exercise Data Integrity",
         "status": "passed",
-        "exerciseCount": 20,
+        "exerciseCount": 22,
         "dataIntegrity": true,
         "categoriesPresent": true
       },
@@ -132,7 +132,7 @@
         "name": "Achievement System",
         "status": "healthy",
         "achievementSystem": "implemented",
-        "achievementCount": 0
+        "achievementCount": 4
       }
     ],
     "infrastructure": {
@@ -155,13 +155,13 @@
         ]
       },
       "resources": {
-        "cpu": 686671,
+        "cpu": 212648,
         "memory": {
-          "rss": 65830912,
-          "heapTotal": 13692928,
-          "heapUsed": 9929720,
-          "external": 3367539,
-          "arrayBuffers": 93102
+          "rss": 66596864,
+          "heapTotal": 13430784,
+          "heapUsed": 9931992,
+          "external": 3375043,
+          "arrayBuffers": 100606
         },
         "handles": 2
       }
@@ -181,14 +181,14 @@
         "totalRequests": 10,
         "successfulRequests": 10,
         "successRate": 100,
-        "averageResponseTime": 3.5,
-        "totalDuration": 35
+        "averageResponseTime": 2.7,
+        "totalDuration": 27
       }
     },
     "optimization": {
       "memoryOptimization": {
         "status": "optimal",
-        "heapUtilization": "78.44%",
+        "heapUtilization": "79.95%",
         "recommendation": "Memory usage is optimal"
       },
       "cpuOptimization": {
@@ -258,7 +258,6 @@
   "alerts": [],
   "repairs": [],
   "recommendations": [
-    "Consider setting up persistent database for production use",
     "System is performing excellently - continue regular monitoring",
     "Schedule regular health checks every 30 minutes for optimal monitoring"
   ]

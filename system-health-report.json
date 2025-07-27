@@ -1,9 +1,9 @@
 {
-  "timestamp": "2025-07-24T07:24:39.803Z",
+  "timestamp": "2025-07-27T14:44:16.636Z",
   "systemInfo": {
     "nodeVersion": "v20.19.3",
     "platform": "linux",
-    "checkDuration": 413
+    "checkDuration": 1209
   },
   "overallStatus": "healthy",
   "criticalIssues": 0,
@@ -329,12 +329,12 @@
       "connectionTime": "unknown",
       "dataHealth": {
         "users": 0,
-        "exercises": 20,
-        "decks": 3,
+        "exercises": 4,
+        "decks": 2,
+        "achievements": 3,
         "workouts": 0,
-        "achievements": 0,
         "consistent": true,
-        "lastCheck": "2025-07-24T07:24:40.133Z"
+        "lastCheck": "2025-07-27T14:44:17.809Z"
       }
     },
     "repairsAttempted": [],
