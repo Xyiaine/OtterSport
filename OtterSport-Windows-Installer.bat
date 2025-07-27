@@ -59,13 +59,50 @@ if %errorlevel% neq 0 (
     :: Install Node.js silently
     start /wait msiexec /i "%TEMP%\nodejs.msi" /quiet /norestart
     
-    :: Refresh environment variables
-    call refreshenv >nul 2>&1
+    :: Update PATH for current session
+    set "PATH=%PATH%;%ProgramFiles%\nodejs"
+    set "PATH=%PATH%;%APPDATA%\npm"
+    
+    :: Update system PATH permanently
+    powershell -Command "& {$env:PATH = [System.Environment]::GetEnvironmentVariable('PATH','Machine') + ';%ProgramFiles%\nodejs;%APPDATA%\npm'; [System.Environment]::SetEnvironmentVariable('PATH', $env:PATH, 'Machine')}" >nul 2>&1
+    
+    :: Verify installation
+    timeout /t 3 /nobreak >nul
+    node --version >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo           [ERROR] Node.js installation failed. Please install manually:
+        echo           1. Visit https://nodejs.org
+        echo           2. Download and install Node.js LTS
+        echo           3. Restart this installer
+        pause
+        exit /b 1
+    )
     
     echo           Node.js installed successfully
 ) else (
     for /f "tokens=*" %%i in ('node --version') do set NODE_VERSION=%%i
     echo           Node.js found: !NODE_VERSION!
+)
+
+:: Verify npm is available
+npm --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo           [ERROR] npm not found after Node.js installation
+    echo           Attempting to fix PATH configuration...
+    
+    :: Try to fix PATH
+    set "PATH=%PATH%;%ProgramFiles%\nodejs"
+    set "PATH=%PATH%;%APPDATA%\npm"
+    
+    npm --version >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo           [ERROR] Unable to fix npm. Please:
+        echo           1. Restart your computer after Node.js installation
+        echo           2. Open a new command prompt
+        echo           3. Run this installer again
+        pause
+        exit /b 1
+    )
 )
 
 :: Check for Git (optional but recommended)

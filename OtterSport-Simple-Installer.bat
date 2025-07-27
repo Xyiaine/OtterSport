@@ -25,8 +25,29 @@ if %errorlevel% neq 0 (
     echo.
     echo Please install Node.js first:
     echo 1. Visit: https://nodejs.org
-    echo 2. Download and install Node.js
-    echo 3. Restart this installer
+    echo 2. Download and install Node.js LTS version
+    echo 3. RESTART your computer after installation
+    echo 4. Open a NEW command prompt
+    echo 5. Run this installer again
+    echo.
+    echo [TIP] Make sure to check "Add to PATH" during Node.js installation
+    echo.
+    pause
+    exit /b 1
+)
+
+:: Check if npm is available
+npm --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] npm not found!
+    echo.
+    echo Node.js is installed but npm is not in PATH.
+    echo Please:
+    echo 1. Restart your computer
+    echo 2. Open a NEW command prompt as administrator
+    echo 3. Run this installer again
+    echo.
+    echo If problem persists, reinstall Node.js with "Add to PATH" checked
     echo.
     pause
     exit /b 1

@@ -106,14 +106,34 @@
 
 ### Installation Issues
 
+**"npm isn't recognized as internal command" Error:**
+```bash
+# Option 1: Use the PATH fix utility
+# Run as administrator: fix-npm-path.bat
+
+# Option 2: Manual fix
+# 1. Install Node.js from https://nodejs.org (LTS version)
+# 2. During installation, CHECK "Add to PATH" option
+# 3. RESTART your computer after installation
+# 4. Open a NEW command prompt as administrator
+# 5. Run the installer again
+
+# Option 3: Manual PATH update
+# Add these to your system PATH:
+# C:\Program Files\nodejs
+# %APPDATA%\npm
+```
+
 **"Node.js not found" Error:**
 ```bash
 # The complete installer will fix this automatically
 # For simple installer, manually install Node.js:
 # 1. Visit https://nodejs.org
 # 2. Download LTS version
-# 3. Run installer
-# 4. Restart command prompt
+# 3. CHECK "Add to PATH" during installation
+# 4. Restart computer
+# 5. Open NEW command prompt
+# 6. Run installer again
 ```
 
 **"Permission denied" Error:**
