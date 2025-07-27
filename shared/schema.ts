@@ -331,7 +331,7 @@ export const userBadgesRelations = relations(userBadges, ({ one }) => ({
  * Zod schemas for validating data before database operations
  * These ensure data integrity and provide type safety
  */
-export const upsertUserSchema = createInsertSchema(users);
+export const upsertUserSchema = createInsertSchema(users).omit({ createdAt: true, updatedAt: true });
 export const insertExerciseSchema = createInsertSchema(exercises).omit({ id: true });
 export const insertDeckSchema = createInsertSchema(decks).omit({ id: true });
 export const insertWorkoutSchema = createInsertSchema(workouts).omit({ id: true });

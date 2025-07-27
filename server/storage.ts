@@ -101,6 +101,23 @@ export interface IStorage {
   // ============================================================================
   updateUserProgress(userId: string, updates: Partial<User>): Promise<User>;
   updateUserStreak(userId: string): Promise<User>;
+  
+  // ============================================================================
+  // GAMIFICATION OPERATIONS
+  // ============================================================================
+  getXpActivities(): Promise<XpActivity[]>;
+  getBadges(): Promise<Badge[]>;
+  getUserBadges(userId: string): Promise<(UserBadge & { badge: Badge })[]>;
+  getWeeklyLeaderboard(): Promise<Leaderboard[]>;
+  
+  // Storage statistics for monitoring
+  getStorageStats(): Promise<{
+    users: number;
+    exercises: number;
+    decks: number;  
+    workouts: number;
+    achievements: number;
+  }>;
 }
 
 /**
@@ -895,6 +912,45 @@ export class MemoryStorage implements IStorage {
     };
     this.users.set(userId, updatedUser);
     return updatedUser;
+  }
+
+  /**
+   * Get XP activities for gamification
+   */
+  async getXpActivities(): Promise<XpActivity[]> {
+    return Array.from(this.xpActivities.values())
+      .filter(activity => activity.isActive)
+      .sort((a, b) => a.activityType.localeCompare(b.activityType));
+  }
+
+  /**
+   * Get all badges
+   */
+  async getBadges(): Promise<Badge[]> {
+    return Array.from(this.badges.values()).sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  /**
+   * Get user badges
+   */
+  async getUserBadges(userId: string): Promise<(UserBadge & { badge: Badge })[]> {
+    this.validateUserId(userId);
+    
+    return Array.from(this.userBadges.values())
+      .filter(ub => ub.userId === userId)
+      .map(ub => ({
+        ...ub,
+        badge: this.badges.get(ub.badgeId)!,
+      }))
+      .sort((a, b) => (b.earnedAt?.getTime() || 0) - (a.earnedAt?.getTime() || 0));
+  }
+
+  /**
+   * Get weekly leaderboard
+   */
+  async getWeeklyLeaderboard(): Promise<Leaderboard[]> {
+    // For in-memory storage, return empty array with default structure
+    return [];
   }
 
   async updateUserStreak(userId: string): Promise<User> {
