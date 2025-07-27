@@ -20,6 +20,12 @@ import ThemedExerciseCard, {
 } from "@/components/ui/themed-exercise-cards";
 import StrategicCard from "@/components/ui/strategic-card";
 import ExerciseCardDisplay from "@/components/ui/exercise-card-display";
+import {
+  EnhancedCardDraw,
+  CardPlayAnimation,
+  AnimatedDeck,
+  BattleField
+} from "@/components/ui/card-battle-animations";
 import type { Exercise, Deck } from "@shared/schema";
 
 interface GameCard {
@@ -86,6 +92,15 @@ export default function CardBattle() {
     gamePhase: 'early',
     comboMultiplier: 1.0,
     warmupComboActive: false
+  });
+
+  // Animation states
+  const [animationState, setAnimationState] = useState({
+    isDrawing: false,
+    drawingCards: [] as GameCard[],
+    playingCard: null as GameCard | null,
+    showBattleEffect: false,
+    lastDrawnCards: [] as GameCard[],
   });
 
   // Game state
@@ -429,6 +444,36 @@ export default function CardBattle() {
     // Final remaining deck after both players draw
     const finalRemainingDeck = remainingAfterPlayer.slice(cardsToDrawAI);
 
+    // Start animation
+    setAnimationState(prev => ({
+      ...prev,
+      isDrawing: true,
+      drawingCards: newPlayerCards,
+      lastDrawnCards: newPlayerCards
+    }));
+
+    // Complete the draw after animation
+    setTimeout(() => {
+      setGameState(prev => ({
+        ...prev,
+        playerHand: [...prev.playerHand, ...newPlayerCards],
+        aiHand: [...prev.aiHand, ...newAICards],
+        deckCards: finalRemainingDeck,
+        gamePhase: 'playing'
+      }));
+
+      setAnimationState(prev => ({
+        ...prev,
+        isDrawing: false,
+        drawingCards: []
+      }));
+
+      toast({
+        title: "Cards Drawn!",
+        description: `You drew ${cardsToDrawPlayer} cards. AI drew ${cardsToDrawAI} cards.`,
+      });
+    }, 1000 + cardsToDrawPlayer * 150); // Animation duration
+
     // Check if we've exhausted all cards after drawing
     const totalCardsLeft = finalRemainingDeck.length;
     const playerWillHaveCards = gameState.playerHand.length + newPlayerCards.length > 0;
@@ -458,13 +503,28 @@ export default function CardBattle() {
   const playCard = (card: GameCard) => {
     if (gameState.gamePhase !== 'playing') return;
 
-    // Show the exercise card display first
-    setGameState(prev => ({
+    // Start play animation
+    setAnimationState(prev => ({
       ...prev,
-      showExerciseDisplay: true,
-      currentExerciseCard: card,
-      selectedCard: null
+      playingCard: card,
+      showBattleEffect: true
     }));
+
+    // Show the exercise card display after animation
+    setTimeout(() => {
+      setGameState(prev => ({
+        ...prev,
+        showExerciseDisplay: true,
+        currentExerciseCard: card,
+        selectedCard: null
+      }));
+
+      setAnimationState(prev => ({
+        ...prev,
+        playingCard: null,
+        showBattleEffect: false
+      }));
+    }, 1200);
   };
 
   const completeExercise = async () => {
@@ -500,6 +560,7 @@ export default function CardBattle() {
       // Calculate points using new warmup scoring system
       const scoringResponse = await apiRequest('/api/card-battle/score', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cardName: card.exercise.name,
           cardType: card.exercise.cardType || 'exercise',
@@ -534,6 +595,7 @@ export default function CardBattle() {
       // Update player scoring state
       const stateUpdateResponse = await apiRequest('/api/card-battle/update-state', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           currentState: gameState.playerScoringState,
           playedCard: { name: card.exercise.name, cardType: card.exercise.cardType || 'exercise' },
@@ -649,7 +711,7 @@ export default function CardBattle() {
     // AI plays after strategic delay
     setTimeout(() => {
       playAICard();
-    }, isCombo ? 2000 : 1500); // Longer delay for combos to show effect
+    }, 1500); // Delay to show effect
   };
 
   const playAICard = () => {
@@ -766,7 +828,9 @@ export default function CardBattle() {
       utilityEffectsActive: [],
       playedCards: [],
       showExerciseDisplay: false,
-      currentExerciseCard: null
+      currentExerciseCard: null,
+      playerScoringState: createInitialScoringState(),
+      aiScoringState: createInitialScoringState()
     });
     initializeGame();
   };
@@ -908,41 +972,16 @@ export default function CardBattle() {
           )}
         </div>
 
-        {/* Last Played Cards */}
-        {(gameState.lastPlayedCard || gameState.aiLastPlayedCard) && (
-          <div className="flex justify-center space-x-8 mb-6">
-            {gameState.lastPlayedCard && (
-              <div className="text-center">
-                <div className="text-sm text-slate-600 mb-2">You Played:</div>
-                <Card className="w-32 border-blue-200 bg-blue-50">
-                  <CardContent className="p-3">
-                    <div className="text-xs font-semibold text-blue-700">
-                      {gameState.lastPlayedCard.exercise.name}
-                    </div>
-                    <div className="text-lg font-bold text-blue-600 mt-1">
-                      {gameState.lastPlayedCard.points} pts
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-            {gameState.aiLastPlayedCard && (
-              <div className="text-center">
-                <div className="text-sm text-slate-600 mb-2">AI Played:</div>
-                <Card className="w-32 border-red-200 bg-red-50">
-                  <CardContent className="p-3">
-                    <div className="text-xs font-semibold text-red-700">
-                      {gameState.aiLastPlayedCard.exercise.name}
-                    </div>
-                    <div className="text-lg font-bold text-red-600 mt-1">
-                      {gameState.aiLastPlayedCard.points} pts
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Enhanced Battle Field */}
+        <div className="mb-6">
+          <BattleField
+            playerCard={gameState.lastPlayedCard}
+            aiCard={gameState.aiLastPlayedCard}
+            isPlayerTurn={gameState.currentTurn === 'player'}
+            showPlayerEffect={animationState.showBattleEffect && gameState.currentTurn === 'player'}
+            showAIEffect={animationState.showBattleEffect && gameState.currentTurn === 'ai'}
+          />
+        </div>
 
         {/* AI Hand (face down) */}
         <div className="text-center mb-6">
@@ -957,37 +996,49 @@ export default function CardBattle() {
           </div>
         </div>
 
-        {/* Deck */}
+        {/* Enhanced Animated Deck */}
         <div className="text-center mb-6">
           <div className="text-sm text-slate-600 mb-2">Deck ({gameState.deckCards.length} cards remaining)</div>
           <div className="flex justify-center">
-            {gameState.deckCards.length > 0 ? (
-              <div
-                className={`w-24 h-32 bg-gradient-to-br from-otter-teal to-teal-700 rounded-lg border-2 border-teal-600 shadow-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-xl ${
-                  gameState.gamePhase === 'drawing' ? 'animate-pulse' : ''
-                }`}
-                onClick={drawCards}
-              >
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <i className="fas fa-layer-group text-2xl mb-1"></i>
-                    <div className="text-xs font-semibold">DRAW</div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="w-24 h-32 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center">
-                <div className="text-slate-400 text-center">
-                  <i className="fas fa-times text-xl mb-1"></i>
-                  <div className="text-xs">Empty</div>
-                </div>
-              </div>
-            )}
+            <div 
+              className="relative cursor-pointer"
+              onClick={gameState.gamePhase === 'drawing' ? drawCards : undefined}
+            >
+              <AnimatedDeck 
+                cardsRemaining={gameState.deckCards.length}
+                isDrawing={animationState.isDrawing}
+                deckTheme={gameState.deckTheme}
+              />
+              {gameState.gamePhase === 'drawing' && gameState.deckCards.length > 0 && (
+                <div className="absolute inset-0 bg-yellow-400/20 rounded-lg animate-pulse pointer-events-none" />
+              )}
+            </div>
+          </div>
+          
+          {/* Draw animations container */}
+          <div className="absolute inset-0 pointer-events-none">
+            {animationState.drawingCards.map((card, index) => (
+              <EnhancedCardDraw
+                key={`${card.id}-draw`}
+                card={card}
+                fromPosition={{ x: 0, y: 0, rotation: 0, scale: 0.8 }}
+                toPosition={{ 
+                  x: -200 + (index * 40), 
+                  y: 100, 
+                  rotation: index * 5 - 10, 
+                  scale: 1 
+                }}
+                isDrawing={animationState.isDrawing}
+                onDrawComplete={() => {}}
+                cardIndex={index}
+                drawDelay={200}
+              />
+            ))}
           </div>
         </div>
 
         {/* Player Hand with Strategic Cards */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 relative">
           <div className="text-sm text-slate-600 mb-2">Your Hand</div>
           <div className="flex justify-center space-x-3 flex-wrap gap-y-4">
             {gameState.playerHand.map((card) => {
@@ -1019,6 +1070,20 @@ export default function CardBattle() {
               );
             })}
           </div>
+          
+          {/* Card Play Animation Container */}
+          {animationState.playingCard && (
+            <div className="absolute inset-0 pointer-events-none">
+              <CardPlayAnimation
+                card={animationState.playingCard}
+                fromPosition={{ x: 0, y: 0, rotation: 0, scale: 1 }}
+                toPosition={{ x: 0, y: -200, rotation: 0, scale: 1.3 }}
+                isPlaying={!!animationState.playingCard}
+                onPlayComplete={() => {}}
+                playEffect={animationState.playingCard.special ? 'special' : 'normal'}
+              />
+            </div>
+          )}
           
           {/* Enhanced Hand Strategy Hints */}
           {gameState.gamePhase === 'playing' && gameState.playerHand.length > 0 && (
