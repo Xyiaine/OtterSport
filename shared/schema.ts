@@ -332,8 +332,8 @@ export const userBadgesRelations = relations(userBadges, ({ one }) => ({
  * These ensure data integrity and provide type safety
  */
 export const upsertUserSchema = createInsertSchema(users);
-export const insertExerciseSchema = createInsertSchema(exercises).omit({ id: true, createdAt: true });
-export const insertDeckSchema = createInsertSchema(decks).omit({ id: true, createdAt: true });
+export const insertExerciseSchema = createInsertSchema(exercises).omit({ id: true });
+export const insertDeckSchema = createInsertSchema(decks).omit({ id: true });
 export const insertWorkoutSchema = createInsertSchema(workouts).omit({ id: true });
 export const insertDeckExerciseSchema = createInsertSchema(deckExercises).omit({ id: true });
 
@@ -359,9 +359,9 @@ export type InsertWorkout = z.infer<typeof insertWorkoutSchema>;
 export type InsertDeckExercise = z.infer<typeof insertDeckExerciseSchema>;
 
 // Additional schemas for gamification
-export const insertAchievementSchema = createInsertSchema(achievements).omit({ id: true, createdAt: true });
-export const insertBadgeSchema = createInsertSchema(badges).omit({ id: true, createdAt: true });
-export const insertLeaderboardSchema = createInsertSchema(leaderboards).omit({ id: true, createdAt: true });
+export const insertAchievementSchema = createInsertSchema(achievements).omit({ id: true });
+export const insertBadgeSchema = createInsertSchema(badges).omit({ id: true });
+export const insertLeaderboardSchema = createInsertSchema(leaderboards).omit({ id: true });
 export const insertXpActivitySchema = createInsertSchema(xpActivities).omit({ id: true });
 
 export type InsertAchievement = z.infer<typeof insertAchievementSchema>;
