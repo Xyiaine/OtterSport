@@ -67,12 +67,43 @@ gamificationRouter.get("/xp", async (req: Request, res: Response) => {
 // Get XP activities configuration
 gamificationRouter.get("/xp-activities", async (req: Request, res: Response) => {
   try {
-    const activities = await db
-      .select()
-      .from(xpActivities)
-      .where(eq(xpActivities.isActive, true));
-
-    res.json(activities);
+    // For in-memory storage, return default XP activities
+    const defaultActivities = [
+      {
+        id: 1,
+        activityType: "workout_complete",
+        baseXP: 50,
+        description: "Complete a workout",
+        multiplierField: null,
+        isActive: true,
+      },
+      {
+        id: 2,
+        activityType: "workout_duration_bonus",
+        baseXP: 2,
+        description: "Bonus XP per minute of workout",
+        multiplierField: "duration_minutes",
+        isActive: true,
+      },
+      {
+        id: 3,
+        activityType: "streak_bonus_3",
+        baseXP: 25,
+        description: "3-day streak bonus",
+        multiplierField: null,
+        isActive: true,
+      },
+      {
+        id: 4,
+        activityType: "streak_bonus_7",
+        baseXP: 100,
+        description: "7-day streak bonus",
+        multiplierField: null,
+        isActive: true,
+      }
+    ];
+    
+    res.json(defaultActivities);
   } catch (error) {
     console.error("Error fetching XP activities:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -231,9 +262,8 @@ gamificationRouter.post("/streak/freeze", async (req: Request, res: Response) =>
 // Get main leaderboard (redirects to weekly)
 gamificationRouter.get("/leaderboard", async (req: Request, res: Response) => {
   try {
-    const limit = parseInt(req.query.limit as string) || 50;
-    const leaderboard = await gamification.getWeeklyLeaderboard(limit);
-    res.json(leaderboard);
+    // For in-memory storage, return empty leaderboard
+    res.json([]);
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -344,12 +374,8 @@ gamificationRouter.post("/lives/deduct", async (req: Request, res: Response) => 
 // Get all badges
 gamificationRouter.get("/badges", async (req: Request, res: Response) => {
   try {
-    const allBadges = await db
-      .select()
-      .from(badges)
-      .orderBy(badges.rarity, badges.name);
-
-    res.json(allBadges);
+    // For in-memory storage, return empty badges array
+    res.json([]);
   } catch (error) {
     console.error("Error fetching badges:", error);
     res.status(500).json({ message: "Internal server error" });
