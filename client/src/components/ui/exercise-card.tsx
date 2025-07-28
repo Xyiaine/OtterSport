@@ -199,11 +199,11 @@ export default function ExerciseCard({
                   onClick={skipExercise}
                   variant="outline"
                   size="sm"
-                  className="hover:bg-red-50 hover:border-red-500 hover:text-red-600"
+                  className="hover:bg-red-50 hover:border-red-500 hover:text-red-600 border-red-300 text-red-600"
                   title="Admin: Skip timer for testing"
                 >
                   <i className="fas fa-fast-forward mr-1"></i>
-                  Skip
+                  Admin Skip
                 </Button>
               )}
             </div>

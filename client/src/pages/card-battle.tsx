@@ -983,64 +983,94 @@ export default function CardBattle() {
           />
         </div>
 
-        {/* AI Hand (face down) */}
-        <div className="text-center mb-6">
-          <div className="text-sm text-slate-600 mb-2">AI Hand ({gameState.aiHand.length} cards)</div>
-          <div className="flex justify-center space-x-2">
-            {gameState.aiHand.map((_, index) => (
-              <div
-                key={index}
-                className="w-16 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-lg border-2 border-slate-600 shadow-lg"
-              />
-            ))}
+        {/* Battle Area Layout with Clear Separation */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* AI Hand Section */}
+          <div className="order-1 lg:order-1">
+            <div className="text-center mb-4">
+              <div className="text-sm text-slate-600 mb-3">AI Hand ({gameState.aiHand.length} cards)</div>
+              <div className="flex justify-center space-x-2 flex-wrap gap-2">
+                {gameState.aiHand.map((_, index) => (
+                  <div
+                    key={index}
+                    className="w-12 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-lg border-2 border-slate-600 shadow-lg"
+                  />
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* Enhanced Animated Deck */}
-        <div className="text-center mb-6">
-          <div className="text-sm text-slate-600 mb-2">Deck ({gameState.deckCards.length} cards remaining)</div>
-          <div className="flex justify-center">
-            <div 
-              className="relative cursor-pointer"
-              onClick={gameState.gamePhase === 'drawing' ? drawCards : undefined}
-            >
-              <AnimatedDeck 
-                cardsRemaining={gameState.deckCards.length}
-                isDrawing={animationState.isDrawing}
-                deckTheme={gameState.deckTheme}
-              />
-              {gameState.gamePhase === 'drawing' && gameState.deckCards.length > 0 && (
-                <div className="absolute inset-0 bg-yellow-400/20 rounded-lg animate-pulse pointer-events-none" />
+          {/* Center Deck Section */}
+          <div className="order-2 lg:order-2 flex flex-col items-center justify-center">
+            <div className="text-center mb-4">
+              <div className="text-sm text-slate-600 mb-3">
+                Deck ({gameState.deckCards.length} cards)
+              </div>
+              <div className="relative">
+                <div 
+                  className={`relative cursor-pointer transition-transform ${
+                    gameState.gamePhase === 'drawing' ? 'hover:scale-105' : ''
+                  }`}
+                  onClick={gameState.gamePhase === 'drawing' ? drawCards : undefined}
+                >
+                  <AnimatedDeck 
+                    cardsRemaining={gameState.deckCards.length}
+                    isDrawing={animationState.isDrawing}
+                    deckTheme={gameState.deckTheme}
+                  />
+                  {gameState.gamePhase === 'drawing' && gameState.deckCards.length > 0 && (
+                    <div className="absolute inset-0 bg-yellow-400/30 rounded-lg animate-pulse pointer-events-none border-2 border-yellow-400" />
+                  )}
+                </div>
+                
+                {/* Game Action Button Below Deck */}
+                <div className="mt-4">
+                  {gameState.gamePhase === 'drawing' && (
+                    <Button
+                      onClick={drawCards}
+                      className="bg-otter-teal hover:bg-teal-600 text-white px-6 py-2 rounded-lg shadow-lg"
+                      disabled={gameState.deckCards.length === 0}
+                    >
+                      🎴 Draw Cards
+                    </Button>
+                  )}
+                  
+                  {gameState.gamePhase === 'ai-turn' && (
+                    <div className="flex items-center justify-center space-x-2 text-slate-600">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-otter-teal"></div>
+                      <span>AI is playing...</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Battle Status Section */}
+          <div className="order-3 lg:order-3">
+            <div className="text-center space-y-2">
+              <div className="text-sm text-slate-600">Battle Status</div>
+              {gameState.lastPlayedCard && (
+                <div className="text-xs text-blue-600">
+                  You played: {gameState.lastPlayedCard.exercise.name}
+                </div>
+              )}
+              {gameState.aiLastPlayedCard && (
+                <div className="text-xs text-red-600">
+                  AI played: {gameState.aiLastPlayedCard.exercise.name}
+                </div>
               )}
             </div>
           </div>
-          
-          {/* Draw animations container */}
-          <div className="absolute inset-0 pointer-events-none">
-            {animationState.drawingCards.map((card, index) => (
-              <EnhancedCardDraw
-                key={`${card.id}-draw`}
-                card={card}
-                fromPosition={{ x: 0, y: 0, rotation: 0, scale: 0.8 }}
-                toPosition={{ 
-                  x: -200 + (index * 40), 
-                  y: 100, 
-                  rotation: index * 5 - 10, 
-                  scale: 1 
-                }}
-                isDrawing={animationState.isDrawing}
-                onDrawComplete={() => {}}
-                cardIndex={index}
-                drawDelay={200}
-              />
-            ))}
-          </div>
         </div>
 
-        {/* Player Hand with Strategic Cards */}
-        <div className="text-center mb-6 relative">
-          <div className="text-sm text-slate-600 mb-2">Your Hand</div>
-          <div className="flex justify-center space-x-3 flex-wrap gap-y-4">
+        {/* Player Hand Section - Separate and Below Deck */}
+        <div className="bg-white/50 rounded-lg p-6 mb-6 border border-slate-200">
+          <div className="text-center mb-4">
+            <div className="text-sm text-slate-600 font-medium">Your Hand</div>
+          </div>
+          
+          <div className="flex justify-center space-x-3 flex-wrap gap-y-4 mb-4">
             {gameState.playerHand.map((card) => {
               const comboCount = gameState.playerHand.filter(c => c.combo === card.combo).length;
               return (
@@ -1113,43 +1143,26 @@ export default function CardBattle() {
           )}
         </div>
 
-        {/* Game Actions */}
-        <div className="flex justify-center space-x-4 mb-6">
-          {gameState.gamePhase === 'drawing' && (
-            <Button
-              onClick={drawCards}
-              className="bg-otter-teal hover:bg-teal-600 text-white px-8 py-3"
-              disabled={gameState.deckCards.length === 0}
-            >
-              🎴 Draw Cards
-            </Button>
-          )}
-
-          {gameState.gamePhase === 'ai-turn' && (
-            <div className="flex items-center space-x-2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-otter-teal"></div>
-              <span className="text-slate-600">AI is playing...</span>
-            </div>
-          )}
-
-          {gameState.gamePhase === 'game-over' && (
+        {/* Game Over Actions - Separate Section */}
+        {gameState.gamePhase === 'game-over' && (
+          <div className="text-center mb-6">
             <div className="space-x-4">
               <Button
                 onClick={restartGame}
-                className="bg-otter-teal hover:bg-teal-600 text-white px-8 py-3"
+                className="bg-otter-teal hover:bg-teal-600 text-white px-8 py-3 rounded-lg shadow-lg"
               >
-                Play Again
+                🔄 Play Again
               </Button>
               <Button
                 onClick={() => setLocation('/')}
                 variant="outline"
-                className="px-8 py-3"
+                className="px-8 py-3 rounded-lg shadow-lg"
               >
-                Back to Home
+                🏠 Back to Home
               </Button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Game Over Stats */}
         {gameState.gamePhase === 'game-over' && (

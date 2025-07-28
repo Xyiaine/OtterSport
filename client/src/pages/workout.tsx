@@ -513,21 +513,22 @@ export default function WorkoutPage() {
             Skip
           </Button>
           {/* Admin Skip Button for Timed Exercises */}
-          {canSkipExercises && isTimerRunning && (
+          {canSkipExercises && currentExercise?.exercise.defaultDuration && isTimerRunning && (
             <Button
               onClick={() => {
                 setTimer(0);
                 setIsTimerRunning(false);
+                handleCompleteExercise();
                 toast({
                   title: "Admin skip activated",
                   description: "Timer skipped for testing purposes",
                 });
               }}
               variant="outline"
-              className="px-3 py-3 bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100"
-              title="Admin: Skip timer instantly"
+              className="px-3 py-3 border-red-300 text-red-600 hover:bg-red-50"
+              title="Admin: Skip timer for testing"
             >
-              <i className="fas fa-bolt"></i>
+              <i className="fas fa-fast-forward"></i>
             </Button>
           )}
         </div>
