@@ -1,0 +1,26 @@
+Windows Registry Editor Version 5.00
+
+; OtterSport Uninstaller Registry Entries
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\OtterSport]
+"DisplayName"="OtterSport - Fitness Card Game"
+"DisplayVersion"="1.0.0"
+"Publisher"="OtterSport Team"
+"InstallLocation"="%USERPROFILE%\OtterSport"
+"UninstallString"="%USERPROFILE%\OtterSport\OtterSport-Uninstaller.bat"
+"QuietUninstallString"="%USERPROFILE%\OtterSport\OtterSport-Quick-Uninstaller.bat"
+"DisplayIcon"="%USERPROFILE%\OtterSport\game-assets\interface\logo.png"
+"NoModify"=dword:00000001
+"NoRepair"=dword:00000001
+"EstimatedSize"=dword:000186A0
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\TotalInstallerOtterSport]
+"DisplayName"="TotalInstallerOtterSport"
+"DisplayVersion"="3.0.0"
+"Publisher"="OtterSport Team"
+"InstallLocation"="%USERPROFILE%\OtterSport"
+"UninstallString"="%USERPROFILE%\OtterSport\OtterSport-Uninstaller.bat"
+"QuietUninstallString"="%USERPROFILE%\OtterSport\OtterSport-Quick-Uninstaller.bat"
+"DisplayIcon"="%USERPROFILE%\OtterSport\game-assets\interface\logo.png"
+"NoModify"=dword:00000001
+"NoRepair"=dword:00000001
+"EstimatedSize"=dword:000249F0
