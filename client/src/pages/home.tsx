@@ -1,3 +1,25 @@
+/**
+ * HOME PAGE COMPONENT
+ * 
+ * Main dashboard for authenticated users displaying:
+ * - User stats (streak, level, workouts completed)
+ * - Quick actions (start workout, card battle, deck creation)
+ * - Deck library with categories and difficulty levels
+ * - Progress overview and achievements
+ * 
+ * Features:
+ * - Automatic onboarding redirect for new users
+ * - Real-time stats fetching with error handling
+ * - Animated UI elements for enhanced user experience
+ * - Responsive design for mobile and desktop
+ * 
+ * Navigation:
+ * - Workout: Start exercise sessions
+ * - Card Battle: Competitive fitness game mode
+ * - Progress: Detailed analytics and achievements
+ * - Deck Creation: Custom workout builder
+ */
+
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
@@ -26,7 +48,13 @@ export default function Home() {
   const { user, isLoading: authLoading } = useAuth();
   const queryClient = useQueryClient();
 
-  // Redirect to onboarding if user hasn't completed setup
+  /**
+   * ONBOARDING REDIRECT LOGIC
+   * 
+   * Automatically redirects new users to onboarding if they haven't
+   * completed their fitness profile setup. Includes timing safeguards
+   * to prevent redirect loops during profile updates.
+   */
   useEffect(() => {
     if (!authLoading && user && !user.fitnessGoal) {
       // Small delay to prevent redirect loops during profile updates

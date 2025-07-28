@@ -1,8 +1,25 @@
 /**
- * DATABASE CONNECTION SETUP
+ * OTTERSPORT DATABASE CONNECTION & STORAGE LAYER
  * 
- * This file configures the database layer for the application.
- * Uses PostgreSQL via Neon serverless when DATABASE_URL is available.
+ * Configures database connections and storage implementations for OtterSport.
+ * Supports both PostgreSQL (production) and in-memory storage (development).
+ * 
+ * Architecture:
+ * - PostgreSQL via Neon serverless for production deployments
+ * - In-memory storage for development and testing
+ * - Drizzle ORM for type-safe database operations
+ * - Connection pooling for serverless environments
+ * 
+ * Environment Variables:
+ * - DATABASE_URL: PostgreSQL connection string (optional)
+ * - If not provided, uses in-memory storage with seeded data
+ * 
+ * Storage Features:
+ * - User management with OAuth integration
+ * - Exercise library and workout deck management
+ * - Progress tracking and gamification data
+ * - Achievement system and leaderboards
+ * - Session management for authentication
  */
 
 import { neon } from '@neondatabase/serverless';
@@ -11,26 +28,50 @@ import { eq } from 'drizzle-orm';
 import * as schema from '@shared/schema';
 import { MemoryStorage } from './storage';
 
+/**
+ * DATABASE CONNECTION INITIALIZATION
+ * 
+ * Determines storage backend based on environment configuration.
+ * Gracefully falls back to in-memory storage if database connection fails.
+ */
 let db: any = null;
 let pool: any = null;
 
-// If DATABASE_URL is provided, set up PostgreSQL connection
+// Initialize PostgreSQL connection if DATABASE_URL is available
 if (process.env.DATABASE_URL) {
-  console.log('DATABASE_URL detected - setting up PostgreSQL connection');
+  console.log('[DatabaseStorage] Initializing PostgreSQL storage with Drizzle ORM...');
   try {
     const sql = neon(process.env.DATABASE_URL);
     db = drizzle(sql, { schema });
-    console.log('PostgreSQL connection established via Neon');
+    console.log('[DatabaseStorage] PostgreSQL connection established via Neon');
   } catch (error) {
-    console.error('Failed to connect to PostgreSQL:', error);
+    console.error('[DatabaseStorage] Failed to connect to PostgreSQL:', error);
+    console.log('[DatabaseStorage] Falling back to in-memory storage');
     db = null;
   }
 } else {
   console.log('Using in-memory storage - data will reset on server restart');
 }
 
-// Create storage instance - use database if available, otherwise memory
+/**
+ * STORAGE LAYER FACTORY
+ * 
+ * Creates appropriate storage instance based on database availability:
+ * - DatabaseStorage: Full PostgreSQL implementation with all features
+ * - MemoryStorage: In-memory implementation for development/testing
+ * 
+ * The storage layer provides a consistent interface regardless of backend.
+ */
 export const storage = db ? new (class DatabaseStorage {
+  /**
+   * DATABASE STORAGE IMPLEMENTATION
+   * 
+   * PostgreSQL-based storage with full feature support including:
+   * - User authentication and profile management
+   * - Exercise library and workout tracking
+   * - Gamification system with achievements
+   * - Real-time analytics and leaderboards
+   */
   async getUser(id: string) {
     const [user] = await db.select().from(schema.users).where(eq(schema.users.id, id));
     return user || undefined;

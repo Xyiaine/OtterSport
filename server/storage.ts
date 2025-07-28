@@ -103,12 +103,8 @@ export interface IStorage {
   updateUserStreak(userId: string): Promise<User>;
   
   // ============================================================================
-  // GAMIFICATION OPERATIONS
+  // GAMIFICATION OPERATIONS (In-memory compatible)
   // ============================================================================
-  getXpActivities(): Promise<XpActivity[]>;
-  getBadges(): Promise<Badge[]>;
-  getUserBadges(userId: string): Promise<(UserBadge & { badge: Badge })[]>;
-  getWeeklyLeaderboard(): Promise<Leaderboard[]>;
   
   // Storage statistics for monitoring
   getStorageStats(): Promise<{
