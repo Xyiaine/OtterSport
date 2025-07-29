@@ -65,7 +65,7 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       difficulty: 'easy',
       xpReward: 15,
       estimatedMinutes: 10,
-      position: { x: 150, y: 50 }
+      position: { x: 200, y: 80 }
     });
 
     nodes.push({
@@ -78,7 +78,7 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       difficulty: 'easy',
       xpReward: 20,
       estimatedMinutes: 15,
-      position: { x: 80, y: 170 }
+      position: { x: 120, y: 180 }
     });
 
     nodes.push({
@@ -91,7 +91,7 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       difficulty: 'easy',
       xpReward: 20,
       estimatedMinutes: 15,
-      position: { x: 220, y: 170 }
+      position: { x: 280, y: 180 }
     });
 
     // Week 2 - Building Strength
@@ -105,7 +105,7 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       difficulty: 'medium',
       xpReward: 30,
       estimatedMinutes: 20,
-      position: { x: 150, y: 290 }
+      position: { x: 200, y: 300 }
     });
 
     // Week 2 Boss Challenge
@@ -119,7 +119,7 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       difficulty: 'boss',
       xpReward: 75,
       estimatedMinutes: 25,
-      position: { x: 150, y: 410 }
+      position: { x: 200, y: 420 }
     });
 
     // Week 3 - Advanced Path Split
@@ -133,7 +133,7 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       difficulty: 'hard',
       xpReward: 40,
       estimatedMinutes: 25,
-      position: { x: 80, y: 530 }
+      position: { x: 120, y: 540 }
     });
 
     nodes.push({
@@ -146,7 +146,7 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       difficulty: 'hard',
       xpReward: 40,
       estimatedMinutes: 25,
-      position: { x: 220, y: 530 }
+      position: { x: 280, y: 540 }
     });
 
     // Bonus Nodes (appear with streak bonuses)
@@ -160,7 +160,7 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
         difficulty: 'medium',
         xpReward: 50,
         estimatedMinutes: 20,
-        position: { x: 300, y: 290 },
+        position: { x: 350, y: 300 },
         isBonus: true,
         streakMultiplier: 1.5
       });
@@ -229,31 +229,39 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       connections.push(['w2-strength', 'bonus-streak']);
     }
 
-    return connections.map(([from, to]) => {
+    return connections.map(([from, to], index) => {
       const fromNode = workoutNodes.find(n => n.id === from);
       const toNode = workoutNodes.find(n => n.id === to);
       
       if (!fromNode || !toNode) return null;
 
       const isPathActive = completedWorkouts.includes(from);
-      const pathColor = isPathActive ? '#10B981' : '#D1D5DB';
+      const pathColor = isPathActive ? '#10B981' : '#9CA3AF';
+      
+      // Use node center positions for connections
+      const x1 = fromNode.position.x;
+      const y1 = fromNode.position.y;
+      const x2 = toNode.position.x;
+      const y2 = toNode.position.y;
       
       return (
         <motion.line
           key={`${from}-${to}`}
-          x1={fromNode.position.x + 30}
-          y1={fromNode.position.y + 30}
-          x2={toNode.position.x + 30}
-          y2={toNode.position.y + 30}
+          x1={x1}
+          y1={y1}
+          x2={x2}
+          y2={y2}
           stroke={pathColor}
-          strokeWidth={isPathActive ? 4 : 2}
-          strokeDasharray={isPathActive ? '0' : '5,5'}
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
+          strokeWidth={isPathActive ? 4 : 3}
+          strokeDasharray={isPathActive ? '0' : '8,4'}
+          strokeLinecap="round"
+          opacity={isPathActive ? 1 : 0.6}
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: isPathActive ? 1 : 0.6 }}
+          transition={{ duration: 0.8, delay: index * 0.1 }}
         />
       );
-    });
+    }).filter(Boolean);
   };
 
   return (
@@ -283,27 +291,43 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
       </Card>
 
       {/* Roadmap Canvas */}
-      <Card className="relative overflow-auto">
+      <Card className="relative">
         <CardContent className="p-6">
-          <div className="relative w-full" style={{ height: '650px' }}>
-            <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
+          <div className="relative w-full min-h-[650px] overflow-hidden">
+            {/* SVG for connecting paths */}
+            <svg 
+              className="absolute inset-0 w-full h-full pointer-events-none" 
+              style={{ zIndex: 1 }}
+              viewBox="0 0 450 650"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <defs>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge> 
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
               {generatePaths()}
             </svg>
             
             {workoutNodes.map((node, index) => (
               <motion.div
                 key={node.id}
-                className={`absolute w-16 h-16 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all duration-300 ${getNodeStyle(node)}`}
+                className={`absolute w-16 h-16 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-lg ${getNodeStyle(node)}`}
                 style={{ 
                   left: node.position.x,
                   top: node.position.y,
-                  zIndex: 2
+                  zIndex: 10,
+                  transform: 'translate(-50%, -50%)'
                 }}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+                transition={{ delay: index * 0.15, type: "spring", stiffness: 300 }}
+                whileHover={{ scale: 1.15, zIndex: 20 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => {
                   if (node.status === 'available') {
                     onStartWorkout(node.id);
@@ -340,24 +364,28 @@ export function WorkoutRoadmap({ userLevel, completedWorkouts, currentStreak, on
 
             {/* Node Labels */}
             {workoutNodes.map((node) => (
-              <div
+              <motion.div
                 key={`label-${node.id}`}
-                className="absolute text-center text-xs font-medium"
+                className="absolute text-center text-xs font-medium pointer-events-none"
                 style={{
-                  left: node.position.x - 20,
-                  top: node.position.y + 70,
-                  width: '100px',
-                  zIndex: 3
+                  left: node.position.x,
+                  top: node.position.y + 40,
+                  width: '120px',
+                  zIndex: 5,
+                  transform: 'translateX(-50%)'
                 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
               >
-                <div className={`px-2 py-1 rounded ${
-                  node.status === 'completed' ? 'bg-green-100 text-green-700' :
-                  node.status === 'available' ? 'bg-blue-100 text-blue-700' :
-                  'bg-gray-100 text-gray-500'
+                <div className={`px-2 py-1 rounded-lg shadow-sm backdrop-blur-sm ${
+                  node.status === 'completed' ? 'bg-green-100/80 text-green-700 border border-green-200' :
+                  node.status === 'available' ? 'bg-blue-100/80 text-blue-700 border border-blue-200' :
+                  'bg-gray-100/80 text-gray-500 border border-gray-200'
                 }`}>
                   {node.title}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </CardContent>
