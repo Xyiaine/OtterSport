@@ -267,12 +267,12 @@ export default function AnimationTimeline() {
       id: Date.now().toString(),
       time,
       properties: {
-        x: element.x || 0,
-        y: element.y || 0,
-        scale: element.scale || 1,
-        rotation: element.rotation || 0,
-        opacity: element.opacity || 1,
-        color: element.color || '#000000'
+        x: (element as any).x || 0,
+        y: (element as any).y || 0,
+        scale: (element as any).scale || 1,
+        rotation: (element as any).rotation || 0,
+        opacity: (element as any).opacity || 1,
+        color: (element as any).color || '#000000'
       },
       easing: 'ease-in-out'
     };

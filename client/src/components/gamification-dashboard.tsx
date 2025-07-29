@@ -328,8 +328,8 @@ export function GamificationDashboard() {
       {/* Goal Setting Modal */}
       <GoalSetting
         show={showGoalSetting}
-        currentGoals={userGoals}
-        onSave={setUserGoals}
+        currentGoals={userGoals as any}
+        onSave={setUserGoals as any}
         onClose={() => setShowGoalSetting(false)}
       />
       {/* Header with XP and Level */}
@@ -436,7 +436,7 @@ export function GamificationDashboard() {
         <TabsContent value="overview" className="space-y-6">
           {/* Progress Commitment Dashboard */}
           <ProgressCommitmentDashboard
-            goals={userGoals}
+            goals={userGoals as any}
             onEditGoals={() => setShowGoalSetting(true)}
           />
 
