@@ -279,7 +279,24 @@ export default function Home() {
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-slate-800 mb-6 text-center">Workout Journey</h3>
                 
-                {/* Duolingo-style roadmap */}
+                {/* 
+                  DUOLINGO-STYLE WORKOUT ROADMAP
+                  
+                  FOR GAME ARTIST: 
+                  Please create round exercise logo images for the following workout types:
+                  - /game-assets/exercises/strength/strength-icon.png (64x64px, round)
+                  - /game-assets/exercises/cardio/cardio-icon.png (64x64px, round)  
+                  - /game-assets/exercises/flexibility/flexibility-icon.png (64x64px, round)
+                  - /game-assets/exercises/core/core-icon.png (64x64px, round)
+                  - /game-assets/exercises/boss/boss-icon.png (64x64px, round - special challenge icon)
+                  
+                  Design Guidelines:
+                  - Round logos that work well in circles
+                  - Clear, simple icons that are readable at small sizes
+                  - Match the OtterSport teal theme (#14b8a6)
+                  - Should look good with white backgrounds for completed states
+                  - Consider how they'll look with green checkmark overlays when completed
+                */}
                 <div className="relative px-4">
                   <div className="space-y-8">
                     {[
@@ -366,11 +383,11 @@ export default function Home() {
                         )}
 
                         <div className="flex flex-col items-center space-y-2">
-                          {/* Main exercise circle */}
+                          {/* Main exercise circle with placeholder for game artist logo */}
                           <motion.div
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
-                            className={`relative w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold cursor-pointer shadow-lg ${
+                            className={`relative w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold cursor-pointer shadow-lg overflow-hidden ${
                               workout.status === "completed" 
                                 ? "bg-gradient-to-br from-green-400 to-green-600 text-white" 
                                 : workout.status === "current"
@@ -378,6 +395,13 @@ export default function Home() {
                                 : "bg-slate-200 text-slate-400"
                             }`}
                           >
+                            {/* TODO: GAME ARTIST - Replace with exercise-specific logo images */}
+                            {/* Expected format: <img src="/game-assets/exercises/{type}/{workout.type}-icon.png" className="w-12 h-12 rounded-full" /> */}
+                            {workout.status !== "completed" && workout.status !== "locked" && (
+                              <div className="absolute inset-2 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                                <div className="text-xs font-medium text-white/60">{workout.type.toUpperCase()}</div>
+                              </div>
+                            )}
                             {/* Completion checkmark overlay */}
                             {workout.status === "completed" && (
                               <motion.div
@@ -401,8 +425,10 @@ export default function Home() {
                               </div>
                             )}
                             
-                            {/* Exercise icon */}
-                            {workout.status !== "completed" && workout.status !== "locked" && workout.icon}
+                            {/* Current exercise icon - will be replaced by game artist logos */}
+                            {workout.status !== "completed" && workout.status !== "locked" && (
+                              <div className="text-2xl">{workout.icon}</div>
+                            )}
                           </motion.div>
 
                           {/* Workout name and day */}
