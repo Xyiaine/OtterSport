@@ -2,22 +2,16 @@
  * HOME PAGE COMPONENT
  * 
  * Main dashboard for authenticated users displaying:
- * - User stats (streak, level, workouts completed)
- * - Quick actions (start workout, card battle, deck creation)
- * - Deck library with categories and difficulty levels
- * - Progress overview and achievements
+ * - Otter coach with different expressions based on user status
+ * - Big play button for card battle workouts
+ * - Player stats (streak, workouts, minutes today)
+ * - Workout roadmap progress with completed and upcoming workouts
  * 
  * Features:
  * - Automatic onboarding redirect for new users
  * - Real-time stats fetching with error handling
  * - Animated UI elements for enhanced user experience
  * - Responsive design for mobile and desktop
- * 
- * Navigation:
- * - Workout: Start exercise sessions
- * - Card Battle: Competitive fitness game mode
- * - Progress: Detailed analytics and achievements
- * - Deck Creation: Custom workout builder
  */
 
 import { useState, useEffect } from "react";
@@ -56,7 +50,7 @@ export default function Home() {
    * to prevent redirect loops during profile updates.
    */
   useEffect(() => {
-    if (!authLoading && user && !user.fitnessGoal) {
+    if (!authLoading && user && !(user as any).fitnessGoal) {
       // Small delay to prevent redirect loops during profile updates
       const timer = setTimeout(() => {
         setLocation("/onboarding");
@@ -69,18 +63,6 @@ export default function Home() {
   const { data: stats } = useQuery({
     queryKey: ["/api/user/stats"],
     enabled: !!user,
-    onError: (error: Error) => {
-      if (isUnauthorizedError(error)) {
-        toast({
-          title: "Session expired",
-          description: "Please log in again",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
-      }
-    },
   });
 
   // Fetch available decks
@@ -88,17 +70,27 @@ export default function Home() {
     queryKey: ["/api/decks"],
   });
 
-  // Get today's recommended deck (prioritize Quick Start, then difficulty-appropriate decks)
-  const todaysWorkout = decks.find(deck => deck.name === "Quick Start") || 
-                       decks.find(deck => deck.difficulty <= (user?.currentDifficultyLevel || 1.0)) || 
-                       decks[0];
+  // Get otter coach mood based on user status
+  const getOtterMood = () => {
+    const streak = (stats as any)?.currentStreak || 0;
+    const totalWorkouts = (stats as any)?.totalWorkouts || 0;
+    
+    if (totalWorkouts === 0) return 'happy'; // First time user
+    if (streak === 0) return 'encouraging'; // Streak broken, be encouraging
+    if (streak >= 7) return 'proud'; // Long streak, be proud
+    if (streak >= 3) return 'excited'; // Good streak, be excited
+    return 'cheerful'; // Default positive mood
+  };
 
-  const handleStartWorkout = (deckId?: number) => {
-    if (deckId) {
-      setLocation(`/workout/${deckId}`);
-    } else if (todaysWorkout) {
-      setLocation(`/workout/${todaysWorkout.id}`);
-    }
+  const getOtterMessage = () => {
+    const streak = (stats as any)?.currentStreak || 0;
+    const totalWorkouts = (stats as any)?.totalWorkouts || 0;
+    
+    if (totalWorkouts === 0) return "Welcome to OtterSport! Let's start your fitness journey!";
+    if (streak === 0) return "Don't worry, we all have off days. Let's get back on track!";
+    if (streak >= 7) return `Amazing ${streak}-day streak! You're a fitness champion!`;
+    if (streak >= 3) return `${streak} days strong! Keep up the momentum!`;
+    return "Ready for another great workout?";
   };
 
   const getGreeting = () => {
@@ -108,12 +100,47 @@ export default function Home() {
     return "Good evening";
   };
 
-  const getMotivationalMessage = () => {
-    const streak = stats?.currentStreak || 0;
-    if (streak === 0) return "Let's start building your streak! 🎯";
-    if (streak < 3) return "Great start! Keep the momentum going! 💪";
-    if (streak < 7) return "You're on fire! Amazing consistency! 🔥";
-    return "Incredible streak! You're a fitness champion! 🏆";
+  // Get today's workout based on fitness goal
+  const getTodaysWorkout = () => {
+    const fitnessGoal = (user as any)?.fitnessGoal;
+    
+    if (fitnessGoal === 'lose_weight') {
+      return decks.find(deck => deck.name.toLowerCase().includes('cardio')) || 
+             decks.find(deck => deck.category === 'cardio') || 
+             decks[0];
+    } else if (fitnessGoal === 'build_muscle') {
+      return decks.find(deck => deck.name.toLowerCase().includes('strength')) || 
+             decks.find(deck => deck.category === 'strength') || 
+             decks[0];
+    } else if (fitnessGoal === 'improve_endurance') {
+      return decks.find(deck => deck.name.toLowerCase().includes('cardio')) || 
+             decks.find(deck => deck.category === 'cardio') || 
+             decks[0];
+    } else if (fitnessGoal === 'increase_flexibility') {
+      return decks.find(deck => deck.name.toLowerCase().includes('flexibility')) || 
+             decks.find(deck => deck.category === 'flexibility') || 
+             decks[0];
+    }
+    
+    // Default to Quick Start or first available deck
+    return decks.find(deck => deck.name === "Quick Start") || decks[0];
+  };
+
+  const todaysWorkout = getTodaysWorkout();
+
+  const handlePlayCardBattle = () => {
+    if (todaysWorkout) {
+      setLocation(`/card-battle/${todaysWorkout.id}`);
+    } else {
+      setLocation('/card-battle');
+    }
+  };
+
+  // Calculate today's workout minutes
+  const getTodaysMinutes = () => {
+    // This would ideally come from today's completed workouts
+    // For now, return 0 as placeholder
+    return 0;
   };
 
   if (authLoading) {
@@ -127,232 +154,231 @@ export default function Home() {
   if (!user) return null;
 
   return (
-    <PageTransition direction="right">
-      <div className="pt-4 pb-32 px-6 max-w-md mx-auto space-y-6">
-        {/* Welcome Section */}
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <AnimatedCard animationType="lift" className="shadow-sm border-slate-100">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4">
-                <motion.div 
-                  className="w-12 h-12"
-                  whileHover={{ scale: 1.1, rotate: 10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <OtterCharacter mood="happy" size="sm" />
-                </motion.div>
-                <div>
-                  <motion.h2 
-                    className="text-lg font-semibold text-slate-800"
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
-                  >
-                    {getGreeting()}, {user.firstName || "Champion"}!
-                  </motion.h2>
-                  <motion.p 
-                    className="text-sm text-slate-600"
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.4, duration: 0.6 }}
-                  >
-                    {getMotivationalMessage()}
-                  </motion.p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      {/* Main Content */}
+      <div className="max-w-md mx-auto">
+        
+        {/* 1. Otter Coach Section */}
+        <div className="text-center py-8 px-6">
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
+            className="mb-6"
+          >
+            <OtterCharacter 
+              mood={getOtterMood()} 
+              size="lg" 
+              animated={true} 
+              className="mx-auto"
+            />
+          </motion.div>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="space-y-2"
+          >
+            <h1 className="text-2xl font-bold text-slate-800">
+              {getGreeting()}, {(user as any).firstName || "Champion"}!
+            </h1>
+            <p className="text-slate-600 text-lg">
+              {getOtterMessage()}
+            </p>
+          </motion.div>
+        </div>
+
+        {/* 2. Big Play Button */}
+        <div className="px-6 mb-8">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6, type: "spring" }}
+          >
+            <Button
+              onClick={handlePlayCardBattle}
+              className="w-full h-20 bg-gradient-to-r from-otter-teal to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white text-2xl font-bold rounded-2xl shadow-xl transform transition-all duration-200 hover:scale-105 active:scale-95"
+            >
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+                <div className="text-left">
+                  <div>PLAY</div>
+                  <div className="text-sm opacity-90">Card Battle</div>
                 </div>
               </div>
-            </CardContent>
-          </AnimatedCard>
-        </motion.div>
-
-        {/* Quick Stats */}
-        <motion.div 
-          className="grid grid-cols-3 gap-3"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          {[
-            { value: stats?.currentStreak || 0, label: "Day Streak", color: "text-otter-teal" },
-            { value: stats?.totalWorkouts || 0, label: "Workouts", color: "text-slate-700" },
-            { value: stats?.totalMinutes || 0, label: "Minutes", color: "text-emerald-500" }
-          ].map((statItem, idx) => (
-            <AnimatedCard key={idx} animationType="lift" className="shadow-sm border-slate-100">
-              <CardContent className="p-4 text-center">
-                <motion.div 
-                  className={`text-2xl font-bold ${statItem.color}`}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.8 + idx * 0.1, type: "spring", stiffness: 200 }}
-                >
-                  {statItem.value}
-                </motion.div>
-                <motion.div 
-                  className="text-xs text-slate-600"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.0 + idx * 0.1 }}
-                >
-                  {statItem.label}
-                </motion.div>
-              </CardContent>
-            </AnimatedCard>
-          ))}
-        </motion.div>
-
-        {/* Today's Workout */}
-        {todaysWorkout && (
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 1.0, duration: 0.6, type: "spring" }}
-          >
-            <AnimatedCard animationType="glow" className="bg-gradient-to-br from-otter-teal to-teal-600 text-white shadow-lg border-0">
-              <CardContent className="p-6 space-y-4">
-                <motion.div
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1.2, duration: 0.5 }}
-                >
-                  <h3 className="text-lg font-semibold text-white">Today's Workout</h3>
-                  <p className="text-teal-100 text-sm opacity-90">
-                    {todaysWorkout.name} • {todaysWorkout.estimatedMinutes || 15} mins
-                  </p>
-                  {todaysWorkout.description && (
-                    <p className="text-teal-100 text-sm mt-1 opacity-90">
-                      {todaysWorkout.description}
-                    </p>
-                  )}
-                </motion.div>
-                <motion.div
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1.4, duration: 0.5 }}
-                >
-                  <AnimatedButton 
-                    onClick={() => handleStartWorkout(todaysWorkout.id)}
-                    animationType="pulse"
-                    className="bg-white text-otter-teal hover:bg-slate-50 transition-colors font-semibold shadow-md"
-                  >
-                    <i className="fas fa-play mr-2"></i>
-                    Start Workout
-                  </AnimatedButton>
-                </motion.div>
-              </CardContent>
-            </AnimatedCard>
+            </Button>
           </motion.div>
-        )}
+        </div>
 
-        {/* Available Decks */}
-        <motion.div 
-          className="space-y-4"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1.6, duration: 0.6 }}
-        >
-          <h3 className="text-lg font-semibold text-slate-800">Available Workouts</h3>
-          <div className="space-y-3">
-            {decks.map((deck, index) => (
-              <motion.div
-                key={deck.id}
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 1.8 + index * 0.1, duration: 0.5 }}
-              >
-                <AnimatedCard animationType="lift" className="shadow-sm border-slate-100">
-                  <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2">
-                            <h4 className="font-medium text-slate-800">{deck.name}</h4>
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{ delay: 2.0 + index * 0.1, type: "spring" }}
-                            >
-                              <Badge variant="secondary" className="text-xs">
-                                {deck.category}
-                              </Badge>
-                            </motion.div>
+        {/* 3. Player Stats */}
+        <div className="px-6 mb-8">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+          >
+            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-slate-800 mb-4 text-center">Your Progress</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  {[
+                    { 
+                      value: (stats as any)?.currentStreak || 0, 
+                      label: "Day Streak", 
+                      icon: "🔥",
+                      color: "text-orange-500"
+                    },
+                    { 
+                      value: (stats as any)?.totalWorkouts || 0, 
+                      label: "Workouts", 
+                      icon: "💪",
+                      color: "text-otter-teal"
+                    },
+                    { 
+                      value: getTodaysMinutes(), 
+                      label: "Minutes Today", 
+                      icon: "⏱️",
+                      color: "text-blue-500"
+                    }
+                  ].map((stat, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 1.1 + idx * 0.1, type: "spring", stiffness: 200 }}
+                      className="text-center"
+                    >
+                      <div className="text-2xl mb-1">{stat.icon}</div>
+                      <div className={`text-3xl font-bold ${stat.color} mb-1`}>
+                        {stat.value}
+                      </div>
+                      <div className="text-xs text-slate-600 font-medium">
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+
+        {/* 4. Workout Roadmap - Scrollable */}
+        <div className="px-6 pb-32">
+          <motion.div
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+          >
+            <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-slate-800 mb-6 text-center">Workout Journey</h3>
+                
+                <div className="space-y-4">
+                  {[
+                    { 
+                      name: "Welcome Workout", 
+                      status: (stats as any)?.totalWorkouts > 0 ? "completed" : "current",
+                      type: "strength",
+                      day: 1
+                    },
+                    { 
+                      name: "First Cardio", 
+                      status: (stats as any)?.totalWorkouts > 1 ? "completed" : (stats as any)?.totalWorkouts > 0 ? "current" : "locked",
+                      type: "cardio",
+                      day: 2
+                    },
+                    { 
+                      name: "Flexibility Flow", 
+                      status: (stats as any)?.totalWorkouts > 2 ? "completed" : (stats as any)?.totalWorkouts > 1 ? "current" : "locked",
+                      type: "flexibility",
+                      day: 3
+                    },
+                    { 
+                      name: "Core Power", 
+                      status: (stats as any)?.totalWorkouts > 3 ? "completed" : (stats as any)?.totalWorkouts > 2 ? "current" : "locked",
+                      type: "core",
+                      day: 4
+                    },
+                    { 
+                      name: "Week 1 Challenge", 
+                      status: (stats as any)?.totalWorkouts > 4 ? "completed" : (stats as any)?.totalWorkouts > 3 ? "current" : "locked",
+                      type: "boss",
+                      day: 5
+                    }
+                  ].map((workout, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ x: -30, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 1.4 + idx * 0.1, duration: 0.5 }}
+                      className="flex items-center space-x-4 p-3 rounded-lg bg-slate-50/50"
+                    >
+                      {/* Status Icon */}
+                      <div className="flex-shrink-0">
+                        {workout.status === "completed" && (
+                          <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
                           </div>
-                          {deck.description && (
-                            <p className="text-sm text-slate-600 mt-1">{deck.description}</p>
-                          )}
-                          <div className="flex items-center space-x-4 mt-2 text-xs text-slate-500">
-                            <span>{deck.estimatedMinutes || 15} mins</span>
-                            <span>Difficulty: {deck.difficulty.toFixed(1)}</span>
+                        )}
+                        {workout.status === "current" && (
+                          <div className="w-8 h-8 bg-otter-teal rounded-full flex items-center justify-center animate-pulse">
+                            <div className="w-3 h-3 bg-white rounded-full"></div>
                           </div>
+                        )}
+                        {workout.status === "locked" && (
+                          <div className="w-8 h-8 bg-slate-300 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-5a2 2 0 00-2-2H6a2 2 0 00-2 2v5a2 2 0 002 2zM12 9V7a4 4 0 00-8 0v2" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Workout Info */}
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2">
+                          <h4 className={`font-medium ${workout.status === "locked" ? "text-slate-400" : "text-slate-800"}`}>
+                            Day {workout.day}: {workout.name}
+                          </h4>
+                          <Badge 
+                            variant={workout.type === "boss" ? "default" : "secondary"}
+                            className="text-xs"
+                          >
+                            {workout.type}
+                          </Badge>
                         </div>
+                        {workout.status === "current" && (
+                          <p className="text-sm text-otter-teal font-medium">Ready to start!</p>
+                        )}
                       </div>
-                      <div className="flex space-x-2">
-                        <AnimatedButton 
-                          onClick={() => handleStartWorkout(deck.id)}
-                          animationType="scale"
-                          className="flex-1 bg-otter-teal hover:bg-teal-600 text-white text-sm py-2"
-                        >
-                          <i className="fas fa-play mr-2"></i>
-                          Regular Workout
-                        </AnimatedButton>
-                        <AnimatedButton 
-                          onClick={() => setLocation(`/card-battle/${deck.id}`)}
-                          animationType="scale"
-                          variant="outline"
-                          className="flex-1 border-purple-300 text-purple-600 hover:bg-purple-50 text-sm py-2"
-                        >
-                          <i className="fas fa-layer-group mr-2"></i>
-                          Card Battle
-                        </AnimatedButton>
-                      </div>
+                    </motion.div>
+                  ))}
+                  
+                  {/* Future workouts preview */}
+                  <div className="text-center py-6">
+                    <div className="text-slate-400 text-sm">
+                      More workouts unlock as you progress...
                     </div>
-                  </CardContent>
-                </AnimatedCard>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Game Modes */}
-        <motion.div 
-          className="space-y-4"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 2.2, duration: 0.6 }}
-        >
-          <h3 className="text-lg font-semibold text-slate-800">Game Modes</h3>
-          <div className="grid grid-cols-2 gap-3">
-            <AnimatedCard 
-              animationType="tilt"
-              onClick={() => setLocation('/game-modes/solo')}
-              className="shadow-sm border-slate-200 cursor-pointer"
-            >
-              <CardContent className="p-4 text-center space-y-2">
-                <motion.i 
-                  className="fas fa-user text-2xl text-slate-400"
-                  whileHover={{ scale: 1.2, color: "#14b8a6" }}
-                />
-                <div className="text-sm font-medium text-slate-700">Solo Play</div>
+                    <div className="flex justify-center space-x-2 mt-2">
+                      {[1, 2, 3].map((dot) => (
+                        <div key={dot} className="w-2 h-2 bg-slate-300 rounded-full"></div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </CardContent>
-            </AnimatedCard>
-            <AnimatedCard 
-              animationType="tilt"
-              onClick={() => setLocation('/game-modes/ai-challenge')}
-              className="shadow-sm border-slate-200 cursor-pointer"
-            >
-              <CardContent className="p-4 text-center space-y-2">
-                <motion.i 
-                  className="fas fa-robot text-2xl text-slate-400"
-                  whileHover={{ scale: 1.2, color: "#7c3aed" }}
-                />
-                <div className="text-sm font-medium text-slate-700">AI Challenge</div>
-              </CardContent>
-            </AnimatedCard>
-          </div>
-        </motion.div>
+            </Card>
+          </motion.div>
+        </div>
       </div>
-    </PageTransition>
+    </div>
   );
 }
