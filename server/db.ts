@@ -200,25 +200,6 @@ export const storage = db ? new (class DatabaseStorage {
     return await db.select().from(schema.decks).where(eq(schema.decks.createdBy, userId));
   }
   
-  async createWorkout(workoutData: any) {
-    const [workout] = await db.insert(schema.workouts).values(workoutData).returning();
-    return workout;
-  }
-  
-  async completeWorkout(workoutId: number, feedback: any, duration?: number, calories?: number) {
-    const [workout] = await db.update(schema.workouts)
-      .set({ 
-        completed: true, 
-        completedAt: new Date(),
-        duration,
-        calories,
-        feedback: JSON.stringify(feedback)
-      })
-      .where(eq(schema.workouts.id, workoutId))
-      .returning();
-    return workout;
-  }
-  
   async getUserWorkouts(userId: string, limit?: number) {
     let query = db.select().from(schema.workouts).where(eq(schema.workouts.userId, userId));
     if (limit) {

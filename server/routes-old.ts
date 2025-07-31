@@ -7,44 +7,40 @@
 
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { storage } from "./db";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeckExerciseSchema } from "@shared/schema";
 import { z } from "zod";
-import { registerTestRoutes } from "./api-test-routes";
-import { registerDevelopmentRoutes } from "./development-tools";
-import { databaseOptimizer } from "./database-optimizer";
-import { migrationTools } from "./migration-tools";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
   await setupAuth(app);
   
-  // Register test routes (development only)
-  registerTestRoutes(app);
-  
-  // Register development monitoring tools
-  registerDevelopmentRoutes(app);
-  
-  // Register migration and optimization tools
-  registerMigrationRoutes(app);
-  
-  // Register code optimization and testing routes
-  registerOptimizationRoutes(app);
-
-  // ============================================================================
-  // AUTH ROUTES
-  // ============================================================================
+  // Simple admin status endpoint
+  app.get("/api/admin/status", (req, res) => {
+    res.json({ isAdmin: false, adminLogin: null });
+  });
   
   /**
    * GET /api/auth/user
    * Returns the current authenticated user's data
    */
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  app.get('/api/auth/user', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
+      // If user is authenticated, return user data
+      if (req.user && req.user.claims && req.user.claims.sub) {
+        const userId = req.user.claims.sub;
+        const user = await storage.getUser(userId);
+        res.json(user);
+      } else {
+        // Return anonymous user data for non-authenticated users
+        res.json({
+          id: 'anonymous',
+          email: 'anonymous@ottersport.com',
+          name: 'Anonymous User',
+          isAnonymous: true
+        });
+      }
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
@@ -75,8 +71,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
    * GET /api/user/stats
    * Returns user fitness statistics (workouts, streaks, etc.)
    */
-  app.get('/api/user/stats', isAuthenticated, async (req: any, res) => {
+  app.get('/api/user/stats', async (req: any, res) => {
     try {
+      // Return anonymous stats for non-authenticated users
+      if (!req.user || !req.user.claims || !req.user.claims.sub) {
+        res.json({
+          totalWorkouts: 0,
+          currentStreak: 0,
+          achievements: 0,
+          isAnonymous: true
+        });
+        return;
+      }
+      
       const userId = req.user.claims.sub;
       const stats = await storage.getUserStats(userId);
       res.json(stats);
@@ -210,22 +217,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/workouts/:id/complete', isAuthenticated, async (req: any, res) => {
     try {
       const workoutId = parseInt(req.params.id);
+      const userId = req.user.claims.sub;
       const { feedback, duration, calories } = req.body;
       
       if (!feedback || typeof duration !== 'number') {
         return res.status(400).json({ message: "Feedback and duration are required" });
       }
 
+      // Complete the workout in storage
       const workout = await storage.completeWorkout(workoutId, feedback, duration, calories);
-      res.json(workout);
+      
+      // Process gamification rewards
+      const gamificationResponse = await processWorkoutCompletion(workoutId, userId);
+      
+      res.json({
+        workout,
+        gamification: gamificationResponse,
+      });
     } catch (error) {
       console.error("Error completing workout:", error);
       res.status(500).json({ message: "Failed to complete workout" });
     }
   });
 
-  app.get('/api/user/workouts', isAuthenticated, async (req: any, res) => {
+  app.get('/api/user/workouts', async (req: any, res) => {
     try {
+      // Return empty workouts for anonymous users
+      if (!req.user || !req.user.claims || !req.user.claims.sub) {
+        res.json([]);
+        return;
+      }
+      
       const userId = req.user.claims.sub;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
       const workouts = await storage.getUserWorkouts(userId, limit);
@@ -233,6 +255,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching user workouts:", error);
       res.status(500).json({ message: "Failed to fetch workouts" });
+    }
+  });
+
+  // ============================================================================
+  // CARD BATTLE & WARMUP SCORING ROUTES
+  // ============================================================================
+  
+  /**
+   * POST /api/card-battle/score
+   * Calculate score for a played card with warmup combo logic
+   */
+  app.post('/api/card-battle/score', async (req: any, res) => {
+    try {
+      const { cardName, cardType, cardCategory, difficulty, scoringState } = req.body;
+      
+      // Calculate points using warmup scoring system
+      const result = calculateCardScore(
+        cardName,
+        cardType,
+        cardCategory, 
+        difficulty,
+        scoringState
+      );
+      
+      res.json(result);
+    } catch (error) {
+      console.error("Error calculating card score:", error);
+      res.status(500).json({ message: "Failed to calculate card score" });
+    }
+  });
+
+  /**
+   * POST /api/card-battle/update-state
+   * Update game scoring state after playing a card
+   */
+  app.post('/api/card-battle/update-state', async (req: any, res) => {
+    try {
+      const { currentState, playedCard, deckSize } = req.body;
+      
+      // Update scoring state with warmup logic
+      const newState = updateScoringState(currentState, playedCard, deckSize);
+      
+      res.json(newState);
+    } catch (error) {
+      console.error("Error updating scoring state:", error);
+      res.status(500).json({ message: "Failed to update scoring state" });
+    }
+  });
+
+  /**
+   * GET /api/card-battle/initial-state
+   * Get initial scoring state for new game
+   */
+  app.get('/api/card-battle/initial-state', async (req: any, res) => {
+    try {
+      const initialState = createInitialScoringState();
+      res.json(initialState);
+    } catch (error) {
+      console.error("Error creating initial state:", error);
+      res.status(500).json({ message: "Failed to create initial state" });
     }
   });
 
@@ -247,8 +329,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/user/achievements', isAuthenticated, async (req: any, res) => {
+  app.get('/api/user/achievements', async (req: any, res) => {
     try {
+      // Return empty achievements for anonymous users
+      if (!req.user || !req.user.claims || !req.user.claims.sub) {
+        res.json([]);
+        return;
+      }
+      
       const userId = req.user.claims.sub;
       const achievements = await storage.getUserAchievements(userId);
       res.json(achievements);
@@ -331,63 +419,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Health endpoint
+  app.get('/api/health', (req, res) => {                    
+    res.json({ 
+      status: 'healthy', 
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime()
+    });
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
-
-/**
- * REGISTER MIGRATION & OPTIMIZATION ROUTES
- * Provides comprehensive database migration and optimization endpoints
- */
-function registerMigrationRoutes(app: Express): void {
-  console.log("[Migration] Registering migration and optimization routes...");
-
-  // Database health check
-  app.get('/api/migration/health', async (req, res) => {
-    try {
-      const health = await databaseOptimizer.performHealthCheck();
-      res.json(health);
-    } catch (error) {
-      res.status(500).json({ error: "Health check failed", details: error });
-    }
-  });
-
-  // Database optimization
-  app.post('/api/migration/optimize', async (req, res) => {
-    try {
-      const optimization = await databaseOptimizer.optimizeDatabase();
-      res.json(optimization);
-    } catch (error) {
-      res.status(500).json({ error: "Optimization failed", details: error });
-    }
-  });
-
-  // Export schema
-  app.get('/api/migration/export-schema', async (req, res) => {
-    try {
-      const schema = await databaseOptimizer.exportSchema();
-      res.setHeader('Content-Type', 'application/json');
-      res.setHeader('Content-Disposition', 'attachment; filename=ottersport-schema.json');
-      res.send(schema);
-    } catch (error) {
-      res.status(500).json({ error: "Schema export failed", details: error });
-    }
-  });
-
-  // Generate migration scripts
-  app.get('/api/migration/scripts', async (req, res) => {
-    try {
-      const scripts = await migrationTools.generatePlatformScripts();
-      res.json(scripts);
-    } catch (error) {
-      res.status(500).json({ error: "Script generation failed", details: error });
-    }
-  });
-
-  // Full backup
-  app.get('/api/migration/backup', async (req, res) => {
-    try {
-      const backup = await migrationTools.createFullBackup();
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Content-Disposition', 'attachment; filename=ottersport-backup.json');
       res.json(backup);
