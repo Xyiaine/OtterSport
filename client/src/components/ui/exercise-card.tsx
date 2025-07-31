@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/useAuth";
+import { ExerciseIcon } from "@/components/ui/exercise-icons";
+import { Play, Pause, SkipForward, CheckCircle } from "lucide-react";
 import type { Exercise } from "@shared/schema";
 
 /**

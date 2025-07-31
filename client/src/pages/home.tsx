@@ -25,6 +25,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { apiRequest } from "@/lib/queryClient";
 import OtterCharacter from "@/components/ui/otter-character";
+import { ExerciseIcon } from "@/components/ui/exercise-icons";
+import { CheckCircle, Clock, Star } from "lucide-react";
 import { 
   AnimatedButton, 
   AnimatedCard, 
@@ -395,11 +397,15 @@ export default function Home() {
                                 : "bg-slate-200 text-slate-400"
                             }`}
                           >
-                            {/* TODO: GAME ARTIST - Replace with exercise-specific logo images */}
-                            {/* Expected format: <img src="/game-assets/exercises/{type}/{workout.type}-icon.png" className="w-12 h-12 rounded-full" /> */}
+                            {/* SVG-based exercise icons to replace missing images */}
                             {workout.status !== "completed" && workout.status !== "locked" && (
-                              <div className="absolute inset-2 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                                <div className="text-xs font-medium text-white/60">{workout.type.toUpperCase()}</div>
+                              <div className="absolute inset-0 rounded-full flex items-center justify-center">
+                                <ExerciseIcon 
+                                  type={workout.type as any} 
+                                  size="md"
+                                  className="text-white"
+                                  completed={false}
+                                />
                               </div>
                             )}
                             {/* Completion checkmark overlay */}
@@ -410,9 +416,7 @@ export default function Home() {
                                 transition={{ delay: 0.2, type: "spring" }}
                                 className="absolute inset-0 rounded-full bg-green-500 flex items-center justify-center"
                               >
-                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                </svg>
+                                <CheckCircle className="w-8 h-8 text-white" fill="currentColor" />
                               </motion.div>
                             )}
                             

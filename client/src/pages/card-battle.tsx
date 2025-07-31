@@ -9,6 +9,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import OtterCharacter from "@/components/ui/otter-character";
+import { ExerciseIcon } from "@/components/ui/exercise-icons";
+import CardGraphics from "@/components/ui/card-graphics";
+import { LoadingSpinner, StatusCard, ProgressBar } from "@/components/ui/visual-feedback";
+import { EnhancedButton } from "@/components/ui/enhanced-buttons";
 import AIOpponentEmotions, { 
   type EmotionType, 
   triggerEmotion, 

@@ -21,8 +21,11 @@ import {
   Trophy,
   Dumbbell,
   Heart,
-  Zap
+  Zap,
+  Play,
+  Target
 } from 'lucide-react';
+import { ExerciseIcon } from '@/components/ui/exercise-icons';
 
 interface WorkoutNode {
   id: string;

@@ -76,13 +76,182 @@
     border-color: var(--otter-teal);
   }
   
+  .bg-otter-neutral {
+    background-color: var(--otter-neutral);
+  }
+  
   .bg-otter-teal-light {
     background-color: var(--otter-teal-light);
   }
   
-  .hover\:bg-otter-teal-light:hover {
-    background-color: var(--otter-teal-light);
+  /* Improved animations for better visual feedback */
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s infinite;
   }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  /* Card hover effects */
+  .card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Button enhancements */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--otter-teal) 0%, #16a085 100%);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #16a085 0%, var(--otter-teal) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(32, 178, 170, 0.3);
+  }
+  
+  /* Exercise type colors */
+  .exercise-strength { color: #374151; }
+  .exercise-cardio { color: #DC2626; }
+  .exercise-flexibility { color: #7C3AED; }
+  .exercise-core { color: #D97706; }
+  .exercise-warmup { color: #EA580C; }
+  .exercise-utility { color: #2563EB; }
+  
+  .bg-exercise-strength { background-color: #374151; }
+  .bg-exercise-cardio { background-color: #DC2626; }
+  .bg-exercise-flexibility { background-color: #7C3AED; }
+  .bg-exercise-core { background-color: #D97706; }
+  .bg-exercise-warmup { background-color: #EA580C; }
+  .bg-exercise-utility { background-color: #2563EB; }
+  
+  /* Gradient backgrounds for cards */
+  .gradient-strength {
+    background: linear-gradient(135deg, #374151 0%, #1F2937 100%);
+  }
+  
+  .gradient-cardio {
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  }
+  
+  .gradient-flexibility {
+    background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+  }
+  
+  .gradient-core {
+    background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  }
+  
+  .gradient-warmup {
+    background: linear-gradient(135deg, #EA580C 0%, #DC2626 100%);
+  }
+  
+  .gradient-utility {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Loading states */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Focus improvements */
+.focus-ring {
+  outline: 2px solid var(--otter-teal);
+  outline-offset: 2px;
+}
+
+/* Dark mode improvements */
+.dark .skeleton {
+  background: linear-gradient(90deg, #374151 25%, #4B5563 50%, #374151 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+/* Responsive text sizing */
+@media (max-width: 640px) {
+  .text-responsive-lg {
+    font-size: 1.5rem;
+  }
+  
+  .text-responsive-xl {
+    font-size: 1.875rem;
+  }
+  
+  .text-responsive-2xl {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .text-responsive-lg {
+    font-size: 1.875rem;
+  }
+  
+  .text-responsive-xl {
+    font-size: 2.25rem;
+  }
+  
+  .text-responsive-2xl {
+    font-size: 3rem;
+  }
+}
   
   .from-otter-teal {
     --tw-gradient-from: var(--otter-teal);
@@ -126,7 +295,6 @@
   .backface-hidden {
     backface-visibility: hidden;
   }
-}
 
 @keyframes cardFlip {
   0% { transform: rotateY(0deg); }
