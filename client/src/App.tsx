@@ -35,6 +35,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
+import { useLocalProfile } from "@/hooks/useLocalProfile";
 import { GameArtistProvider } from "@/contexts/GameArtistContext";
 import GameArtistToolbar from "@/components/ui/game-artist-toolbar";
 import Landing from "@/pages/landing";
@@ -66,6 +67,7 @@ import BottomNavigation from "@/components/ui/bottom-navigation";
  */
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
+  const { hasProfile } = useLocalProfile();
 
   // Show loading spinner while checking authentication status
   if (isLoading) {
@@ -79,11 +81,11 @@ function Router() {
   return (
     <div className="min-h-screen bg-otter-neutral">
       <Switch>
-        {!isAuthenticated ? (
-          // Show landing page for unauthenticated users
+        {!isAuthenticated && !hasProfile ? (
+          // Show landing page for new users
           <Route path="/" component={Landing} />
         ) : (
-          // Show app pages for authenticated users
+          // Show app pages for authenticated users or users with local profile
           <>
             <Route path="/" component={Home} />
             <Route path="/onboarding" component={Onboarding} />
@@ -97,8 +99,8 @@ function Router() {
         )}
         <Route component={NotFound} />
       </Switch>
-      {/* Show bottom navigation only for authenticated users */}
-      {isAuthenticated && <BottomNavigation />}
+      {/* Show bottom navigation for authenticated users or users with local profile */}
+      {(isAuthenticated || hasProfile) && <BottomNavigation />}
       {/* Game Artist Toolbar */}
       <GameArtistToolbar />
     </div>

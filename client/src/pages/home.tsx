@@ -22,7 +22,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { isUnauthorizedError } from "@/lib/authUtils";
+import { useLocalProfile } from "@/hooks/useLocalProfile";
 import { apiRequest } from "@/lib/queryClient";
 import OtterCharacter from "@/components/ui/otter-character";
 import { ExerciseIcon } from "@/components/ui/exercise-icons";
@@ -42,24 +42,24 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { user, isLoading: authLoading } = useAuth();
+  const { profile, hasProfile } = useLocalProfile();
   const queryClient = useQueryClient();
 
   /**
    * ONBOARDING REDIRECT LOGIC
    * 
    * Automatically redirects new users to onboarding if they haven't
-   * completed their fitness profile setup. Includes timing safeguards
-   * to prevent redirect loops during profile updates.
+   * completed their fitness profile setup (either locally or on server).
    */
   useEffect(() => {
-    if (!authLoading && user && !(user as any).fitnessGoal) {
+    if (!authLoading && !hasProfile) {
       // Small delay to prevent redirect loops during profile updates
       const timer = setTimeout(() => {
         setLocation("/onboarding");
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [user, authLoading, setLocation]);
+  }, [authLoading, hasProfile, setLocation]);
 
   // Fetch user stats
   const { data: stats } = useQuery({
@@ -102,15 +102,15 @@ export default function Home() {
     return "Good evening";
   };
 
-  // Get today's workout based on fitness goal
+  // Get today's workout based on fitness goal (from profile or user data)
   const getTodaysWorkout = () => {
-    const fitnessGoal = (user as any)?.fitnessGoal;
+    const fitnessGoal = profile?.fitnessGoal || (user as any)?.fitnessGoal;
     
     if (fitnessGoal === 'lose_weight') {
       return decks.find(deck => deck.name.toLowerCase().includes('cardio')) || 
              decks.find(deck => deck.category === 'cardio') || 
              decks[0];
-    } else if (fitnessGoal === 'build_muscle') {
+    } else if (fitnessGoal === 'gain_muscle') {
       return decks.find(deck => deck.name.toLowerCase().includes('strength')) || 
              decks.find(deck => deck.category === 'strength') || 
              decks[0];
@@ -118,7 +118,7 @@ export default function Home() {
       return decks.find(deck => deck.name.toLowerCase().includes('cardio')) || 
              decks.find(deck => deck.category === 'cardio') || 
              decks[0];
-    } else if (fitnessGoal === 'increase_flexibility') {
+    } else if (fitnessGoal === 'increase_mobility') {
       return decks.find(deck => deck.name.toLowerCase().includes('flexibility')) || 
              decks.find(deck => deck.category === 'flexibility') || 
              decks[0];

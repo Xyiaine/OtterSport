@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { isUnauthorizedError } from "@/lib/authUtils";
-import { apiRequest } from "@/lib/queryClient";
+import { saveOnboardingData } from "@/lib/localStorage";
 import OtterCharacter from "@/components/ui/otter-character";
 
 const FITNESS_GOALS = [
@@ -42,38 +41,25 @@ export default function Onboarding() {
 
   const updateProfileMutation = useMutation({
     mutationFn: async (profileData: any) => {
-      await apiRequest("PATCH", "/api/user/profile", profileData);
-    },
-    onSuccess: async () => {
-      // Invalidate and refetch user data to ensure it's up to date
-      await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
-      await queryClient.refetchQueries({ queryKey: ["/api/auth/user"] });
+      // Save onboarding data to local storage
+      saveOnboardingData(profileData);
       
+      // Return the profile data (no server call needed for anonymous users)
+      return profileData;
+    },
+    onSuccess: async (profileData) => {
       toast({
-        title: "Profile updated!",
+        title: "Profile created!",
         description: "Your fitness journey is ready to begin.",
       });
       
-      // Small delay to ensure the user data is properly updated
-      setTimeout(() => {
-        setLocation("/");
-      }, 100);
+      // Navigate to home page
+      setLocation("/");
     },
     onError: (error: Error) => {
-      if (isUnauthorizedError(error)) {
-        toast({
-          title: "Session expired",
-          description: "Please log in again",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
-        return;
-      }
       toast({
         title: "Error",
-        description: "Failed to update profile. Please try again.",
+        description: "Failed to save profile. Please try again.",
         variant: "destructive",
       });
     },
