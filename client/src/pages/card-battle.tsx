@@ -483,14 +483,6 @@ export default function CardBattle() {
     const playerWillHaveCards = gameState.playerHand.length + newPlayerCards.length > 0;
     const aiWillHaveCards = gameState.aiHand.length + newAICards.length > 0;
 
-    setGameState(prev => ({
-      ...prev,
-      playerHand: [...prev.playerHand, ...newPlayerCards],
-      aiHand: [...prev.aiHand, ...newAICards],
-      deckCards: finalRemainingDeck,
-      gamePhase: totalCardsLeft === 0 && (!playerWillHaveCards || !aiWillHaveCards) ? 'game-over' : 'playing',
-    }));
-
     // End game if no more cards available and players can't continue
     if (totalCardsLeft === 0 && (!playerWillHaveCards || !aiWillHaveCards)) {
       setTimeout(() => endGame(), 1000);
@@ -1005,12 +997,12 @@ export default function CardBattle() {
           </div>
 
           {/* Center Deck Section */}
-          <div className="order-2 lg:order-2 flex flex-col items-center justify-center">
+          <div className="order-2 lg:order-2 flex flex-col items-center justify-center min-h-[300px]">
             <div className="text-center mb-4">
               <div className="text-sm text-slate-600 mb-3">
                 Deck ({gameState.deckCards.length} cards)
               </div>
-              <div className="relative">
+              <div className="relative flex flex-col items-center">
                 <div 
                   className={`relative cursor-pointer transition-transform ${
                     gameState.gamePhase === 'drawing' ? 'hover:scale-105' : ''
@@ -1028,7 +1020,7 @@ export default function CardBattle() {
                 </div>
                 
                 {/* Game Action Button Below Deck */}
-                <div className="mt-4">
+                <div className="mt-6">
                   {gameState.gamePhase === 'drawing' && (
                     <Button
                       onClick={drawCards}
