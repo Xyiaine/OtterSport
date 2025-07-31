@@ -11,6 +11,7 @@ import { storage } from "./db";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeckExerciseSchema } from "@shared/schema";
 import { z } from "zod";
+import { registerTotalHealthRoutes } from "./total-health-system";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
@@ -20,6 +21,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/admin/status", (req, res) => {
     res.json({ isAdmin: false, adminLogin: null });
   });
+
+  // Register Total Health System routes
+  registerTotalHealthRoutes(app);
 
   // Health endpoint
   app.get('/api/health', (req, res) => {                    

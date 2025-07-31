@@ -1,0 +1,198 @@
+{
+  "overall": "excellent",
+  "score": 90,
+  "timestamp": "2025-07-31T08:23:48.098Z",
+  "frontend": [
+    {
+      "timestamp": "2025-07-31T08:23:48.112Z",
+      "testName": "Frontend Component Loading",
+      "status": "passed",
+      "duration": 14,
+      "details": {
+        "componentCount": 83,
+        "components": [
+          "gamification-dashboard.tsx",
+          "ui",
+          "ui/accordion.tsx",
+          "ui/admin-login.tsx",
+          "ui/ai-opponent-emotions.tsx",
+          "ui/alert-dialog.tsx",
+          "ui/alert.tsx",
+          "ui/animated-toast.tsx",
+          "ui/animation-timeline.tsx",
+          "ui/aspect-ratio.tsx"
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-07-31T08:23:48.114Z",
+      "testName": "Frontend Page Structure",
+      "status": "passed",
+      "duration": 2,
+      "details": {
+        "expectedPages": [
+          "home.tsx",
+          "workout.tsx",
+          "progress.tsx",
+          "landing.tsx"
+        ],
+        "foundPages": [
+          "home.tsx",
+          "workout.tsx",
+          "progress.tsx",
+          "landing.tsx"
+        ],
+        "totalPages": 10
+      }
+    },
+    {
+      "timestamp": "2025-07-31T08:23:48.257Z",
+      "testName": "Frontend App Configuration",
+      "status": "passed",
+      "duration": 143,
+      "details": {
+        "hasRouting": true,
+        "hasQueryClient": true,
+        "fileSize": 4702
+      }
+    }
+  ],
+  "backend": [
+    {
+      "timestamp": "2025-07-31T08:23:48.168Z",
+      "testName": "Backend API Endpoints",
+      "status": "passed",
+      "duration": 70,
+      "details": {
+        "total": 5,
+        "working": 5,
+        "results": [
+          {
+            "url": "http://localhost:5000/api/health",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "url": "http://localhost:5000/api/exercises",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "url": "http://localhost:5000/api/decks",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "url": "http://localhost:5000/api/auth/user",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "url": "http://localhost:5000/api/user/stats",
+            "status": 200,
+            "ok": true
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-07-31T08:23:48.168Z",
+      "testName": "Backend Database Operations",
+      "status": "passed",
+      "duration": 0,
+      "details": {
+        "exerciseCount": 20,
+        "deckCount": 3,
+        "achievementCount": 5
+      }
+    },
+    {
+      "timestamp": "2025-07-31T08:23:48.175Z",
+      "testName": "Backend Authentication System",
+      "status": "passed",
+      "duration": 7,
+      "details": {
+        "status": 200,
+        "userData": {
+          "id": "anonymous",
+          "email": "anonymous@ottersport.com",
+          "name": "Anonymous User",
+          "isAnonymous": true
+        }
+      }
+    }
+  ],
+  "integration": [
+    {
+      "timestamp": "2025-07-31T08:23:48.172Z",
+      "testName": "Integration Frontend-Backend Communication",
+      "status": "passed",
+      "duration": 69,
+      "details": {
+        "status": 200,
+        "exerciseCount": 20,
+        "firstExercise": "Deck Shuffle"
+      }
+    },
+    {
+      "timestamp": "2025-07-31T08:23:48.186Z",
+      "testName": "Integration User Workflow",
+      "status": "passed",
+      "duration": 14,
+      "details": {
+        "userStats": {
+          "totalWorkouts": 0,
+          "totalMinutes": 0,
+          "currentStreak": 0,
+          "longestStreak": 0,
+          "averageRating": 0,
+          "isAnonymous": true
+        },
+        "deckCount": 3,
+        "exerciseCount": 20
+      }
+    }
+  ],
+  "performance": [
+    {
+      "timestamp": "2025-07-31T08:23:48.189Z",
+      "testName": "Performance API Response Times",
+      "status": "passed",
+      "duration": 85,
+      "details": {
+        "averageResponseTime": 81,
+        "timings": [
+          {
+            "url": "http://localhost:5000/api/health",
+            "responseTime": 77
+          },
+          {
+            "url": "http://localhost:5000/api/exercises",
+            "responseTime": 82
+          },
+          {
+            "url": "http://localhost:5000/api/decks",
+            "responseTime": 84
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-07-31T08:23:48.189Z",
+      "testName": "Performance Memory Usage",
+      "status": "failed",
+      "duration": 0,
+      "details": {
+        "rss": 619,
+        "heapUsed": 270,
+        "heapTotal": 299
+      }
+    }
+  ],
+  "codeQuality": {
+    "duplicateCode": 5,
+    "typeErrors": 90,
+    "unusedCode": 10,
+    "optimization": 75
+  }
+}
