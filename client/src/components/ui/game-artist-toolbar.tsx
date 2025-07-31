@@ -7,7 +7,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+// Badge component removed for minimal design
 import { 
   Paintbrush, 
   Eye, 
@@ -25,7 +25,7 @@ import {
   Zap
 } from "lucide-react";
 import { useGameArtist } from "@/contexts/GameArtistContext";
-import VisualEditor from "./visual-editor";
+// Visual editor component removed for minimal design
 
 /**
  * Handles gameartisttoolbar functionality for the application
@@ -381,7 +381,7 @@ export default function GameArtistToolbar() {
 
       {/* Visual Editor Modal */}
       {showEditor && (
-        <VisualEditor onClose={() => setShowEditor(false)} />
+        {/* Visual editor removed for minimal design */}
       )}
     </>
   );

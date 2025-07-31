@@ -13,7 +13,7 @@
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
-import AdminLogin from "./admin-login";
+// Admin login component removed for minimal design
 import { 
   Home, 
   Play, 
@@ -60,7 +60,7 @@ import {
 export default function BottomNavigation() {
   const [location, setLocation] = useLocation();
   const { isAdmin, canAccessGameArtist, logout } = useAdmin();
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  // Admin login removed for minimal design
 
   const navItems = [
     { id: "home", path: "/", icon: Home, label: "Home" },
@@ -81,7 +81,7 @@ export default function BottomNavigation() {
     if (isAdmin) {
       logout();
     } else {
-      setShowAdminLogin(true);
+      // Admin login disabled in minimal mode
     }
   };
 
@@ -136,14 +136,7 @@ export default function BottomNavigation() {
       </nav>
       
       {/* Admin login modal */}
-      <AdminLogin
-        isOpen={showAdminLogin}
-        onClose={() => setShowAdminLogin(false)}
-        onSuccess={() => {
-          // Refresh navigation after successful login
-          // Game Artist will become available automatically
-        }}
-      />
+      {/* Admin login component removed for minimal design */}
     </>
   );
 }

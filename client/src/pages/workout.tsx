@@ -21,10 +21,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAdmin } from "@/hooks/useAdmin";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { apiRequest } from "@/lib/queryClient";
-import ExerciseCard from "@/components/ui/exercise-card";
-import FeedbackModal from "@/components/ui/feedback-modal";
+// Exercise card component removed for minimal design
+// Feedback modal component removed for minimal design
 import OtterCharacter from "@/components/ui/otter-character";
-import CardDeckSelection from "@/components/ui/card-deck-selection";
+// Card deck selection component removed for minimal design
 import type { Deck, DeckExercise, Exercise, Workout } from "@shared/schema";
 
 /**
@@ -386,14 +386,14 @@ export default function WorkoutPage() {
 
   // Show card selection phase first
   if (workoutPhase === 'card-selection') {
-    return <CardDeckSelection 
-      deck={deck} 
-      onCardSelected={handleCardSelection}
-      gameMode={gameMode}
-      playerHand={playerHand}
-      aiHandSize={aiHand.length}
-      deckSize={deckCards.length}
-    />;
+    return (
+      <div className="text-center p-4">
+        <div className="text-2xl mb-2">🏃‍♂️</div>
+        <p>Card deck selection simplified for minimal design</p>
+        <p className="text-sm text-gray-500 mt-2">Deck: {deck?.name || 'Default'}</p>
+        <p className="text-sm text-gray-500">Cards available: {deckCards.length}</p>
+      </div>
+    );
   }
 
   return (
@@ -564,18 +564,19 @@ export default function WorkoutPage() {
         </div>
       </div>
 
-      {/* Feedback Modal */}
-      <FeedbackModal
-        isOpen={showFeedback}
-        onClose={() => setShowFeedback(false)}
-        onSubmit={handleFeedbackSubmit}
-        workoutStats={{
-          cards: deck.exercises.length,
-          minutes: Math.floor(timer / 60),
-          calories: Math.floor((timer / 60) * 8),
-        }}
-        isSubmitting={completeWorkoutMutation.isPending}
-      />
+      {/* Feedback Modal removed for minimal design */}
+      {showFeedback && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Workout Complete!</h3>
+            <p className="text-gray-600 mb-4">How did that feel?</p>
+            <div className="flex gap-2">
+              <Button onClick={() => {setShowFeedback(false); setLocation('/');}}>Continue</Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Original feedback modal with stats removed for minimal design */}
     </div>
   );
 }

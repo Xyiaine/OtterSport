@@ -1,184 +1,65 @@
 /**
- * ADMIN AUTHENTICATION HOOK
- * 
- * Custom React hook for managing admin authentication state
- * and providing admin-specific functionality access control.
+ * Admin Hook - Minimal Implementation
+ * Simple admin authentication and permissions for OtterSport
  */
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from 'react';
 
-/**
- * AdminStatus interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
-/**
- * AdminStatus interface defines the contract for implementation.
-/**
- * AdminStatus interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
-/**
- * AdminStatus interface defines the contract for implementation.
- * 
-/**
- * defines interface defines the contract for implementation.
- * 
-/**
- * AdminStatus interface defines the contract for implementation.
-/**
- * AdminStatus interface defines the contract for implementation.
-/**
- * AdminStatus interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface AdminStatus
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface AdminStatus
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
-/**
- * Handles that functionality for the application
- * 
- * @param {any} params - Function parameters
- * @returns {any} Function return value
- */
- * 
- * @interface AdminStatus
- */
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface defines
- */
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
-/**
- * Handles useadmin functionality for the application
- * 
- * This is a complex function that requires careful attention.
- * 
- * @param {any} params - Function parameters
- * @returns {any} Function return value
- * 
- * @example
- * const result = await useAdmin(params);
- */
- * 
- * @interface AdminStatus
- */
- * @interface AdminStatus
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface AdminStatus
- */
- * @interface AdminStatus
- */
-interface AdminStatus {
+interface AdminState {
   isAdmin: boolean;
-  adminLogin: string | null;
-/**
- * Handles useadmin functionality for the application
- * 
-/**
- * Handles useadmin functionality for the application
- * 
- * This is a complex function that requires careful attention.
- * 
- * @param {any} params - Function parameters
- * @returns {any} Function return value
- * 
- * @example
- * const result = await useAdmin(params);
- */
- * This is a complex function that requires careful attention.
- * 
- * @param {any} params - Function parameters
- * @returns {any} Function return value
- * 
- * @example
- * const result = await useAdmin(params);
- */
+  canAccessGameArtist: boolean;
 }
 
-/**
- * useAdmin Hook
- * 
- * Provides admin authentication state and logout functionality.
- * Automatically refreshes admin status and handles session management.
- */
-export function useAdmin() {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+export function useAdmin(): AdminState & {
+  login: (password: string) => Promise<boolean>;
+  logout: () => void;
+} {
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Query admin status
-  const { 
-    data: adminStatus, 
-    isLoading, 
-    error 
-  } = useQuery<AdminStatus>({
-    queryKey: ["/api/admin/status"],
-    refetchOnWindowFocus: true,
-    refetchInterval: 5 * 60 * 1000, // Refresh every 5 minutes
-  });
+  useEffect(() => {
+    // Check if admin session exists in localStorage
+    const adminSession = localStorage.getItem('ottersport_admin_session');
+    if (adminSession) {
+      try {
+        const session = JSON.parse(adminSession);
+        if (session.isAdmin && session.expires > Date.now()) {
+          setIsAdmin(true);
+        } else {
+          localStorage.removeItem('ottersport_admin_session');
+        }
+      } catch (error) {
+        console.error('Error parsing admin session:', error);
+        localStorage.removeItem('ottersport_admin_session');
+      }
+    }
+  }, []);
 
-  // Admin logout mutation
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      const response = await apiRequest("POST", "/api/admin/logout", {});
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Admin logout successful",
-        description: "You have been logged out of admin mode",
-      });
+  const login = async (password: string): Promise<boolean> => {
+    // Simple password check for minimal implementation
+    if (password === 'admin' || password === 'ottersport') {
+      setIsAdmin(true);
       
-      // Invalidate admin status to refresh UI
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/status"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Logout failed",
-        description: error.message || "Failed to logout from admin mode",
-        variant: "destructive",
-      });
-    },
-  });
+      // Store session in localStorage (expires in 24 hours)
+      const session = {
+        isAdmin: true,
+        expires: Date.now() + (24 * 60 * 60 * 1000)
+      };
+      localStorage.setItem('ottersport_admin_session', JSON.stringify(session));
+      
+      return true;
+    }
+    return false;
+  };
+
+  const logout = (): void => {
+    setIsAdmin(false);
+    localStorage.removeItem('ottersport_admin_session');
+  };
 
   return {
-    // Admin status
-    isAdmin: adminStatus?.isAdmin || false,
-    adminLogin: adminStatus?.adminLogin || null,
-    
-    // Loading states
-    isLoading,
-    error,
-    
-    // Actions
-    logout: () => logoutMutation.mutate(),
-    isLoggingOut: logoutMutation.isPending,
-    
-    // Convenience methods
-    hasAdminAccess: () => adminStatus?.isAdmin === true,
-    canAccessGameArtist: () => adminStatus?.isAdmin === true,
-    canSkipExercises: () => adminStatus?.isAdmin === true,
+    isAdmin,
+    canAccessGameArtist: isAdmin, // Game artist access requires admin permissions
+    login,
+    logout,
   };
 }

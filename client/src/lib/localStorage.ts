@@ -1,149 +1,144 @@
 /**
- * LOCAL STORAGE UTILITIES FOR OTTERSPORT
+ * LOCAL STORAGE UTILITIES FOR OTTERSPORT - MINIMAL VERSION
  * 
- * Manages local storage for user preferences and onboarding data
- * that can be synced with the server when user authenticates.
+ * Simple local storage management for user preferences and onboarding data
  */
 
-/**
- * OnboardingData interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
-/**
- * OnboardingData interface defines the contract for implementation.
-/**
- * OnboardingData interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
-/**
- * OnboardingData interface defines the contract for implementation.
- * 
-/**
- * defines interface defines the contract for implementation.
- * 
-/**
- * OnboardingData interface defines the contract for implementation.
-/**
- * OnboardingData interface defines the contract for implementation.
-/**
- * OnboardingData interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface OnboardingData
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface OnboardingData
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface OnboardingData
- */
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface defines
- */
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface OnboardingData
- */
- * @interface OnboardingData
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface OnboardingData
- */
- * @interface OnboardingData
- */
 export interface OnboardingData {
   fitnessGoal: string;
   fitnessLevel: string;
   workoutFrequency: string;
-  currentDifficultyLevel: number;
+  preferredWorkoutTime: string;
+  hasCompletedOnboarding: boolean;
+}
+
+export interface UserPreferences {
+  theme: 'light' | 'dark';
+  notifications: boolean;
+  soundEnabled: boolean;
 }
 
 const STORAGE_KEYS = {
-  ONBOARDING_DATA: 'ottersport_onboarding_data',
-  USER_PREFERENCES: 'ottersport_user_preferences',
+  ONBOARDING: 'ottersport_onboarding',
+  PREFERENCES: 'ottersport_preferences',
+  USER_PROFILE: 'ottersport_user_profile',
 } as const;
 
-/**
- * Save onboarding data to local storage
- */
-export function saveOnboardingData(data: OnboardingData): void {
+// Onboarding Data Management
+export const getOnboardingData = (): OnboardingData | null => {
   try {
-    localStorage.setItem(STORAGE_KEYS.ONBOARDING_DATA, JSON.stringify(data));
-  } catch (error) {
-    console.error('Failed to save onboarding data to localStorage:', error);
-  }
-}
-
-/**
- * Get onboarding data from local storage
- */
-export function getOnboardingData(): OnboardingData | null {
-  try {
-    const data = localStorage.getItem(STORAGE_KEYS.ONBOARDING_DATA);
+    const data = localStorage.getItem(STORAGE_KEYS.ONBOARDING);
     return data ? JSON.parse(data) : null;
   } catch (error) {
-    console.error('Failed to get onboarding data from localStorage:', error);
+    console.error('Error getting onboarding data:', error);
     return null;
   }
-}
+};
 
-/**
- * Clear onboarding data from local storage (after successful sync)
- */
-export function clearOnboardingData(): void {
+export const setOnboardingData = (data: Partial<OnboardingData>): void => {
   try {
-    localStorage.removeItem(STORAGE_KEYS.ONBOARDING_DATA);
+    const existing = getOnboardingData() || {} as OnboardingData;
+    const updated = { ...existing, ...data };
+    localStorage.setItem(STORAGE_KEYS.ONBOARDING, JSON.stringify(updated));
   } catch (error) {
-    console.error('Failed to clear onboarding data from localStorage:', error);
+    console.error('Error setting onboarding data:', error);
   }
-}
+};
 
-/**
- * Check if user has completed onboarding (either locally or on server)
- */
-export function hasCompletedOnboarding(user?: any): boolean {
-  // Check if user has fitness goal set on server
-  if (user && user.fitnessGoal) {
-    return true;
+export const clearOnboardingData = (): void => {
+  try {
+    localStorage.removeItem(STORAGE_KEYS.ONBOARDING);
+  } catch (error) {
+    console.error('Error clearing onboarding data:', error);
   }
-  
-  // Check if onboarding data exists locally
-  const localData = getOnboardingData();
-  return localData !== null;
-}
+};
 
-/**
- * Get user profile data (combines server data with local storage)
- */
-export function getUserProfile(user?: any): OnboardingData | null {
-  // Prefer server data if available
-  if (user && user.fitnessGoal) {
+export const hasCompletedOnboarding = (): boolean => {
+  try {
+    const data = getOnboardingData();
+    return data?.hasCompletedOnboarding === true;
+  } catch (error) {
+    console.error('Error checking onboarding completion:', error);
+    return false;
+  }
+};
+
+// User Preferences Management
+export const getUserPreferences = (): UserPreferences => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.PREFERENCES);
+    const defaults: UserPreferences = {
+      theme: 'light',
+      notifications: true,
+      soundEnabled: true,
+    };
+    return data ? { ...defaults, ...JSON.parse(data) } : defaults;
+  } catch (error) {
+    console.error('Error getting user preferences:', error);
     return {
-      fitnessGoal: user.fitnessGoal,
-      fitnessLevel: user.fitnessLevel,
-      workoutFrequency: user.workoutFrequency,
-      currentDifficultyLevel: user.currentDifficultyLevel || 1.0,
+      theme: 'light',
+      notifications: true,
+      soundEnabled: true,
     };
   }
-  
-  // Fall back to local storage
-  return getOnboardingData();
+};
+
+export const setUserPreferences = (preferences: Partial<UserPreferences>): void => {
+  try {
+    const existing = getUserPreferences();
+    const updated = { ...existing, ...preferences };
+    localStorage.setItem(STORAGE_KEYS.PREFERENCES, JSON.stringify(updated));
+  } catch (error) {
+    console.error('Error setting user preferences:', error);
+  }
+};
+
+// User Profile Management
+export interface UserProfile {
+  id?: string;
+  name?: string;
+  email?: string;
+  fitnessGoal?: string;
+  fitnessLevel?: string;
+  workoutFrequency?: string;
+  preferredWorkoutTime?: string;
 }
+
+export const getUserProfile = (): UserProfile | null => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error getting user profile:', error);
+    return null;
+  }
+};
+
+export const setUserProfile = (profile: Partial<UserProfile>): void => {
+  try {
+    const existing = getUserProfile() || {} as UserProfile;
+    const updated = { ...existing, ...profile };
+    localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(updated));
+  } catch (error) {
+    console.error('Error setting user profile:', error);
+  }
+};
+
+export const clearUserProfile = (): void => {
+  try {
+    localStorage.removeItem(STORAGE_KEYS.USER_PROFILE);
+  } catch (error) {
+    console.error('Error clearing user profile:', error);
+  }
+};
+
+// Clear all local storage data
+export const clearAllLocalData = (): void => {
+  try {
+    Object.values(STORAGE_KEYS).forEach(key => {
+      localStorage.removeItem(key);
+    });
+  } catch (error) {
+    console.error('Error clearing local data:', error);
+  }
+};

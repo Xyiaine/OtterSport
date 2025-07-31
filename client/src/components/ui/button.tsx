@@ -1,15 +1,3 @@
-/**
- * BUTTON MODULE
- * 
- * This module provides functionality for button.
- * All exports are designed to work seamlessly with the OtterSport application.
- * 
- * Human Developer Guide:
- * - Follow established patterns when modifying this file
- * - Maintain comprehensive test coverage for all functions
- * - Update documentation when adding new functionality
- */
-
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -17,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -45,70 +33,6 @@ const buttonVariants = cva(
   }
 )
 
-/**
- * ButtonProps interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
-/**
- * ButtonProps interface defines the contract for implementation.
-/**
- * ButtonProps interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
-/**
- * ButtonProps interface defines the contract for implementation.
- * 
-/**
- * defines interface defines the contract for implementation.
- * 
-/**
- * ButtonProps interface defines the contract for implementation.
-/**
- * ButtonProps interface defines the contract for implementation.
-/**
- * ButtonProps interface defines the contract for implementation.
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface ButtonProps
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface ButtonProps
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface ButtonProps
- */
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface defines
- */
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface ButtonProps
- */
- * @interface ButtonProps
- */
- * 
- * This interface defines the contract for implementation.
- * All properties and methods should be implemented according to specification.
- * 
- * @interface ButtonProps
- */
- * @interface ButtonProps
- */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
