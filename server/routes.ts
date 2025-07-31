@@ -71,10 +71,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   /**
    * PATCH /api/user/profile
    * Updates user profile information (fitness goals, preferences, etc.)
+   * Supports both authenticated and anonymous users during onboarding
    */
-  app.patch('/api/user/profile', isAuthenticated, async (req: any, res) => {
+  app.patch('/api/user/profile', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      let userId = 'anonymous';
+      
+      // Use authenticated user ID if available, otherwise use anonymous
+      if (req.user && req.user.claims && req.user.claims.sub) {
+        userId = req.user.claims.sub;
+      }
+      
       const updates = req.body;
       const user = await storage.updateUserProgress(userId, updates);
       res.json(user);
