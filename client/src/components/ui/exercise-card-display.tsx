@@ -1,3 +1,15 @@
+/**
+ * EXERCISE-CARD-DISPLAY MODULE
+ * 
+ * This module provides functionality for exercise-card-display.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,11 +29,198 @@ import {
   Timer
 } from "lucide-react";
 
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Exercise interface defines the contract for implementation.
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Exercise
+ */
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+/**
+ * ExerciseCardDisplayProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardDisplayProps
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Exercise
+/**
+ * ExerciseCardDisplayProps interface defines the contract for implementation.
+ * 
+/**
+ * Exercise interface defines the contract for implementation.
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Exercise
+ */
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * ExerciseCardDisplayProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardDisplayProps
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ */
+ * 
+ * @interface Exercise
+/**
+ * ExerciseCardDisplayProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardDisplayProps
+ */
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardDisplayProps
+ */
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ * @interface Exercise
+ */
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * ExerciseCardDisplayProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardDisplayProps
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ */
+ * 
+ * @interface Exercise
+/**
+ * ExerciseCardDisplayProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardDisplayProps
+ */
+ */
+ * @interface Exercise
+ */
+/**
+ * Handles exercisecarddisplay functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ExerciseCardDisplay(params);
+ */
 interface Exercise {
   id: number;
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
   name: string;
   description: string;
   category: string;
+/**
+ * ExerciseCardDisplayProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardDisplayProps
+ */
   baseReps?: number;
   baseDuration?: number;
   cardType?: string;
@@ -46,6 +245,17 @@ interface ExerciseCardDisplayProps {
   userDifficulty?: number;
 }
 
+/**
+ * Handles exercisecarddisplay functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ExerciseCardDisplay(params);
+ */
 const typeIcons = {
   cardio: Heart,
   strength: Dumbbell,
@@ -59,6 +269,17 @@ const typeColors = {
   cardio: 'bg-red-100 text-red-800 border-red-200',
   strength: 'bg-blue-100 text-blue-800 border-blue-200',
   flexibility: 'bg-purple-100 text-purple-800 border-purple-200',
+/**
+ * Handles exercisecarddisplay functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ExerciseCardDisplay(params);
+ */
   mixed: 'bg-gray-100 text-gray-800 border-gray-200',
   warmup: 'bg-orange-100 text-orange-800 border-orange-200',
   utility: 'bg-teal-100 text-teal-800 border-teal-200'

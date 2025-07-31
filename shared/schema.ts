@@ -8,124 +8,69 @@
  * - Workout deck creation and management system
  * - Progress tracking with adaptive difficulty algorithms
  * - Achievement system and gamification mechanics
- * - Session management for secure authentication
- * 
- * All tables include proper relationships, indexes, and constraints
- * for optimal performance and data integrity across all deployment platforms.
- * 
- * Database Optimization Features:
- * - Connection pooling support for serverless environments
- * - Efficient indexes for common query patterns
- * - Proper foreign key relationships for data integrity
- * - Timestamp tracking for audit and analytics
- * - JSON fields for flexible configuration storage
  */
 
-import {
-  pgTable,
-  text,
-  varchar,
-  timestamp,
-  jsonb,
-  index,
-  integer,
-  boolean,
-  serial,
-  real,
-} from "drizzle-orm/pg-core";
+import { pgTable, varchar, integer, text, timestamp, boolean, decimal, json } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { relations } from "drizzle-orm";
 
 /**
- * DATABASE SCHEMA FOR OTTERSPORT FITNESS APP
- * This file defines all database tables and their relationships
- */
-
-// ============================================================================
-// AUTH TABLES (Required for Replit Authentication)
-// ============================================================================
-
-/** 
- * Sessions table - stores user session data for authentication
- * Required by connect-pg-simple for express-session
- */
-export const sessions = pgTable(
-  "sessions",
-  {
-    sid: varchar("sid").primaryKey(),
-    sess: jsonb("sess").notNull(),
-    expire: timestamp("expire").notNull(),
-  },
-  (table) => [index("IDX_session_expire").on(table.expire)],
-);
-
-/**
- * Users table - stores user profiles and fitness data
- * Integrates with Replit OAuth for authentication
+ * Users table - stores user profiles and authentication data
+ * Integrated with Replit OAuth for seamless authentication
  */
 export const users = pgTable("users", {
-  // Basic user info (from Replit OAuth)
-  id: varchar("id").primaryKey().notNull(),
-  email: varchar("email").unique(),
-  firstName: varchar("first_name"),
-  lastName: varchar("last_name"),
-  profileImageUrl: varchar("profile_image_url"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  id: varchar("id").primaryKey(), // Replit user ID
+  name: varchar("name").notNull(),
+  username: varchar("username"),
+  email: varchar("email"),
+  profileImage: varchar("profile_image"),
   
-  // Admin authentication
-  isAdmin: boolean("is_admin").default(false),
-  adminLogin: varchar("admin_login"),
-  adminPasswordHash: varchar("admin_password_hash"),
+  // Onboarding and fitness profile
+  fitnessGoal: varchar("fitness_goal"), // weight_loss, muscle_gain, endurance, general_fitness
+  experienceLevel: varchar("experience_level"), // beginner, intermediate, advanced
+  preferredWorkoutDuration: integer("preferred_workout_duration").default(30), // minutes
+  workoutFrequency: integer("workout_frequency").default(3), // times per week
   
-  // Fitness profile settings
-  fitnessGoal: varchar("fitness_goal"), // Options: lose_weight, gain_muscle, improve_endurance, stay_consistent, increase_mobility
-  fitnessLevel: varchar("fitness_level"), // Options: beginner, casual, fit, athlete
-  workoutFrequency: varchar("workout_frequency"), // Options: daily, three_per_week, flexible
-  
-  // Progress tracking counters
-  currentStreak: integer("current_streak").default(0), // Days in a row
-  longestStreak: integer("longest_streak").default(0), // Best streak ever
-  totalWorkouts: integer("total_workouts").default(0), // Total completed workouts
-  totalMinutes: integer("total_minutes").default(0), // Total workout time
+  // Progress tracking
+  currentStreak: integer("current_streak").default(0),
+  longestStreak: integer("longest_streak").default(0),
+  totalWorkouts: integer("total_workouts").default(0),
+  totalMinutes: integer("total_minutes").default(0),
   
   // Adaptive difficulty system
-  currentDifficultyLevel: real("current_difficulty_level").default(1.0), // Multiplier for exercise difficulty
-  lastWorkoutFeedback: varchar("last_workout_feedback"), // Options: too_easy, just_right, bit_too_hard, way_too_hard
+  baseDifficultyLevel: decimal("base_difficulty_level", { precision: 3, scale: 2 }).default("1.00"), // 0.50 to 3.00
+  currentDifficultyLevel: decimal("current_difficulty_level", { precision: 3, scale: 2 }).default("1.00"),
+  lastDifficultyAdjustment: timestamp("last_difficulty_adjustment"),
   
-  // Gamification system - XP and Levels
-  experiencePoints: integer("experience_points").default(0), // Total XP earned
-  currentLevel: integer("current_level").default(1), // Current user level
-  xpToNextLevel: integer("xp_to_next_level").default(100), // XP needed for next level
+  // Gamification
+  totalXP: integer("total_xp").default(0),
+  level: integer("level").default(1),
   
-  // Daily streak system
-  lastWorkoutDate: timestamp("last_workout_date"), // Last workout completion date
-  streakFreezeUses: integer("streak_freeze_uses").default(0), // Streak protection uses this month
-  
-  // Life/Heart system
-  livesRemaining: integer("lives_remaining").default(5), // Hearts for mistakes
-  lastLifeLoss: timestamp("last_life_loss"), // When last heart was lost
-  livesRefillAt: timestamp("lives_refill_at"), // When hearts refill completely
+  // Metadata
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// ============================================================================
-// EXERCISE SYSTEM TABLES
-// ============================================================================
-
 /**
- * Exercises table - stores individual workout exercises
- * These are the building blocks of workout decks
+ * Exercises table - library of workout exercises
+ * Supports different card types for game mechanics
  */
 export const exercises = pgTable("exercises", {
-  id: serial("id").primaryKey(),
-  name: varchar("name").notNull(), // Exercise name (e.g., "Push-ups")
-  description: text("description"), // Brief description
-  category: varchar("category").notNull(), // Options: cardio, strength, flexibility, mixed, warmup, utility
-  difficulty: real("difficulty").notNull(), // Base difficulty multiplier (0.5 to 2.0)
-  defaultReps: integer("default_reps"), // Default number of reps (if rep-based)
-  defaultDuration: integer("default_duration"), // Default duration in seconds (if time-based)
-  instructions: text("instructions"), // How to perform the exercise
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar("name").notNull(),
+  category: varchar("category").notNull(), // strength, cardio, flexibility, core, warmup
+  difficulty: integer("difficulty").notNull(), // 1-5 scale
+  
+  // Exercise parameters
+  defaultReps: integer("default_reps"), // For rep-based exercises
+  defaultDuration: integer("default_duration"), // For time-based exercises (seconds)
+  instructions: text("instructions").notNull(),
+  
+  // Card game mechanics
+  cardPoints: integer("card_points").default(10), // Points awarded in card battles
+  energyCost: integer("energy_cost").default(1), // Energy required to play card
+  
+  // UI elements
   icon: varchar("icon").default("fas fa-dumbbell"), // Icon class for UI
   cardType: varchar("card_type").default("exercise"), // Options: exercise, warmup, utility, power
   utilityEffect: varchar("utility_effect"), // For utility cards: redraw, shuffle, skip, etc.
@@ -134,237 +79,153 @@ export const exercises = pgTable("exercises", {
 
 /**
  * Decks table - stores workout collections
- * A deck is a collection of exercises that form a complete workout
+ * Collections of exercises that form complete workouts
  */
 export const decks = pgTable("decks", {
-  id: serial("id").primaryKey(),
-  name: varchar("name").notNull(), // Deck name (e.g., "Morning Cardio")
-  description: text("description"), // Deck description
-  category: varchar("category").notNull(), // Same categories as exercises
-  difficulty: real("difficulty").notNull(), // Overall deck difficulty
-  estimatedMinutes: integer("estimated_minutes"), // Expected workout duration
-  isCustom: boolean("is_custom").default(false), // User-created vs. system deck
-  createdBy: varchar("created_by").references(() => users.id), // Creator if custom
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar("name").notNull(),
+  description: text("description"),
+  difficulty: integer("difficulty").notNull(), // 1-5 scale
+  estimatedDuration: integer("estimated_duration").default(30), // minutes
+  category: varchar("category").default("general"), // beginner, cardio, strength, etc.
+  isPublic: boolean("is_public").default(true),
+  createdBy: varchar("created_by"), // User ID of creator
   createdAt: timestamp("created_at").defaultNow(),
 });
 
 /**
- * Deck Exercises table - links exercises to decks with custom settings
- * This allows the same exercise to be used in multiple decks with different parameters
+ * Deck-Exercise relationship table
+ * Many-to-many relationship between decks and exercises
  */
 export const deckExercises = pgTable("deck_exercises", {
-  id: serial("id").primaryKey(),
-  deckId: integer("deck_id").references(() => decks.id).notNull(),
-  exerciseId: integer("exercise_id").references(() => exercises.id).notNull(),
-  order: integer("order").notNull(), // Order in the deck
-  customReps: integer("custom_reps"), // Override default reps
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  deckId: integer("deck_id").notNull(),
+  exerciseId: integer("exercise_id").notNull(),
+  orderInDeck: integer("order_in_deck").default(0), // Position in deck
+  customReps: integer("custom_reps"), // Override default reps for this deck
   customDuration: integer("custom_duration"), // Override default duration
 });
 
-// ============================================================================
-// WORKOUT TRACKING TABLES
-// ============================================================================
-
 /**
- * Workouts table - stores individual workout sessions
- * Tracks user progress through deck exercises
+ * Workouts table - tracks individual workout sessions
+ * Records of completed or in-progress workouts
  */
 export const workouts = pgTable("workouts", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id").references(() => users.id).notNull(),
-  deckId: integer("deck_id").references(() => decks.id).notNull(),
-  startedAt: timestamp("started_at").notNull(), // When workout began
-  completedAt: timestamp("completed_at"), // When workout finished (null if abandoned)
-  duration: integer("duration"), // Total workout time in seconds
-  cardsCompleted: integer("cards_completed").default(0), // Exercises completed
-  totalCards: integer("total_cards").notNull(), // Total exercises in deck
-  feedback: varchar("feedback"), // User feedback: too_easy, just_right, bit_too_hard, way_too_hard
-  calories: integer("calories"), // Estimated calories burned
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  userId: varchar("user_id").notNull(),
+  deckId: integer("deck_id"),
+  deckName: varchar("deck_name"), // Snapshot of deck name
+  
+  // Workout session data
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  totalDuration: integer("total_duration"), // seconds
+  exercisesCompleted: integer("exercises_completed").default(0),
+  totalExercises: integer("total_exercises").default(0),
+  
+  // Adaptive feedback
+  difficultyRating: integer("difficulty_rating"), // 1-5: too easy to too hard
+  enjoymentRating: integer("enjoyment_rating"), // 1-5: user satisfaction
+  
+  // Metadata
+  workoutData: json("workout_data"), // Detailed exercise completion data
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// ============================================================================
-// GAMIFICATION TABLES
-// ============================================================================
-
 /**
- * Achievements table - defines available achievements
- * Used for gamification and user motivation
+ * Achievements table - gamification system
+ * Defines available achievements and their criteria
  */
 export const achievements = pgTable("achievements", {
-  id: serial("id").primaryKey(),
-  name: varchar("name").notNull(), // Achievement name
-  description: text("description"), // What user needs to do
-  icon: varchar("icon").notNull(), // Icon for UI
-  requirement: jsonb("requirement"), // JSON defining unlock criteria (e.g., { type: "streak", value: 7 })
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar("name").notNull(),
+  description: text("description").notNull(),
+  icon: varchar("icon").notNull(), // Emoji or icon class
+  points: integer("points").default(10), // XP awarded
+  criteria: varchar("criteria").notNull(), // Achievement trigger condition
+  isSecret: boolean("is_secret").default(false), // Hidden until earned
   createdAt: timestamp("created_at").defaultNow(),
 });
 
 /**
- * User Achievements table - tracks which achievements users have unlocked
- * Links users to their earned achievements
+ * User Achievements table - tracks earned achievements
+ * Many-to-many relationship between users and achievements
  */
 export const userAchievements = pgTable("user_achievements", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id").references(() => users.id).notNull(),
-  achievementId: integer("achievement_id").references(() => achievements.id).notNull(),
-  unlockedAt: timestamp("unlocked_at").defaultNow(), // When achievement was earned
-});
-
-/**
- * Leaderboards table - tracks weekly and global rankings
- * Used for competitive features and social motivation
- */
-export const leaderboards = pgTable("leaderboards", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id").references(() => users.id).notNull(),
-  weekStart: timestamp("week_start").notNull(), // Start of the week this entry covers
-  weeklyXP: integer("weekly_xp").default(0), // XP earned this week
-  weeklyWorkouts: integer("weekly_workouts").default(0), // Workouts completed this week
-  weeklyMinutes: integer("weekly_minutes").default(0), // Minutes worked out this week
-  globalRank: integer("global_rank"), // Global ranking position
-  friendRank: integer("friend_rank"), // Ranking among friends
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-/**
- * Badges table - special recognition badges beyond achievements
- * Used for leaderboard rewards and special events
- */
-export const badges = pgTable("badges", {
-  id: serial("id").primaryKey(),
-  name: varchar("name").notNull(), // Badge name
-  description: text("description"), // Badge description
-  icon: varchar("icon").notNull(), // Badge icon
-  type: varchar("type").notNull(), // Badge type: weekly_top, event, special
-  rarity: varchar("rarity").default("common"), // common, rare, epic, legendary
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-/**
- * User Badges table - tracks special badges earned by users
- * Links users to their earned badges (different from achievements)
- */
-export const userBadges = pgTable("user_badges", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id").references(() => users.id).notNull(),
-  badgeId: integer("badge_id").references(() => badges.id).notNull(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  userId: varchar("user_id").notNull(),
+  achievementId: integer("achievement_id").notNull(),
   earnedAt: timestamp("earned_at").defaultNow(),
-  weekEarned: timestamp("week_earned"), // For weekly badges
+  progress: json("progress"), // Additional progress data if needed
 });
 
 /**
- * XP Activities table - defines XP rewards for different activities
- * Configurable system for XP earning
+ * Sessions table - stores user session data
+ * Used by express-session for authentication
  */
-export const xpActivities = pgTable("xp_activities", {
-  id: serial("id").primaryKey(),
-  activityType: varchar("activity_type").notNull(), // workout_complete, streak_bonus, perfect_week, etc.
-  baseXP: integer("base_xp").notNull(), // Base XP for this activity
-  description: text("description"), // Description of the activity
-  multiplierField: varchar("multiplier_field"), // Field to multiply by (e.g., 'duration', 'cards_completed')
-  isActive: boolean("is_active").default(true), // Whether this XP reward is currently active
+export const sessions = pgTable("sessions", {
+  sid: varchar("sid").primaryKey(),
+  sess: json("sess").notNull(),
+  expire: timestamp("expire").notNull(),
 });
 
-// ============================================================================
-// DATABASE RELATIONSHIPS
-// ============================================================================
-
 /**
- * Define relationships between tables for easier querying
- * This allows us to fetch related data in a single query
+ * Zod schemas for type-safe operations
+ * Generated from Drizzle table definitions
  */
-export const usersRelations = relations(users, ({ many }) => ({
-  workouts: many(workouts), // User's workout history
-  customDecks: many(decks), // User's custom workout decks
-  achievements: many(userAchievements), // User's earned achievements
-  badges: many(userBadges), // User's earned badges
-  leaderboardEntries: many(leaderboards), // User's leaderboard entries
-}));
 
-export const decksRelations = relations(decks, ({ one, many }) => ({
-  creator: one(users, { fields: [decks.createdBy], references: [users.id] }), // Who created this deck
-  exercises: many(deckExercises), // Exercises in this deck
-  workouts: many(workouts), // Workouts using this deck
-}));
+// User schemas
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type SelectUser = typeof users.$inferSelect;
 
-export const exercisesRelations = relations(exercises, ({ many }) => ({
-  deckExercises: many(deckExercises), // Which decks use this exercise
-}));
-
-export const deckExercisesRelations = relations(deckExercises, ({ one }) => ({
-  deck: one(decks, { fields: [deckExercises.deckId], references: [decks.id] }),
-  exercise: one(exercises, { fields: [deckExercises.exerciseId], references: [exercises.id] }),
-}));
-
-export const workoutsRelations = relations(workouts, ({ one }) => ({
-  user: one(users, { fields: [workouts.userId], references: [users.id] }),
-  deck: one(decks, { fields: [workouts.deckId], references: [decks.id] }),
-}));
-
-export const achievementsRelations = relations(achievements, ({ many }) => ({
-  userAchievements: many(userAchievements), // Who has earned this achievement
-}));
-
-export const userAchievementsRelations = relations(userAchievements, ({ one }) => ({
-  user: one(users, { fields: [userAchievements.userId], references: [users.id] }),
-  achievement: one(achievements, { fields: [userAchievements.achievementId], references: [achievements.id] }),
-}));
-
-export const leaderboardsRelations = relations(leaderboards, ({ one }) => ({
-  user: one(users, { fields: [leaderboards.userId], references: [users.id] }),
-}));
-
-export const badgesRelations = relations(badges, ({ many }) => ({
-  userBadges: many(userBadges), // Who has earned this badge
-}));
-
-export const userBadgesRelations = relations(userBadges, ({ one }) => ({
-  user: one(users, { fields: [userBadges.userId], references: [users.id] }),
-  badge: one(badges, { fields: [userBadges.badgeId], references: [badges.id] }),
-}));
-
-// ============================================================================
-// VALIDATION SCHEMAS & TYPES
-// ============================================================================
-
-/**
- * Zod schemas for validating data before database operations
- * These ensure data integrity and provide type safety
- */
-export const upsertUserSchema = createInsertSchema(users).omit({ createdAt: true, updatedAt: true });
-export const insertExerciseSchema = createInsertSchema(exercises).omit({ id: true });
-export const insertDeckSchema = createInsertSchema(decks).omit({ id: true });
-export const insertWorkoutSchema = createInsertSchema(workouts).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertDeckExerciseSchema = createInsertSchema(deckExercises).omit({ id: true });
-
-/**
- * TypeScript types for use throughout the application
- * These provide compile-time type checking and IDE support
- */
-export type UpsertUser = z.infer<typeof upsertUserSchema>;
-export type User = typeof users.$inferSelect;
-export type Exercise = typeof exercises.$inferSelect;
-export type Deck = typeof decks.$inferSelect;
-export type DeckExercise = typeof deckExercises.$inferSelect;
-export type Workout = typeof workouts.$inferSelect;
-export type Achievement = typeof achievements.$inferSelect;
-export type UserAchievement = typeof userAchievements.$inferSelect;
-export type Leaderboard = typeof leaderboards.$inferSelect;
-export type Badge = typeof badges.$inferSelect;
-export type UserBadge = typeof userBadges.$inferSelect;
-export type XpActivity = typeof xpActivities.$inferSelect;
+// Exercise schemas
+export const insertExerciseSchema = createInsertSchema(exercises).omit({
+  id: true,
+  createdAt: true,
+});
 export type InsertExercise = z.infer<typeof insertExerciseSchema>;
+export type SelectExercise = typeof exercises.$inferSelect;
+
+// Deck schemas  
+export const insertDeckSchema = createInsertSchema(decks).omit({
+  id: true,
+  createdAt: true,
+});
 export type InsertDeck = z.infer<typeof insertDeckSchema>;
+export type SelectDeck = typeof decks.$inferSelect;
+
+// Workout schemas
+export const insertWorkoutSchema = createInsertSchema(workouts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
 export type InsertWorkout = z.infer<typeof insertWorkoutSchema>;
-export type InsertDeckExercise = z.infer<typeof insertDeckExerciseSchema>;
+export type SelectWorkout = typeof workouts.$inferSelect;
 
-// Additional schemas for gamification
-export const insertAchievementSchema = createInsertSchema(achievements).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertBadgeSchema = createInsertSchema(badges).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertLeaderboardSchema = createInsertSchema(leaderboards).omit({ id: true, createdAt: true, updatedAt: true });
-export const insertXpActivitySchema = createInsertSchema(xpActivities).omit({ id: true, createdAt: true, updatedAt: true });
-
+// Achievement schemas
+export const insertAchievementSchema = createInsertSchema(achievements).omit({
+  id: true,
+  createdAt: true,
+});
 export type InsertAchievement = z.infer<typeof insertAchievementSchema>;
-export type InsertBadge = z.infer<typeof insertBadgeSchema>;
-export type InsertLeaderboard = z.infer<typeof insertLeaderboardSchema>;
-export type InsertXpActivity = z.infer<typeof insertXpActivitySchema>;
+export type SelectAchievement = typeof achievements.$inferSelect;
+
+/**
+ * Profile update schema for onboarding
+ * Used during user profile setup and updates
+ */
+export const profileUpdateSchema = z.object({
+  fitnessGoal: z.enum(["weight_loss", "muscle_gain", "endurance", "general_fitness"]).optional(),
+  experienceLevel: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+  preferredWorkoutDuration: z.number().min(10).max(120).optional(),
+  workoutFrequency: z.number().min(1).max(7).optional(),
+});
+
+export type ProfileUpdate = z.infer<typeof profileUpdateSchema>;

@@ -12,8 +12,111 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Shield, Heart, Flame, Clock, AlertTriangle, Zap } from 'lucide-react';
 
+/**
+ * StreakWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * StreakWarningProps interface defines the contract for implementation.
+/**
+ * StreakWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * StreakWarningProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * StreakWarningProps interface defines the contract for implementation.
+/**
+ * StreakWarningProps interface defines the contract for implementation.
+/**
+ * StreakWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakWarningProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakWarningProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakWarningProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+/**
+ * Handles streakwarning functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await StreakWarning(params);
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakWarningProps
+ */
+ * @interface StreakWarningProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakWarningProps
+ */
+ * @interface StreakWarningProps
+ */
 interface StreakWarningProps {
   show: boolean;
+/**
+ * Handles streakwarning functionality for the application
+ * 
+/**
+ * Handles streakwarning functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await StreakWarning(params);
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await StreakWarning(params);
+ */
   streakCount: number;
   hoursRemaining: number;
   onWorkoutNow: () => void;
@@ -85,6 +188,14 @@ export function StreakWarning({
                   duration: 0.5 
                 }}
               >
+/**
+ * LivesWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LivesWarningProps
+ */
                 <AlertTriangle className="h-8 w-8 text-red-600 dark:text-red-400" />
               </motion.div>
               
@@ -109,6 +220,30 @@ export function StreakWarning({
                 </div>
                 {urgencyLevel === 'critical' && (
                   <p className="text-sm text-red-100 mt-1">
+/**
+ * LivesWarningProps interface defines the contract for implementation.
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * LivesWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LivesWarningProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LivesWarningProps
+ */
                     ⚠️ Critical: Less than 2 hours left!
                   </p>
                 )}
@@ -133,9 +268,36 @@ export function StreakWarning({
               <Button 
                 onClick={onWorkoutNow}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3"
+/**
+ * LivesWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LivesWarningProps
+ */
                 size="lg"
               >
                 <Zap className="h-5 w-5 mr-2" />
+/**
+ * LivesWarningProps interface defines the contract for implementation.
+/**
+ * Handles liveswarning functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await LivesWarning(params);
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LivesWarningProps
+ */
                 Start Workout Now
               </Button>
 
@@ -157,11 +319,57 @@ export function StreakWarning({
                 size="sm"
               >
                 Remind Me Later
+/**
+ * LivesWarningProps interface defines the contract for implementation.
+ * 
+/**
+ * LivesWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LivesWarningProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LivesWarningProps
+ */
+/**
+ * Handles liveswarning functionality for the application
+/**
+ * ProgressLossWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressLossWarningProps
+ */
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await LivesWarning(params);
+ */
               </Button>
             </div>
 
             {/* Motivation Message */}
             <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+/**
+ * Handles liveswarning functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await LivesWarning(params);
+ */
               {streakCount >= 30 ? 
                 "You're a fitness legend! Don't break your legendary streak!" :
                 streakCount >= 7 ?
@@ -180,6 +388,14 @@ interface LivesWarningProps {
   show: boolean;
   livesRemaining: number;
   onContinue: () => void;
+/**
+ * ProgressLossWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressLossWarningProps
+ */
   onRecover: () => void;
   onQuit: () => void;
   recoveryOptions: Array<{
@@ -196,6 +412,14 @@ export function LivesWarning({
   onRecover, 
   onQuit, 
   recoveryOptions 
+/**
+ * ProgressLossWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressLossWarningProps
+ */
 }: LivesWarningProps) {
   const isCritical = livesRemaining <= 1;
 
@@ -239,6 +463,33 @@ export function LivesWarning({
               
               <p className="text-gray-600 dark:text-gray-300">
                 {isCritical
+/**
+ * ProgressLossWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressLossWarningProps
+ */
+/**
+ * Handles progresslosswarning functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ProgressLossWarning(params);
+ */
+/**
+ * ProgressLossWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressLossWarningProps
+ */
                   ? 'One mistake and your workout session ends!'
                   : `Only ${livesRemaining} ${livesRemaining === 1 ? 'life' : 'lives'} remaining. Be careful!`
                 }
@@ -282,11 +533,49 @@ export function LivesWarning({
                 <div className="space-y-2">
                   <p className="text-sm text-center text-gray-600 dark:text-gray-400">
                     Or recover a life:
+/**
+ * ProgressLossWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressLossWarningProps
+ */
+/**
+ * Handles progresslosswarning functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ProgressLossWarning(params);
+ */
                   </p>
                   {recoveryOptions.map((option, index) => (
                     <Button
                       key={index}
                       onClick={onRecover}
+/**
+ * ProgressLossWarningProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressLossWarningProps
+ */
+/**
+ * Handles progresslosswarning functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ProgressLossWarning(params);
+ */
                       variant="outline"
                       className="w-full border-2 border-green-500 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
                     >

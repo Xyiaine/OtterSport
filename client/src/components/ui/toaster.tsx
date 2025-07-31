@@ -1,3 +1,15 @@
+/**
+ * TOASTER MODULE
+ * 
+ * This module provides functionality for toaster.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useToast } from "@/hooks/use-toast"
 import {
   Toast,
@@ -8,6 +20,24 @@ import {
   ToastViewport,
 } from "@/components/ui/toast"
 
+/**
+ * Handles toaster functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles toaster functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles toaster functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 export function Toaster() {
   const { toasts } = useToast()
 

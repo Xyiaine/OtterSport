@@ -1,3 +1,15 @@
+/**
+ * CHART MODULE
+ * 
+ * This module provides functionality for chart.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 "use client"
 
 import * as React from "react"
@@ -24,6 +36,24 @@ type ChartContextProps = {
 
 const ChartContext = React.createContext<ChartContextProps | null>(null)
 
+/**
+ * Handles usechart functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles usechart functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles usechart functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 function useChart() {
   const context = React.useContext(ChartContext)
 
@@ -311,6 +341,24 @@ const ChartLegendContent = React.forwardRef<
           )
         })}
       </div>
+/**
+ * Retrieves data from the system
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Retrieves data from the system
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Retrieves data from the system
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
     )
   }
 )

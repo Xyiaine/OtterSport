@@ -12,6 +12,39 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeckExerciseSchema } from "@shared/schema";
 import { z } from "zod";
 
+/**
+ * Handles registerroutes functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await registerRoutes(params);
+ */
+/**
+ * Handles registerroutes functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await registerRoutes(params);
+ */
+/**
+ * Handles registerroutes functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await registerRoutes(params);
+ */
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
   await setupAuth(app);

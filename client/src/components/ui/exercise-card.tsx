@@ -1,3 +1,15 @@
+/**
+ * EXERCISE-CARD MODULE
+ * 
+ * This module provides functionality for exercise-card.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,12 +32,115 @@ import type { Exercise } from "@shared/schema";
  * - Responsive design for mobile and desktop
  */
 
+/**
+ * ExerciseCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * ExerciseCardProps interface defines the contract for implementation.
+/**
+ * ExerciseCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * ExerciseCardProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * ExerciseCardProps interface defines the contract for implementation.
+/**
+ * ExerciseCardProps interface defines the contract for implementation.
+/**
+ * ExerciseCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardProps
+ */
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardProps
+ */
+/**
+ * Handles exercisecard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ExerciseCard(params);
+ */
+ * @interface ExerciseCardProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseCardProps
+ */
+ * @interface ExerciseCardProps
+ */
 interface ExerciseCardProps {
   exercise: Exercise;           // The exercise to display
   reps?: number | null;        // Number of reps (for rep-based exercises)
   duration?: number | null;    // Duration in seconds (for time-based exercises)
   onComplete: () => void;      // Called when exercise is completed
   onSkip: () => void;         // Called when exercise is skipped
+/**
+ * Handles exercisecard functionality for the application
+ * 
+/**
+ * Handles exercisecard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ExerciseCard(params);
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ExerciseCard(params);
+ */
 }
 
 /**

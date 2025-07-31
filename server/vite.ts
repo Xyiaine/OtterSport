@@ -1,3 +1,15 @@
+/**
+ * VITE MODULE
+ * 
+ * This module provides functionality for vite.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import express, { type Express } from "express";
 import fs from "fs";
 import path from "path";
@@ -8,11 +20,62 @@ import { nanoid } from "nanoid";
 
 const viteLogger = createLogger();
 
+/**
+ * Handles log functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles log functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles log functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     second: "2-digit",
+/**
+ * Updates data in the system
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await setupVite(params);
+ */
+/**
+ * Updates data in the system
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await setupVite(params);
+ */
+/**
+ * Updates data in the system
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await setupVite(params);
+ */
     hour12: true,
   });
 
@@ -50,6 +113,24 @@ export async function setupVite(app: Express, server: Server) {
         "..",
         "client",
         "index.html",
+/**
+ * Handles servestatic functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles servestatic functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles servestatic functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       );
 
       // always reload the index.html file from disk incase it changes

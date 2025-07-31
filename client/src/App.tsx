@@ -65,6 +65,39 @@ import BottomNavigation from "@/components/ui/bottom-navigation";
  * - Authenticated: Full application with all features
  * - Automatic redirects to appropriate pages
  */
+/**
+ * Handles router functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Router(params);
+ */
+/**
+ * Handles router functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Router(params);
+ */
+/**
+ * Handles router functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Router(params);
+ */
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
   const { hasProfile } = useLocalProfile();
@@ -108,7 +141,7 @@ function Router() {
 }
 
 /**
- * MAIN APP FUNCTION
+ * Main App Component
  * 
  * Sets up all global providers and renders the router component.
  * This is the entry point for the entire React application.

@@ -5,6 +5,70 @@
  * that can be synced with the server when user authenticates.
  */
 
+/**
+ * OnboardingData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * OnboardingData interface defines the contract for implementation.
+/**
+ * OnboardingData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * OnboardingData interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * OnboardingData interface defines the contract for implementation.
+/**
+ * OnboardingData interface defines the contract for implementation.
+/**
+ * OnboardingData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface OnboardingData
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface OnboardingData
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface OnboardingData
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface OnboardingData
+ */
+ * @interface OnboardingData
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface OnboardingData
+ */
+ * @interface OnboardingData
+ */
 export interface OnboardingData {
   fitnessGoal: string;
   fitnessLevel: string;

@@ -1,9 +1,124 @@
+/**
+ * ANIMATED-TOAST MODULE
+ * 
+ * This module provides functionality for animated-toast.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
+/**
+ * AnimatedToastProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AnimatedToastProps interface defines the contract for implementation.
+/**
+ * AnimatedToastProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AnimatedToastProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * AnimatedToastProps interface defines the contract for implementation.
+/**
+ * AnimatedToastProps interface defines the contract for implementation.
+/**
+ * AnimatedToastProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedToastProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedToastProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedToastProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+/**
+ * Handles animatedtoast functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedToast(params);
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedToastProps
+ */
+ * @interface AnimatedToastProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedToastProps
+ */
+ * @interface AnimatedToastProps
+ */
 interface AnimatedToastProps {
   type: 'success' | 'error' | 'warning' | 'info';
+/**
+ * Handles animatedtoast functionality for the application
+ * 
+/**
+ * Handles animatedtoast functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedToast(params);
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedToast(params);
+ */
   title: string;
   description?: string;
   show: boolean;
@@ -113,6 +228,14 @@ export function AnimatedToast({
 
   const config = getTypeConfig();
 
+/**
+ * ToastData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ToastData
+ */
   return (
     <AnimatePresence>
       {isVisible && (
@@ -137,11 +260,35 @@ export function AnimatedToast({
                 <motion.div
                   className="flex-shrink-0"
                   initial={{ scale: 0, rotate: -180 }}
+/**
+ * ToastData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ToastData
+ */
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ 
                     delay: 0.1, 
                     type: "spring", 
                     stiffness: 500,
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * ToastData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ToastData
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
                     damping: 15
                   }}
                 >
@@ -161,9 +308,36 @@ export function AnimatedToast({
                 <div className="flex-1 min-w-0">
                   <motion.h4
                     className="font-semibold text-slate-900 text-sm"
+/**
+ * ToastData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ToastData
+ */
+/**
+ * Handles useanimatedtoast functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await useAnimatedToast(params);
+ */
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
+/**
+ * ToastData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ToastData
+ */
                   >
                     {title}
                   </motion.h4>
@@ -185,6 +359,44 @@ export function AnimatedToast({
                     setIsVisible(false);
                     onClose?.();
                   }}
+/**
+ * ToastData interface defines the contract for implementation.
+ * 
+/**
+ * ToastData interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ToastData
+ */
+/**
+ * Handles useanimatedtoast functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await useAnimatedToast(params);
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ToastData
+ */
+/**
+ * Handles useanimatedtoast functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await useAnimatedToast(params);
+ */
                   className="flex-shrink-0 text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-100 transition-colors"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}

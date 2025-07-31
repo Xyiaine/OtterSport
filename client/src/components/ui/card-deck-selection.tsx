@@ -1,3 +1,15 @@
+/**
+ * CARD-DECK-SELECTION MODULE
+ * 
+ * This module provides functionality for card-deck-selection.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +22,110 @@ type DeckWithExercises = Deck & {
   exercises: (DeckExercise & { exercise: Exercise })[] 
 };
 
+/**
+ * CardDeckSelectionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * CardDeckSelectionProps interface defines the contract for implementation.
+/**
+ * CardDeckSelectionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * CardDeckSelectionProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * CardDeckSelectionProps interface defines the contract for implementation.
+/**
+ * CardDeckSelectionProps interface defines the contract for implementation.
+/**
+ * CardDeckSelectionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDeckSelectionProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDeckSelectionProps
+ */
+ * 
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDeckSelectionProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+/**
+ * Handles carddeckselection functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardDeckSelection(params);
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDeckSelectionProps
+ */
+ * @interface CardDeckSelectionProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDeckSelectionProps
+ */
+ * @interface CardDeckSelectionProps
+ */
 interface CardDeckSelectionProps {
+/**
+ * Handles carddeckselection functionality for the application
+ * 
+/**
+ * Handles carddeckselection functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardDeckSelection(params);
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardDeckSelection(params);
+ */
   deck: DeckWithExercises;
   onCardSelected: (exerciseIndex: number) => void;
   gameMode: string;

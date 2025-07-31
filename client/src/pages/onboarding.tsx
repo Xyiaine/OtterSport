@@ -1,3 +1,15 @@
+/**
+ * ONBOARDING MODULE
+ * 
+ * This module provides functionality for onboarding.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
@@ -29,6 +41,39 @@ const WORKOUT_FREQUENCIES = [
   { value: "flexible", label: "Flexible", description: "When I can" },
 ];
 
+/**
+ * Handles onboarding functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Onboarding(params);
+ */
+/**
+ * Handles onboarding functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Onboarding(params);
+ */
+/**
+ * Handles onboarding functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Onboarding(params);
+ */
 export default function Onboarding() {
   const [step, setStep] = useState(1);
   const [selectedGoal, setSelectedGoal] = useState("");

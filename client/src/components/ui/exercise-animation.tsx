@@ -1,7 +1,83 @@
+/**
+ * EXERCISE-ANIMATION MODULE
+ * 
+ * This module provides functionality for exercise-animation.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Exercise } from "@shared/schema";
 
+/**
+ * ExerciseAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * ExerciseAnimationProps interface defines the contract for implementation.
+/**
+ * ExerciseAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * ExerciseAnimationProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * ExerciseAnimationProps interface defines the contract for implementation.
+/**
+ * ExerciseAnimationProps interface defines the contract for implementation.
+/**
+ * ExerciseAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseAnimationProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseAnimationProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseAnimationProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseAnimationProps
+ */
+ * @interface ExerciseAnimationProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseAnimationProps
+ */
+ * @interface ExerciseAnimationProps
+ */
 interface ExerciseAnimationProps {
   exercise: Exercise;
   isActive: boolean;
@@ -189,6 +265,12 @@ const DefaultAnimation = ({ exercise, isActive }: { exercise: Exercise; isActive
         className={`${exercise.icon} text-white text-2xl`}
         animate={isActive ? { 
           scale: [1, 1.2, 1],
+/**
+ * Handles exerciseanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
         } : {}}
         transition={{ duration: 1.5, repeat: Infinity }}
       />
@@ -207,8 +289,20 @@ const DefaultAnimation = ({ exercise, isActive }: { exercise: Exercise; isActive
         <motion.div
           className="absolute bottom-2 left-2 w-1 h-1 bg-yellow-400 rounded-full"
           animate={{
+/**
+ * Handles exerciseanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
             scale: [0, 1, 0],
             opacity: [0, 1, 0],
+/**
+ * Handles exerciseanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
           }}
           transition={{ duration: 1, repeat: Infinity, delay: 0.5 }}
         />

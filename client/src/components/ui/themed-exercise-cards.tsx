@@ -25,9 +25,129 @@ import {
 
 export type DeckTheme = 'cardio' | 'strength' | 'flexibility' | 'core';
 
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Exercise interface defines the contract for implementation.
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Exercise
+ */
+ * @interface Exercise
+/**
+ * ThemedExerciseCardProps interface defines the contract for implementation.
+/**
+ * defines interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+/**
+ * ThemedExerciseCardProps interface defines the contract for implementation.
+ * 
+/**
+ * Exercise interface defines the contract for implementation.
+/**
+ * Exercise interface defines the contract for implementation.
+/**
+ * Exercise interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Exercise
+ */
+ * 
+/**
+ * ThemedExerciseCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ThemedExerciseCardProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * ThemedExerciseCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ThemedExerciseCardProps
+ */
+ * 
+ * @interface Exercise
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Exercise
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ThemedExerciseCardProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ThemedExerciseCardProps
+ */
+ */
+ * 
+/**
+ * ThemedExerciseCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ThemedExerciseCardProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * ThemedExerciseCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ThemedExerciseCardProps
+ */
+ * 
+ * @interface Exercise
+ */
+ * @interface Exercise
+ */
 export interface Exercise {
   id: string;
   name: string;
+/**
+ * ThemedExerciseCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ThemedExerciseCardProps
+ */
   reps?: number;
   duration?: number;
   difficulty: 1 | 2 | 3 | 4 | 5;
@@ -45,6 +165,17 @@ export interface ThemedExerciseCardProps {
   progress?: number;
   onSelect?: (exercise: Exercise) => void;
   onComplete?: (exercise: Exercise) => void;
+/**
+ * Handles themedexercisecard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ThemedExerciseCard(params);
+ */
   showDetails?: boolean;
 }
 
@@ -74,11 +205,33 @@ const themeConfigs = {
   flexibility: {
     name: 'Flexibility Flow',
     primaryColor: 'from-purple-500 to-teal-500',
+/**
+ * Handles themedexercisecard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ThemedExerciseCard(params);
+ */
     backgroundColor: 'bg-purple-50 dark:bg-purple-950',
     borderColor: 'border-purple-200 dark:border-purple-800',
     textColor: 'text-purple-700 dark:text-purple-300',
     icon: Waves,
     accentColor: 'bg-purple-500',
+/**
+ * Handles themedexercisecard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ThemedExerciseCard(params);
+ */
     badgeVariant: 'outline' as const,
     pattern: 'bg-gradient-to-br from-purple-100 via-teal-50 to-purple-100'
   },
@@ -239,6 +392,12 @@ export default function ThemedExerciseCard({
                   size="sm"
                   variant="outline"
                   className="flex-1"
+/**
+ * Handles to functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
                   onClick={handleCardClick}
                 >
                   Select Exercise
@@ -273,6 +432,12 @@ export default function ThemedExerciseCard({
       {theme === 'cardio' && (
         <div className="absolute top-2 right-2">
           <div className="animate-pulse">
+/**
+ * Handles to functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
             <Heart className="h-4 w-4 text-red-400 fill-current" />
           </div>
         </div>
@@ -283,6 +448,12 @@ export default function ThemedExerciseCard({
           <Dumbbell className="h-4 w-4 text-slate-400" />
         </div>
       )}
+/**
+ * Handles to functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       
       {theme === 'flexibility' && (
         <div className="absolute top-2 right-2">

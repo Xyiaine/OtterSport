@@ -1,3 +1,15 @@
+/**
+ * INTERACTIVE-ELEMENTS MODULE
+ * 
+ * This module provides functionality for interactive-elements.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -5,6 +17,173 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // Floating Action Button with Expandable Menu
+/**
+ * FloatingAction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * FloatingAction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * FloatingAction interface defines the contract for implementation.
+/**
+ * FloatingAction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingAction
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingAction
+ */
+ * @interface FloatingAction
+ */
+ * @interface FloatingAction
+/**
+ * FloatingActionButtonProps interface defines the contract for implementation.
+/**
+ * FloatingAction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingAction
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles floatingactionbutton functionality for the application
+ * 
+/**
+ * FloatingActionButtonProps interface defines the contract for implementation.
+ * 
+/**
+ * FloatingActionButtonProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * FloatingActionButtonProps interface defines the contract for implementation.
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * FloatingActionButtonProps interface defines the contract for implementation.
+ * 
+/**
+ * FloatingAction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingAction
+/**
+ * FloatingActionButtonProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles floatingactionbutton functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await FloatingActionButton(params);
+ */
+ * @interface FloatingActionButtonProps
+ */
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingActionButtonProps
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingActionButtonProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingActionButtonProps
+ */
+/**
+ * FloatingAction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingAction
+/**
+ * FloatingActionButtonProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles floatingactionbutton functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await FloatingActionButton(params);
+ */
+ * @interface FloatingActionButtonProps
+ */
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FloatingActionButtonProps
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+/**
+ * GridCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GridCardProps
+ */
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await FloatingActionButton(params);
+ */
+ * @interface FloatingActionButtonProps
+ */
+ */
 interface FloatingAction {
   icon: string;
   label: string;
@@ -29,6 +208,14 @@ export function FloatingActionButton({
     switch (position) {
       case 'bottom-right':
         return 'bottom-6 right-6';
+/**
+ * GridCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GridCardProps
+ */
       case 'bottom-left':
         return 'bottom-6 left-6';
       case 'top-right':
@@ -45,6 +232,14 @@ export function FloatingActionButton({
     if (position.includes('bottom')) {
       return { y: -(baseOffset + index * spacing), x: 0 };
     } else {
+/**
+ * GridCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GridCardProps
+ */
       return { y: baseOffset + index * spacing, x: 0 };
     }
   };
@@ -74,12 +269,47 @@ export function FloatingActionButton({
               exit={{ 
                 scale: 0, 
                 opacity: 0,
+/**
+ * CounterProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CounterProps
+ */
                 x: 0,
                 y: 0
               }}
+/**
+ * GridCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GridCardProps
+ */
               transition={{ 
                 delay: index * 0.1,
+/**
+ * Handles interactivegridcard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await InteractiveGridCard(params);
+ */
                 type: "spring",
+/**
+ * GridCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GridCardProps
+ */
                 stiffness: 500,
                 damping: 25
               }}
@@ -104,22 +334,92 @@ export function FloatingActionButton({
                   className={`w-12 h-12 rounded-full shadow-lg flex items-center justify-center ${
                     action.color || 'bg-otter-teal hover:bg-teal-600'
                   } text-white transition-colors`}
+/**
+ * ProgressRingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressRingProps
+ */
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
                   <i className={action.icon}></i>
                 </motion.button>
+/**
+ * CounterProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CounterProps
+ */
               </div>
             </motion.div>
           );
+/**
+ * GridCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GridCardProps
+ */
         })}
       </AnimatePresence>
+/**
+ * CounterProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CounterProps
+ */
+/**
+ * Handles interactivegridcard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await InteractiveGridCard(params);
+ */
 
       {/* Main Button */}
       <motion.button
+/**
+ * GridCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GridCardProps
+ */
         onClick={() => setIsOpen(!isOpen)}
         className="w-16 h-16 bg-otter-teal hover:bg-teal-600 text-white rounded-full shadow-lg flex items-center justify-center text-xl transition-colors"
+/**
+ * Handles interactivegridcard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await InteractiveGridCard(params);
+ */
         whileHover={{ scale: 1.05 }}
+/**
+ * ProgressRingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressRingProps
+ */
         whileTap={{ scale: 0.95 }}
         animate={{ rotate: isOpen ? 45 : 0 }}
         transition={{ duration: 0.2 }}
@@ -135,6 +435,14 @@ export function FloatingActionButton({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+/**
+ * CounterProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CounterProps
+ */
             onClick={() => setIsOpen(false)}
           />
         )}
@@ -144,11 +452,38 @@ export function FloatingActionButton({
 }
 
 // Interactive Card Grid with Hover Effects
+/**
+ * ProgressRingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressRingProps
+ */
 interface GridCardProps {
   title: string;
   description?: string;
   icon: string;
   badge?: string;
+/**
+ * CounterProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CounterProps
+ */
+/**
+ * Handles animatedcounter functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedCounter(params);
+ */
   onClick?: () => void;
   color?: string;
   animationDelay?: number;
@@ -192,13 +527,78 @@ export function InteractiveGridCard({
               className={`w-12 h-12 bg-${color} text-white rounded-lg flex items-center justify-center`}
               animate={{ 
                 scale: isHovered ? 1.1 : 1,
+/**
+ * ProgressRingProps interface defines the contract for implementation.
+ * 
+/**
+ * ProgressRingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressRingProps
+ */
+/**
+ * Handles progressring functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ProgressRing(params);
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressRingProps
+ */
                 rotate: isHovered ? 5 : 0
               }}
               transition={{ duration: 0.2 }}
             >
               <i className={`${icon} text-xl`}></i>
+/**
+ * CounterProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CounterProps
+ */
+/**
+ * Handles animatedcounter functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedCounter(params);
+ */
             </motion.div>
             
+/**
+ * CounterProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CounterProps
+ */
+/**
+ * Handles animatedcounter functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedCounter(params);
+ */
             {/* Badge */}
             {badge && (
               <motion.div
@@ -224,6 +624,25 @@ export function InteractiveGridCard({
             <motion.p
               className="text-slate-600 text-sm"
               animate={{ x: isHovered ? 5 : 0 }}
+/**
+ * ProgressRingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressRingProps
+ */
+/**
+ * Handles progressring functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ProgressRing(params);
+ */
               transition={{ duration: 0.2, delay: 0.05 }}
             >
               {description}
@@ -245,6 +664,25 @@ export function InteractiveGridCard({
 }
 
 // Animated Number Counter
+/**
+ * ProgressRingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressRingProps
+ */
+/**
+ * Handles progressring functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await ProgressRing(params);
+ */
 interface CounterProps {
   value: number;
   duration?: number;

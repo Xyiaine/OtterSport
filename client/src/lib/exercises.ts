@@ -1,5 +1,145 @@
+/**
+ * EXERCISES MODULE
+ * 
+ * This module provides functionality for exercises.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import type { Exercise, DeckExercise } from "@shared/schema";
 
+/**
+ * ExerciseWithSettings interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * WorkoutDifficulty interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * WorkoutDifficulty interface defines the contract for implementation.
+/**
+ * ExerciseWithSettings interface defines the contract for implementation.
+/**
+ * ExerciseWithSettings interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * WorkoutDifficulty interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * WorkoutDifficulty interface defines the contract for implementation.
+/**
+ * ExerciseWithSettings interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * ExerciseWithSettings interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * WorkoutDifficulty interface defines the contract for implementation.
+/**
+ * WorkoutDifficulty interface defines the contract for implementation.
+/**
+ * ExerciseWithSettings interface defines the contract for implementation.
+/**
+ * ExerciseWithSettings interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * WorkoutDifficulty interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutDifficulty
+ */
+ * @interface ExerciseWithSettings
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseWithSettings
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutDifficulty
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutDifficulty
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseWithSettings
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseWithSettings
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutDifficulty
+ */
+ * @interface WorkoutDifficulty
+ */
+ * @interface ExerciseWithSettings
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseWithSettings
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutDifficulty
+ */
+ * @interface WorkoutDifficulty
+ */
+ * @interface ExerciseWithSettings
+ */
 export interface ExerciseWithSettings extends Exercise {
   reps?: number;
   duration?: number;

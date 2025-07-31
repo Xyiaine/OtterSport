@@ -1,3 +1,15 @@
+/**
+ * MENU-ANIMATIONS MODULE
+ * 
+ * This module provides functionality for menu-animations.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -5,8 +17,111 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // Enhanced Button with Feedback Animation
+/**
+ * AnimatedButtonProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AnimatedButtonProps interface defines the contract for implementation.
+/**
+ * AnimatedButtonProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AnimatedButtonProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * AnimatedButtonProps interface defines the contract for implementation.
+/**
+ * AnimatedButtonProps interface defines the contract for implementation.
+/**
+ * AnimatedButtonProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedButtonProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedButtonProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedButtonProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+/**
+ * Handles animatedbutton functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedButton(params);
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedButtonProps
+ */
+ * @interface AnimatedButtonProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedButtonProps
+ */
+ * @interface AnimatedButtonProps
+ */
 interface AnimatedButtonProps {
   children: React.ReactNode;
+/**
+ * Handles animatedbutton functionality for the application
+ * 
+/**
+ * Handles animatedbutton functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedButton(params);
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedButton(params);
+ */
   onClick?: () => void;
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
@@ -36,6 +151,14 @@ export function AnimatedButton({
     if (animationType === 'ripple') {
       const rect = event.currentTarget.getBoundingClientRect();
       const x = event.clientX - rect.left;
+/**
+ * AnimatedCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedCardProps
+ */
       const y = event.clientY - rect.top;
       const newRipple = { id: Date.now(), x, y };
       
@@ -60,11 +183,35 @@ export function AnimatedButton({
       case 'pulse':
         return {
           rest: { scale: 1 },
+/**
+ * AnimatedCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedCardProps
+ */
           hover: { scale: [1, 1.05, 1], transition: { repeat: Infinity, duration: 1 } },
           pressed: { scale: 0.95 }
         };
       case 'glow':
         return {
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * AnimatedCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedCardProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
           rest: { scale: 1, boxShadow: "0 0 0px rgba(59, 130, 246, 0)" },
           hover: { 
             scale: 1.02, 
@@ -84,9 +231,44 @@ export function AnimatedButton({
 
   return (
     <motion.div
+/**
+ * AnimatedCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedCardProps
+ */
+/**
+ * Handles animatedcard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedCard(params);
+/**
+ * AnimatedMenuItemProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedMenuItemProps
+ */
+ */
       className="relative overflow-hidden"
       variants={getAnimationVariants()}
       initial="rest"
+/**
+ * AnimatedCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedCardProps
+ */
       whileHover={disabled ? "rest" : "hover"}
       animate={isPressed ? "pressed" : "rest"}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -108,6 +290,60 @@ export function AnimatedButton({
                 key={ripple.id}
                 className="absolute bg-white/30 rounded-full pointer-events-none"
                 style={{
+/**
+ * AnimatedCardProps interface defines the contract for implementation.
+ * 
+/**
+ * AnimatedCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedCardProps
+/**
+ * AnimatedMenuItemProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedMenuItemProps
+ */
+ */
+/**
+ * Handles animatedcard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedCard(params);
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedCardProps
+/**
+ * AnimatedMenuItemProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedMenuItemProps
+ */
+ */
+/**
+ * Handles animatedcard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedCard(params);
+ */
                   left: ripple.x - 10,
                   top: ripple.y - 10,
                   width: 20,
@@ -117,6 +353,14 @@ export function AnimatedButton({
                 animate={{ scale: 4, opacity: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
+/**
+ * FeedbackAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FeedbackAnimationProps
+ */
               />
             ))}
           </AnimatePresence>
@@ -139,6 +383,33 @@ export function AnimatedCard({
   children,
   className = '',
   onClick,
+/**
+ * AnimatedMenuItemProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedMenuItemProps
+ */
+/**
+ * AnimatedMenuItemProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedMenuItemProps
+ */
+/**
+ * Handles animatedmenuitem functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedMenuItem(params);
+ */
   animationType = 'lift',
   disabled = false
 }: AnimatedCardProps) {
@@ -160,6 +431,22 @@ export function AnimatedCard({
         return {
           rest: { 
             scale: 1, 
+/**
+ * PageTransitionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface PageTransitionProps
+/**
+ * FeedbackAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FeedbackAnimationProps
+ */
+ */
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             borderColor: "rgba(226, 232, 240, 1)"
           },
@@ -172,23 +459,91 @@ export function AnimatedCard({
       case 'flip':
         return {
           rest: { rotateY: 0, scale: 1 },
+/**
+ * StaggeredListProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StaggeredListProps
+ */
           hover: { rotateY: 180, scale: 1.05 }
         };
       case 'slide':
         return {
           rest: { x: 0, y: 0, scale: 1 },
+/**
+ * FeedbackAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FeedbackAnimationProps
+ */
           hover: { x: 5, y: -5, scale: 1.02 }
         };
       default: // lift
         return {
           rest: { 
+/**
+ * AnimatedMenuItemProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedMenuItemProps
+ */
             y: 0, 
             scale: 1, 
+/**
+ * Handles animatedmenuitem functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedMenuItem(params);
+ */
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" 
           },
           hover: { 
+/**
+ * AnimatedMenuItemProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedMenuItemProps
+/**
+ * Handles animatedspinner functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
             y: -8, 
             scale: 1.02, 
+/**
+ * Handles animatedmenuitem functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+/**
+ * PageTransitionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface PageTransitionProps
+ */
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AnimatedMenuItem(params);
+ */
             boxShadow: "0 20px 25px rgba(0, 0, 0, 0.15)",
             transition: { duration: 0.2 }
           }
@@ -197,6 +552,22 @@ export function AnimatedCard({
   };
 
   return (
+/**
+ * FeedbackAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * StaggeredListProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StaggeredListProps
+ */
+ * @interface FeedbackAnimationProps
+ */
     <motion.div
       className={`cursor-${onClick ? 'pointer' : 'default'} ${disabled ? 'opacity-50' : ''}`}
       variants={getCardVariants()}
@@ -207,12 +578,42 @@ export function AnimatedCard({
       onClick={disabled ? undefined : onClick}
       style={{ perspective: "1000px" }}
     >
+/**
+ * PageTransitionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface PageTransitionProps
+/**
+ * FeedbackAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FeedbackAnimationProps
+/**
+ * Handles feedbackanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ */
       <Card className={`relative overflow-hidden transition-colors duration-200 ${className}`}>
         {children}
         
         {/* Animated Border Glow */}
         {isHovered && animationType === 'glow' && (
           <motion.div
+/**
+ * StaggeredListProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StaggeredListProps
+ */
             className="absolute inset-0 border-2 border-blue-400/50 rounded-lg pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -233,6 +634,12 @@ interface AnimatedMenuItemProps {
   onClick?: () => void;
   delay?: number;
   isActive?: boolean;
+/**
+ * Handles animatedspinner functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 }
 
 export function AnimatedMenuItem({
@@ -245,6 +652,12 @@ export function AnimatedMenuItem({
   isActive = false
 }: AnimatedMenuItemProps) {
   return (
+/**
+ * Handles animatedspinner functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
     <motion.div
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
@@ -255,17 +668,89 @@ export function AnimatedMenuItem({
       <AnimatedCard
         animationType="lift"
         onClick={onClick}
+/**
+ * PageTransitionProps interface defines the contract for implementation.
+ * 
+/**
+ * PageTransitionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles pagetransition functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @interface PageTransitionProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface PageTransitionProps
+/**
+ * FeedbackAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FeedbackAnimationProps
+/**
+ * Handles feedbackanimation functionality for the application
+ * 
+/**
+ * StaggeredListProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles staggeredlist functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface StaggeredListProps
+ */
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ */
         className={`p-4 cursor-pointer transition-all duration-200 ${
           isActive ? 'bg-otter-teal/10 border-otter-teal' : 'hover:bg-slate-50'
         }`}
       >
         <CardContent className="flex items-center space-x-4 p-0">
           <motion.div
+/**
+ * StaggeredListProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StaggeredListProps
+ */
             className={`w-12 h-12 rounded-lg flex items-center justify-center ${
               isActive ? 'bg-otter-teal text-white' : 'bg-slate-100 text-slate-600'
             }`}
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.6 }}
+/**
+ * FeedbackAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface FeedbackAnimationProps
+/**
+ * Handles feedbackanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
           >
             <i className={`${icon} text-xl`}></i>
           </motion.div>
@@ -304,6 +789,20 @@ export function AnimatedMenuItem({
 // Loading Spinner with Animation
 export function AnimatedSpinner({ size = 32, color = "text-otter-teal" }) {
   return (
+/**
+ * PageTransitionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles pagetransition functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @interface PageTransitionProps
+ */
     <motion.div
       className={`${color}`}
       animate={{ rotate: 360 }}
@@ -318,12 +817,40 @@ export function AnimatedSpinner({ size = 32, color = "text-otter-teal" }) {
       >
         <path
           d="M12 2V6M12 18V22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12H6M18 12H22M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93"
+/**
+ * StaggeredListProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles staggeredlist functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface StaggeredListProps
+ */
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
       </svg>
+/**
+ * PageTransitionProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles pagetransition functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @interface PageTransitionProps
+ */
     </motion.div>
   );
 }
@@ -338,6 +865,20 @@ interface FeedbackAnimationProps {
 
 export function FeedbackAnimation({ type, message, show, onClose }: FeedbackAnimationProps) {
   const getIcon = () => {
+/**
+ * StaggeredListProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles staggeredlist functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface StaggeredListProps
+ */
     switch (type) {
       case 'success': return 'fas fa-check-circle';
       case 'error': return 'fas fa-times-circle';

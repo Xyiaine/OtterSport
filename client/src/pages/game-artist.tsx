@@ -1,3 +1,15 @@
+/**
+ * GAME-ARTIST MODULE
+ * 
+ * This module provides functionality for game-artist.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,8 +57,78 @@ import ThemeManager from "@/components/ui/theme-manager";
 import GameArtistPerformanceMonitor from "@/components/ui/game-artist-performance-monitor";
 import GameArtistAdvancedTools from "@/components/ui/game-artist-advanced-tools";
 
+/**
+ * AssetSlot interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AssetSlot interface defines the contract for implementation.
+/**
+ * AssetSlot interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AssetSlot interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * AssetSlot interface defines the contract for implementation.
+/**
+ * AssetSlot interface defines the contract for implementation.
+/**
+ * AssetSlot interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AssetSlot
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AssetSlot
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AssetSlot
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AssetSlot
+ */
+ * @interface AssetSlot
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AssetSlot
+ */
+ * @interface AssetSlot
+ */
 interface AssetSlot {
   id: string;
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
   name: string;
   category: string;
   currentImage?: string;
@@ -57,6 +139,17 @@ interface AssetSlot {
 const assetSlots: AssetSlot[] = [
   // Interface Assets
   { id: "logo", name: "Main Logo", category: "Interface", description: "OtterSport main logo", recommendedSize: "256x256px" },
+/**
+ * Handles gameartistmode functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GameArtistMode(params);
+ */
   { id: "background", name: "Main Background", category: "Interface", description: "App background pattern", recommendedSize: "1920x1080px" },
   { id: "btn-primary", name: "Primary Button", category: "Interface", description: "Main action buttons", recommendedSize: "200x60px" },
   
@@ -73,6 +166,28 @@ const assetSlots: AssetSlot[] = [
   // Characters
   { id: "otter-happy", name: "Otter Coach - Happy", category: "Characters", description: "Happy/encouraging expression", recommendedSize: "512x512px" },
   { id: "otter-proud", name: "Otter Coach - Proud", category: "Characters", description: "Proud/celebrating expression", recommendedSize: "512x512px" },
+/**
+ * Handles gameartistmode functionality for the application
+ * 
+/**
+ * Handles gameartistmode functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GameArtistMode(params);
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GameArtistMode(params);
+ */
   { id: "ai-opponent", name: "AI Opponent", category: "Characters", description: "AI opponent character", recommendedSize: "512x512px" },
   
   // Exercise Illustrations

@@ -1,3 +1,15 @@
+/**
+ * GAME-MODES MODULE
+ * 
+ * This module provides functionality for game-modes.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useParams } from "wouter";
@@ -25,6 +37,24 @@ type DeckWithExercises = Deck & {
   exercises: (DeckExercise & { exercise: Exercise })[] 
 };
 
+/**
+ * Handles gamemodespage functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles gamemodespage functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles gamemodespage functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 export default function GameModesPage() {
   const { mode } = useParams<{ mode: string }>();
   const [, setLocation] = useLocation();

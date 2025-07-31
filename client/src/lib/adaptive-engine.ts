@@ -1,3 +1,15 @@
+/**
+ * ADAPTIVE-ENGINE MODULE
+ * 
+ * This module provides functionality for adaptive-engine.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import type { User } from "@shared/schema";
 
 /**
@@ -17,6 +29,118 @@ import type { User } from "@shared/schema";
 export type FeedbackType = 'too_easy' | 'just_right' | 'bit_too_hard' | 'way_too_hard';
 
 // Comprehensive adaptive settings returned by the engine
+/**
+ * AdaptiveSettings interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AdaptiveSettings interface defines the contract for implementation.
+/**
+ * AdaptiveSettings interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AdaptiveSettings interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * AdaptiveSettings interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdaptiveSettings
+ */
+/**
+ * AdaptiveEngine class provides comprehensive functionality for its domain area.
+/**
+ * AdaptiveSettings interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdaptiveSettings
+ */
+/**
+ * AdaptiveEngine class provides comprehensive functionality for its domain area.
+/**
+ * AdaptiveSettings interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdaptiveSettings
+ */
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class AdaptiveEngine
+ */
+/**
+ * AdaptiveEngine class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class AdaptiveEngine
+ */
+ * 
+ * This class provides comprehensive functionality for its domain area.
+/**
+ * AdaptiveEngine class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class AdaptiveEngine
+ */
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class AdaptiveEngine
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdaptiveSettings
+ */
+ * @interface AdaptiveSettings
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdaptiveSettings
+ */
+/**
+ * AdaptiveEngine class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class AdaptiveEngine
+ */
+ * @interface AdaptiveSettings
+ */
+/**
+ * AdaptiveEngine class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class AdaptiveEngine
+ */
 export interface AdaptiveSettings {
   difficultyLevel: number;
   recommendations: {
@@ -25,6 +149,14 @@ export interface AdaptiveSettings {
     adjustRest: boolean;         // Should we adjust rest periods?
     message: string;             // Human-readable recommendation
   };
+/**
+ * AdaptiveEngine class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class AdaptiveEngine
+ */
 }
 
 /**

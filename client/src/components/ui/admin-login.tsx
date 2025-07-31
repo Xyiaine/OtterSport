@@ -17,10 +17,92 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Shield, Eye, EyeOff } from "lucide-react";
 
+/**
+ * AdminLoginProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AdminLoginProps interface defines the contract for implementation.
+/**
+ * AdminLoginProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AdminLoginProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * AdminLoginProps interface defines the contract for implementation.
+/**
+ * AdminLoginProps interface defines the contract for implementation.
+/**
+ * AdminLoginProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdminLoginProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdminLoginProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdminLoginProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+/**
+ * Handles adminlogin functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdminLoginProps
+ */
+ * @interface AdminLoginProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AdminLoginProps
+ */
+ * @interface AdminLoginProps
+ */
 interface AdminLoginProps {
   isOpen: boolean;
+/**
+ * Handles adminlogin functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
   onClose: () => void;
   onSuccess: () => void;
+/**
+ * Handles adminlogin functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 }
 
 /**

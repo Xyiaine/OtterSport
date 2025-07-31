@@ -1,15 +1,260 @@
+/**
+ * CARD-BATTLE-ANIMATIONS MODULE
+ * 
+ * This module provides functionality for card-battle-animations.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Exercise } from "@shared/schema";
 
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * GameCard interface defines the contract for implementation.
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+/**
+ * CardPosition interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPosition
+ */
+/**
+ * EnhancedCardDrawProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * GameCard interface defines the contract for implementation.
+/**
+ * GameCard interface defines the contract for implementation.
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+/**
+ * CardPosition interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPosition
+ */
+/**
+ * EnhancedCardDrawProps interface defines the contract for implementation.
+/**
+ * defines interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface EnhancedCardDrawProps
+ */
+/**
+ * CardPosition interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPosition
+ */
+/**
+ * EnhancedCardDrawProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface EnhancedCardDrawProps
+ */
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface EnhancedCardDrawProps
+ */
+ */
+ * This interface defines the contract for implementation.
+/**
+ * CardPosition interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPosition
+ */
+/**
+ * EnhancedCardDrawProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface EnhancedCardDrawProps
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles enhancedcarddraw functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await EnhancedCardDraw(params);
+ */
+ * @interface GameCard
+ */
+ * @interface GameCard
+ */
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * CardPosition interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPosition
+ */
+/**
+ * EnhancedCardDrawProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface EnhancedCardDrawProps
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ * @interface GameCard
+ */
 interface GameCard {
   id: string;
   exercise: Exercise;
   points: number;
+/**
+ * CardPosition interface defines the contract for implementation.
+ * 
+/**
+ * CardPosition interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * CardPlayAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPlayAnimationProps
+ */
+ * @interface CardPosition
+ */
+/**
+ * EnhancedCardDrawProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface EnhancedCardDrawProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles enhancedcarddraw functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await EnhancedCardDraw(params);
+ */
+ * 
+ * @interface CardPosition
+ */
+/**
+ * EnhancedCardDrawProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface EnhancedCardDrawProps
+ */
   difficulty: number;
   type: 'cardio' | 'strength' | 'flexibility' | 'mixed' | 'warmup' | 'utility';
+/**
+ * Handles enhancedcarddraw functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+/**
+ * CardPlayAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPlayAnimationProps
+ */
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await EnhancedCardDraw(params);
+ */
   combo?: string;
   special?: 'double' | 'block' | 'steal' | 'bonus';
   cardType?: 'exercise' | 'warmup' | 'utility' | 'power';
@@ -27,6 +272,14 @@ interface CardPosition {
 interface EnhancedCardDrawProps {
   card: GameCard;
   fromPosition: CardPosition;
+/**
+ * CardPlayAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPlayAnimationProps
+ */
   toPosition: CardPosition;
   isDrawing: boolean;
   onDrawComplete: () => void;
@@ -67,7 +320,26 @@ export function EnhancedCardDraw({
       x: fromPosition.x,
       y: fromPosition.y,
       rotate: fromPosition.rotation,
+/**
+ * CardPlayAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPlayAnimationProps
+ */
       scale: fromPosition.scale,
+/**
+ * Handles cardplayanimation functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardPlayAnimation(params);
+ */
       rotateY: 0,
       opacity: 1,
       zIndex: 10 + cardIndex,
@@ -80,6 +352,22 @@ export function EnhancedCardDraw({
       rotateY: 0,
       opacity: 1,
       zIndex: 20 + cardIndex,
+/**
+ * CardPlayAnimationProps interface defines the contract for implementation.
+/**
+ * AnimatedDeckProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedDeckProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPlayAnimationProps
+ */
       transition: {
         duration: 0.8,
         ease: "easeInOut",
@@ -120,7 +408,34 @@ export function EnhancedCardDraw({
     <motion.div
       className="absolute"
       variants={cardVariants}
+/**
+ * CardPlayAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPlayAnimationProps
+ */
       animate={phase}
+/**
+ * Handles cardplayanimation functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+/**
+ * AnimatedDeckProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedDeckProps
+ */
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardPlayAnimation(params);
+ */
       style={{ perspective: "1000px" }}
     >
       <motion.div
@@ -133,7 +448,58 @@ export function EnhancedCardDraw({
           style={{ 
             backfaceVisibility: "hidden",
             display: phase === 'flipping' || phase === 'hand' ? 'none' : 'block'
+/**
+ * CardPlayAnimationProps interface defines the contract for implementation.
+ * 
+/**
+ * BattleFieldProps interface defines the contract for implementation.
+/**
+ * defines interface defines the contract for implementation.
+/**
+ * defines interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * 
+/**
+ * AnimatedDeckProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedDeckProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface BattleFieldProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardPlayAnimationProps
+ */
           }}
+/**
+ * Handles cardplayanimation functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardPlayAnimation(params);
+ */
         >
           <Card className="w-full h-full bg-gradient-to-br from-otter-teal to-otter-teal-dark border border-otter-teal">
             <CardContent className="h-full flex items-center justify-center p-2">
@@ -172,11 +538,33 @@ interface CardPlayAnimationProps {
   card: GameCard;
   fromPosition: CardPosition;
   toPosition: CardPosition;
+/**
+ * BattleFieldProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface BattleFieldProps
+ */
   isPlaying: boolean;
   onPlayComplete: () => void;
   playEffect?: 'normal' | 'special' | 'combo' | 'power';
 }
 
+/**
+ * AnimatedDeckProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles animateddeck functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface AnimatedDeckProps
+ */
 export function CardPlayAnimation({
   card,
   fromPosition,
@@ -196,6 +584,22 @@ export function CardPlayAnimation({
       }, 1200);
 
       return () => clearTimeout(timer);
+/**
+ * AnimatedDeckProps interface defines the contract for implementation.
+/**
+ * BattleFieldProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface BattleFieldProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedDeckProps
+ */
     }
   }, [isPlaying, onPlayComplete]);
 
@@ -212,6 +616,12 @@ export function CardPlayAnimation({
 
   const cardVariants = {
     hand: {
+/**
+ * Handles exercisecardmini functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       x: fromPosition.x,
       y: fromPosition.y,
       rotate: fromPosition.rotation,
@@ -250,6 +660,39 @@ export function CardPlayAnimation({
 
   return (
     <AnimatePresence>
+/**
+ * AnimatedDeckProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles animateddeck functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface AnimatedDeckProps
+/**
+ * BattleFieldProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface BattleFieldProps
+ */
+/**
+ * Handles battlefield functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await BattleField(params);
+ */
+ */
       {isPlaying && (
         <motion.div
           className="absolute"
@@ -270,6 +713,28 @@ export function CardPlayAnimation({
               <motion.div
                 className="absolute inset-0 rounded-lg"
                 style={{
+/**
+/**
+ * BattleFieldProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface BattleFieldProps
+ */
+ * AnimatedDeckProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles animateddeck functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface AnimatedDeckProps
+ */
                   boxShadow: `0 0 20px ${colors.glow}, 0 0 40px ${colors.glow}, 0 0 60px ${colors.glow}`,
                   backgroundColor: `${colors.glow}20`,
                 }}
@@ -279,6 +744,12 @@ export function CardPlayAnimation({
                 }}
                 transition={{
                   duration: 1,
+/**
+ * Handles exercisecardmini functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
@@ -302,6 +773,12 @@ export function CardPlayAnimation({
                   }}
                   animate={{
                     x: Math.cos((i * Math.PI * 2) / 8) * 60,
+/**
+ * Handles exercisecardmini functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
                     y: Math.sin((i * Math.PI * 2) / 8) * 60,
                     scale: [0, 1, 0],
                     opacity: [1, 0.8, 0],
@@ -324,6 +801,25 @@ export function CardPlayAnimation({
 }
 
 // Deck Component with Animation
+/**
+ * BattleFieldProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface BattleFieldProps
+ */
+/**
+ * Handles battlefield functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await BattleField(params);
+ */
 interface AnimatedDeckProps {
   cardsRemaining: number;
   isDrawing: boolean;
@@ -353,6 +849,25 @@ export function AnimatedDeck({ cardsRemaining, isDrawing, deckTheme }: AnimatedD
               <div className="text-center text-white">
                 <motion.div
                   animate={{ rotate: 360 }}
+/**
+ * BattleFieldProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface BattleFieldProps
+ */
+/**
+ * Handles battlefield functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await BattleField(params);
+ */
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                   className="w-8 h-8 mx-auto mb-1 bg-white/20 rounded-full flex items-center justify-center"
                 >

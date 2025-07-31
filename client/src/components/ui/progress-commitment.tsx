@@ -28,9 +28,147 @@ import {
   Clock
 } from 'lucide-react';
 
+/**
+ * Goal interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Goal interface defines the contract for implementation.
+/**
+ * Goal interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Goal interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Goal
+ */
+ * @interface Goal
+/**
+ * GoalSettingProps interface defines the contract for implementation.
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * Goal interface defines the contract for implementation.
+/**
+ * Goal interface defines the contract for implementation.
+/**
+ * Goal interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Goal
+/**
+ * GoalSettingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalSettingProps
+ */
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Goal
+ */
+ * 
+/**
+ * GoalSettingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalSettingProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Goal
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * GoalSettingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalSettingProps
+/**
+ * Handles goalsetting functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ * @interface defines
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalSettingProps
+ */
+ */
+ * 
+/**
+ * GoalSettingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalSettingProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface Goal
+ */
+ * @interface Goal
+ */
 interface Goal {
+/**
+ * GoalSettingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalSettingProps
+/**
+ * Handles goalsetting functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
   id: string;
   type: 'daily' | 'weekly' | 'monthly';
+/**
+ * GoalSettingProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalSettingProps
+/**
+ * Handles goalsetting functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
   target: number;
   current: number;
   unit: 'workouts' | 'minutes' | 'xp' | 'streak';
@@ -59,6 +197,14 @@ export function GoalSetting({ show, currentGoals, onSave, onClose }: GoalSetting
 
   const handleSaveGoal = (goal: Goal) => {
     const updatedGoals = goals.map(g => g.id === goal.id ? goal : g);
+/**
+ * GoalEditorProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalEditorProps
+ */
     if (!goals.find(g => g.id === goal.id)) {
       updatedGoals.push(goal);
     }
@@ -81,6 +227,14 @@ export function GoalSetting({ show, currentGoals, onSave, onClose }: GoalSetting
     >
       <motion.div
         className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+/**
+ * GoalEditorProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalEditorProps
+ */
         initial={{ scale: 0.9, y: 50 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 50 }}
@@ -97,6 +251,14 @@ export function GoalSetting({ show, currentGoals, onSave, onClose }: GoalSetting
           {/* Existing Goals */}
           {goals.map((goal) => (
             <Card key={goal.id} className="border-2 border-gray-200 dark:border-gray-700">
+/**
+ * GoalEditorProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalEditorProps
+ */
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -113,11 +275,33 @@ export function GoalSetting({ show, currentGoals, onSave, onClose }: GoalSetting
                       value={(goal.current / goal.target) * 100} 
                       className="h-2 mt-2"
                     />
+/**
+ * GoalEditorProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles goaleditor functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface GoalEditorProps
+ */
                   </div>
                   <div className="flex gap-2">
                     <Button
                       onClick={() => setEditingGoal(goal)}
                       variant="outline"
+/**
+ * ProgressCommitmentDashboardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressCommitmentDashboardProps
+ */
                       size="sm"
                     >
                       Edit
@@ -131,6 +315,14 @@ export function GoalSetting({ show, currentGoals, onSave, onClose }: GoalSetting
                     </Button>
                   </div>
                 </div>
+/**
+ * GoalEditorProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GoalEditorProps
+ */
               </CardContent>
             </Card>
           ))}
@@ -146,7 +338,29 @@ export function GoalSetting({ show, currentGoals, onSave, onClose }: GoalSetting
                   current: 0,
                   unit: 'workouts',
                   description: 'New goal'
+/**
+ * ProgressCommitmentDashboardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressCommitmentDashboardProps
+ */
                 })}
+/**
+ * GoalEditorProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles goaleditor functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface GoalEditorProps
+ */
                 variant="outline"
                 className="w-full"
               >
@@ -156,7 +370,29 @@ export function GoalSetting({ show, currentGoals, onSave, onClose }: GoalSetting
             </CardContent>
           </Card>
         </div>
+/**
+ * ProgressCommitmentDashboardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressCommitmentDashboardProps
+ */
 
+/**
+ * GoalEditorProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles goaleditor functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface GoalEditorProps
+ */
         <div className="flex justify-end gap-3 mt-6">
           <Button onClick={onClose} variant="outline">
             Cancel
@@ -172,6 +408,20 @@ export function GoalSetting({ show, currentGoals, onSave, onClose }: GoalSetting
         <GoalEditor
           goal={editingGoal}
           onSave={handleSaveGoal}
+/**
+ * ProgressCommitmentDashboardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles progresscommitmentdashboard functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @interface ProgressCommitmentDashboardProps
+ */
           onCancel={() => setEditingGoal(null)}
         />
       )}
@@ -192,6 +442,14 @@ function GoalEditor({ goal, onSave, onCancel }: GoalEditorProps) {
     <motion.div
       className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-60 p-4"
       initial={{ opacity: 0 }}
+/**
+ * ProgressCommitmentDashboardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ProgressCommitmentDashboardProps
+ */
       animate={{ opacity: 1 }}
     >
       <motion.div
@@ -222,6 +480,20 @@ function GoalEditor({ goal, onSave, onCancel }: GoalEditorProps) {
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
+/**
+ * ProgressCommitmentDashboardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles progresscommitmentdashboard functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @interface ProgressCommitmentDashboardProps
+ */
               <SelectContent>
                 <SelectItem value="daily">Daily</SelectItem>
                 <SelectItem value="weekly">Weekly</SelectItem>
@@ -240,6 +512,20 @@ function GoalEditor({ goal, onSave, onCancel }: GoalEditorProps) {
             >
               <SelectTrigger>
                 <SelectValue />
+/**
+ * ProgressCommitmentDashboardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles progresscommitmentdashboard functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @interface ProgressCommitmentDashboardProps
+ */
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="workouts">Workouts</SelectItem>

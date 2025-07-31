@@ -1,3 +1,15 @@
+/**
+ * LANDING MODULE
+ * 
+ * This module provides functionality for landing.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import OtterCharacter from "@/components/ui/otter-character";
@@ -10,6 +22,39 @@ import {
 } from "@/components/ui/menu-animations";
 import { motion } from "framer-motion";
 
+/**
+ * Handles landing functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Landing(params);
+ */
+/**
+ * Handles landing functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Landing(params);
+ */
+/**
+ * Handles landing functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await Landing(params);
+ */
 export default function Landing() {
   const handleLogin = () => {
     window.location.href = "/api/login";

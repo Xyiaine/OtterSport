@@ -38,6 +38,24 @@ import {
 import { motion } from "framer-motion";
 import type { User, Deck } from "@shared/schema";
 
+/**
+ * Handles home functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles home functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles home functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 export default function Home() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();

@@ -9,6 +9,24 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 // Fix for missing logo - create SVG OtterSport logo
+/**
+ * Handles ottersportlogo functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles ottersportlogo functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles ottersportlogo functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 export function OtterSportLogo({ size = 'md', className = '' }: { size?: 'sm' | 'md' | 'lg', className?: string }) {
   const sizeClasses = {
     sm: 'w-16 h-8',
@@ -37,6 +55,24 @@ export function OtterSportLogo({ size = 'md', className = '' }: { size?: 'sm' | 
         <circle cx="100" cy="15" r="3" fill="#20B2AA" opacity="0.6" />
         <circle cx="105" cy="25" r="2" fill="#16a085" opacity="0.6" />
         <circle cx="110" cy="35" r="2.5" fill="#20B2AA" opacity="0.4" />
+/**
+ * Handles appbackground functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles appbackground functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles appbackground functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       </svg>
     </div>
   );
@@ -98,6 +134,39 @@ export function AppBackground({ variant = 'default', className = '' }: { variant
             <circle cx="320" cy="150" r="40" fill="#16a085" opacity="0.05" />
             <circle cx="150" cy="220" r="35" fill="#20B2AA" opacity="0.03" />
           </svg>
+/**
+ * Handles graphicbutton functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GraphicButton(params);
+ */
+/**
+ * Handles graphicbutton functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GraphicButton(params);
+ */
+/**
+ * Handles graphicbutton functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GraphicButton(params);
+ */
         );
     }
   };
@@ -145,6 +214,12 @@ export function GraphicButton({
   };
 
   return (
+/**
+ * Handles cardframe functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
     <motion.button
       className={`
         ${getVariantClasses()}
@@ -157,6 +232,12 @@ export function GraphicButton({
       `}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
+/**
+ * Handles cardframe functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       {...props}
     >
       <div className="flex items-center justify-center space-x-2">
@@ -167,6 +248,48 @@ export function GraphicButton({
   );
 }
 
+/**
+ * Handles iconreplacements functionality for the application
+/**
+ * Handles cardframe functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+/**
+ * Handles graphicfixes functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+/**
+ * Handles iconreplacements functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+/**
+ * Handles graphicfixes functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+/**
+ * Handles iconreplacements functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+/**
+ * Handles graphicfixes functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
 // Fix for missing card backgrounds
 export function CardFrame({ children, theme = 'default', className = '' }: any) {
   const getThemeClasses = () => {

@@ -1,3 +1,15 @@
+/**
+ * BOTTOM-NAVIGATION MODULE
+ * 
+ * This module provides functionality for bottom-navigation.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useState } from "react";
@@ -12,6 +24,39 @@ import {
   LogOut 
 } from "lucide-react";
 
+/**
+ * Handles bottomnavigation functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await BottomNavigation(params);
+ */
+/**
+ * Handles bottomnavigation functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await BottomNavigation(params);
+ */
+/**
+ * Handles bottomnavigation functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await BottomNavigation(params);
+ */
 export default function BottomNavigation() {
   const [location, setLocation] = useLocation();
   const { isAdmin, canAccessGameArtist, logout } = useAdmin();

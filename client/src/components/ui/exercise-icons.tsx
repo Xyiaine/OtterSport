@@ -7,6 +7,80 @@
 
 import React from 'react';
 
+/**
+ * ExerciseIconProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * ExerciseIconProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * ExerciseIconProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseIconProps
+ */
+/**
+ * ExerciseIconProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseIconProps
+ */
+/**
+ * ExerciseIconProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseIconProps
+ */
+/**
+ * ExerciseIconProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseIconProps
+/**
+ * Handles exerciseicon functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ * @interface ExerciseIconProps
+ */
+/**
+ * ExerciseIconProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ExerciseIconProps
+/**
+ * Handles exerciseicon functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ * @interface ExerciseIconProps
+/**
+ * Handles exerciseicon functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
 interface ExerciseIconProps {
   type: 'strength' | 'cardio' | 'flexibility' | 'core' | 'warmup' | 'utility';
   size?: 'sm' | 'md' | 'lg';

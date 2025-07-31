@@ -1,3 +1,15 @@
+/**
+ * VITE.CONFIG MODULE
+ * 
+ * This module provides functionality for vite.config.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";

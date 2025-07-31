@@ -7,6 +7,24 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+/**
+ * Handles useauth functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles useauth functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles useauth functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 export function useAuth() {
   // Fetch current user data from the server
   const { data: user, isLoading } = useQuery({

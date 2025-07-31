@@ -27,6 +27,39 @@ import {
 import { useGameArtist } from "@/contexts/GameArtistContext";
 import VisualEditor from "./visual-editor";
 
+/**
+ * Handles gameartisttoolbar functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GameArtistToolbar(params);
+ */
+/**
+ * Handles gameartisttoolbar functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GameArtistToolbar(params);
+ */
+/**
+ * Handles gameartisttoolbar functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await GameArtistToolbar(params);
+ */
 export default function GameArtistToolbar() {
   const { 
     isGameArtistMode, 

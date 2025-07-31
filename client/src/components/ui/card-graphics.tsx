@@ -7,6 +7,80 @@
 
 import React from 'react';
 
+/**
+ * CardGraphicsProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * CardGraphicsProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * CardGraphicsProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardGraphicsProps
+ */
+/**
+ * CardGraphicsProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardGraphicsProps
+ */
+/**
+ * CardGraphicsProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardGraphicsProps
+ */
+/**
+ * CardGraphicsProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardGraphicsProps
+/**
+ * Handles cardgraphics functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ * @interface CardGraphicsProps
+ */
+/**
+ * CardGraphicsProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardGraphicsProps
+/**
+ * Handles cardgraphics functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ * @interface CardGraphicsProps
+/**
+ * Handles cardgraphics functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
 interface CardGraphicsProps {
   type: 'frame' | 'back' | 'background';
   theme?: 'strength' | 'cardio' | 'flexibility' | 'core' | 'utility' | 'warmup';

@@ -131,6 +131,70 @@ export interface IStorage {
  * 
  * Note: Data is lost when server restarts - use DatabaseStorage for production.
  */
+/**
+ * MemoryStorage class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+/**
+ * MemoryStorage class provides comprehensive functionality for its domain area.
+/**
+ * MemoryStorage class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+/**
+ * MemoryStorage class provides comprehensive functionality for its domain area.
+ * 
+/**
+ * provides class provides comprehensive functionality for its domain area.
+ * 
+/**
+ * MemoryStorage class provides comprehensive functionality for its domain area.
+/**
+ * MemoryStorage class provides comprehensive functionality for its domain area.
+/**
+ * MemoryStorage class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class MemoryStorage
+ */
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class MemoryStorage
+ */
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class MemoryStorage
+ */
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class provides
+ */
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class MemoryStorage
+ */
+ * @class MemoryStorage
+ */
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class MemoryStorage
+ */
+ * @class MemoryStorage
+ */
 export class MemoryStorage implements IStorage {
   // In-memory data stores with proper typing
   private users: Map<string, User> = new Map();

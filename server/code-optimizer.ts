@@ -8,7 +8,209 @@
  * - This system scans all TypeScript files for duplicate functions
  * - Merges similar functions with different names into unified implementations
  * - Removes unused imports and dead code
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
  * - Optimizes function signatures and return types
+/**
+ * DuplicateFunction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface DuplicateFunction
+ */
+/**
+ * CodeOptimizationResult interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CodeOptimizationResult
+ */
+/**
+ * DuplicateFunction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface DuplicateFunction
+ */
+/**
+ * CodeOptimizer class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class CodeOptimizer
+ */
+/**
+ * CodeOptimizationResult interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CodeOptimizationResult
+ */
+/**
+ * DuplicateFunction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface DuplicateFunction
+ */
+/**
+ * CodeOptimizer class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class CodeOptimizer
+ */
+/**
+ * DuplicateFunction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * CodeOptimizationResult interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CodeOptimizationResult
+ */
+/**
+ * DuplicateFunction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface DuplicateFunction
+ */
+/**
+ * CodeOptimizer class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class CodeOptimizer
+ */
+/**
+ * CodeOptimizationResult interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CodeOptimizationResult
+ */
+ * @interface DuplicateFunction
+ */
+/**
+ * CodeOptimizationResult interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CodeOptimizationResult
+ */
+/**
+ * DuplicateFunction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface DuplicateFunction
+ */
+/**
+ * CodeOptimizer class provides comprehensive functionality for its domain area.
+/**
+ * CodeOptimizer class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class CodeOptimizer
+ */
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+/**
+ * Handles detection functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @class CodeOptimizer
+ */
+/**
+ * CodeOptimizationResult interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CodeOptimizationResult
+ */
+/**
+ * DuplicateFunction interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface DuplicateFunction
+ */
+/**
+ * CodeOptimizer class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class CodeOptimizer
+ */
+/**
+ * CodeOptimizationResult interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles detection functionality for the application
+ * 
+ * @param {any} params - Function parameters
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @returns {any} Function return value
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CodeOptimizationResult
+ */
  * - Maintains code clarity while reducing redundancy
  */
 
@@ -17,6 +219,14 @@ import path from "path";
 
 interface DuplicateFunction {
   name: string;
+/**
+ * CodeOptimizer class provides comprehensive functionality for its domain area.
+ * 
+ * This class provides comprehensive functionality for its domain area.
+ * All methods are designed to work together as a cohesive system.
+ * 
+ * @class CodeOptimizer
+ */
   files: string[];
   similarity: number;
   canMerge: boolean;
@@ -27,10 +237,22 @@ interface CodeOptimizationResult {
   duplicatesFound: DuplicateFunction[];
   duplicatesRemoved: number;
   unusedImportsRemoved: number;
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
   deadCodeRemoved: number;
   functionsOptimized: number;
   bytesSaved: number;
   optimizationDetails: string[];
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 }
 
 /**
@@ -45,10 +267,22 @@ export class CodeOptimizer {
    * MAIN OPTIMIZATION FUNCTION
    * 
    * Runs complete code optimization including:
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
    * - Duplicate function detection and merging
    * - Unused code removal
    * - Import optimization
    * - Function signature optimization
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
    */
   async optimizeCodebase(): Promise<CodeOptimizationResult> {
     console.log('🔧 Starting comprehensive code optimization...');
@@ -62,6 +296,18 @@ export class CodeOptimizer {
       bytesSaved: 0,
       optimizationDetails: []
     };
+/**
+ * Handles in functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles definitions functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 
     // Step 1: Find duplicate functions across all files
     result.duplicatesFound = await this.findDuplicateFunctions();
@@ -98,6 +344,18 @@ export class CodeOptimizer {
    * DUPLICATE FUNCTION FINDER
    * 
    * Scans all TypeScript files to identify functions that are duplicated
+/**
+ * Handles in functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles definitions functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
    * or very similar across different files.
    */
   private async findDuplicateFunctions(): Promise<DuplicateFunction[]> {
@@ -116,6 +374,18 @@ export class CodeOptimizer {
           const normalizedContent = this.normalizeFunctionContent(func.content);
           
           if (!functionMap.has(normalizedContent)) {
+/**
+ * Handles in functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles definitions functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
             functionMap.set(normalizedContent, []);
           }
           
@@ -137,6 +407,12 @@ export class CodeOptimizer {
             mergedName: this.generateMergedName(instances[0].content)
           });
         }
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       }
       
     } catch (error) {
@@ -167,10 +443,22 @@ export class CodeOptimizer {
           // Remove duplicate function definitions
           await this.removeDuplicateDefinitions(duplicate);
           
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
           mergedCount++;
         } catch (error) {
           console.error(`Error merging function ${duplicate.name}:`, error);
         }
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       }
     }
     
@@ -189,6 +477,12 @@ export class CodeOptimizer {
     try {
       const files = await this.getAllTypeScriptFiles();
       
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       for (const file of files) {
         const content = await fs.readFile(file, 'utf-8');
         const cleanedContent = await this.removeUnusedImportsFromFile(content);
@@ -207,6 +501,18 @@ export class CodeOptimizer {
 
   /**
    * REMOVE DEAD CODE
+/**
+ * Handles signatures functionality for the application
+/**
+ * Handles declarations functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
    * 
    * Identifies and removes code that is never executed or referenced,
    * including unused variables, functions, and unreachable code blocks.
@@ -224,9 +530,27 @@ export class CodeOptimizer {
         const cleanedContent = await this.removeDeadCodeFromFile(content);
         const cleanedLines = cleanedContent.split('\n').length;
         
+/**
+ * Handles in functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
         if (content !== cleanedContent) {
           await fs.writeFile(file, cleanedContent, 'utf-8');
           removedLines += (originalLines - cleanedLines);
+/**
+/**
+ * Handles definitions functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * Handles declarations functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
         }
       }
     } catch (error) {
@@ -237,15 +561,39 @@ export class CodeOptimizer {
   }
 
   /**
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
    * OPTIMIZE FUNCTION SIGNATURES
    * 
+/**
+ * Handles declarations functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
    * Improves function signatures by:
    * - Adding proper TypeScript types
    * - Simplifying parameter lists
+/**
+ * Handles in functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
    * - Optimizing return types
    * - Adding JSDoc comments
    */
   private async optimizeFunctionSignatures(): Promise<number> {
+/**
+ * Handles definitions functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
     let optimizedCount = 0;
     
     try {
@@ -260,10 +608,28 @@ export class CodeOptimizer {
           optimizedCount += this.countFunctionOptimizations(content, optimizedContent);
         }
       }
+/**
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * Handles in functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
     } catch (error) {
       console.error('Error optimizing function signatures:', error);
     }
     
+/**
+ * Handles definitions functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
     return optimizedCount;
   }
 
@@ -279,6 +645,12 @@ export class CodeOptimizer {
         for (const entry of entries) {
           const fullPath = path.join(dir, entry.name);
           
+/**
+ * Handles signatures functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
           if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             await scanDirectory(fullPath);
           } else if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.tsx'))) {

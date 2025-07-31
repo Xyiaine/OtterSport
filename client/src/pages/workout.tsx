@@ -1,3 +1,15 @@
+/**
+ * WORKOUT MODULE
+ * 
+ * This module provides functionality for workout.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useParams } from "wouter";
@@ -42,6 +54,24 @@ type DeckWithExercises = Deck & {
  * 
  * Main workout execution interface that manages the complete workout lifecycle
  * from exercise selection through completion and feedback collection.
+ */
+/**
+ * Handles workoutpage functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles workoutpage functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles workoutpage functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
  */
 export default function WorkoutPage() {
   const { deckId } = useParams<{ deckId: string }>();

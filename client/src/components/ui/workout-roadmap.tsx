@@ -27,13 +27,151 @@ import {
 } from 'lucide-react';
 import { ExerciseIcon } from '@/components/ui/exercise-icons';
 
+/**
+ * WorkoutNode interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * WorkoutNode interface defines the contract for implementation.
+/**
+ * WorkoutNode interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * WorkoutNode interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * WorkoutNode interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutNode
+/**
+ * WorkoutRoadmapProps interface defines the contract for implementation.
+ * 
+/**
+ * WorkoutNode interface defines the contract for implementation.
+/**
+ * WorkoutNode interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutNode
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * WorkoutRoadmapProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutRoadmapProps
+ */
+ * 
+ * @interface WorkoutNode
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutRoadmapProps
+ */
+/**
+ * WorkoutRoadmapProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutRoadmapProps
+ */
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * WorkoutRoadmapProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutRoadmapProps
+/**
+ * Handles workoutroadmap functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ * 
+ * @interface WorkoutNode
+ */
+ * @interface WorkoutNode
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutNode
+/**
+ * WorkoutRoadmapProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutRoadmapProps
+ */
+ */
+ * @interface WorkoutNode
+ */
 interface WorkoutNode {
   id: string;
   title: string;
   description: string;
   type: 'strength' | 'cardio' | 'flexibility' | 'core' | 'boss';
+/**
+ * WorkoutRoadmapProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutRoadmapProps
+/**
+ * Handles workoutroadmap functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
   status: 'completed' | 'current' | 'locked' | 'available';
   difficulty: 'easy' | 'medium' | 'hard' | 'boss';
+/**
+ * WorkoutRoadmapProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface WorkoutRoadmapProps
+/**
+ * Handles workoutroadmap functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
   xpReward: number;
   estimatedMinutes: number;
   position: { x: number; y: number };

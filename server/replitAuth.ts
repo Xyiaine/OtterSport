@@ -59,10 +59,46 @@ export function getSession() {
   });
 }
 
+/**
+ * Modifies existing data in the system
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Modifies existing data in the system
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Modifies existing data in the system
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 function updateUserSession(
   user: any,
   tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers
 ) {
+/**
+ * Handles upsertuser functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles upsertuser functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles upsertuser functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
   user.claims = tokens.claims();
   user.access_token = tokens.access_token;
   user.refresh_token = tokens.refresh_token;
@@ -75,6 +111,39 @@ async function upsertUser(
   try {
     if (storage && storage.upsertUser) {
       await storage.upsertUser({
+/**
+ * Updates data in the system
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await setupAuth(params);
+ */
+/**
+ * Updates data in the system
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await setupAuth(params);
+ */
+/**
+ * Updates data in the system
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await setupAuth(params);
+ */
         id: claims["sub"],
         email: claims["email"],
         firstName: claims["first_name"],

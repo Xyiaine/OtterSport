@@ -11,6 +11,24 @@ import { useAuth } from './useAuth';
 import { getOnboardingData, clearOnboardingData, hasCompletedOnboarding, getUserProfile } from '@/lib/localStorage';
 import { apiRequest } from '@/lib/queryClient';
 
+/**
+ * Handles uselocalprofile functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles uselocalprofile functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles uselocalprofile functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
 export function useLocalProfile() {
   const { user, isAuthenticated } = useAuth();
   const queryClient = useQueryClient();

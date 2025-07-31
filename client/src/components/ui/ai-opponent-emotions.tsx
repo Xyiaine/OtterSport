@@ -24,6 +24,70 @@ export type EmotionType =
   | 'thinking'
   | 'surprised';
 
+/**
+ * AIOpponentProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AIOpponentProps interface defines the contract for implementation.
+/**
+ * AIOpponentProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AIOpponentProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * AIOpponentProps interface defines the contract for implementation.
+/**
+ * AIOpponentProps interface defines the contract for implementation.
+/**
+ * AIOpponentProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AIOpponentProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AIOpponentProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AIOpponentProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AIOpponentProps
+ */
+ * @interface AIOpponentProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AIOpponentProps
+ */
+ * @interface AIOpponentProps
+ */
 export interface AIOpponentProps {
   currentEmotion: EmotionType;
   playerScore: number;
@@ -50,6 +114,12 @@ const emotionConfigs = {
     expression: '😤',
     color: 'bg-orange-100',
     message: 'Time to step up!',
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
     animation: 'animate-bounce'
   },
   focused: {
@@ -60,6 +130,17 @@ const emotionConfigs = {
   },
   celebratory: {
     expression: '🎉',
+/**
+ * Handles aiopponentemotions functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AIOpponentEmotions(params);
+ */
     color: 'bg-yellow-100',
     message: 'Excellent move!',
     animation: 'animate-bounce'
@@ -76,6 +157,28 @@ const emotionConfigs = {
     message: 'Let me think...',
     animation: 'animate-spin'
   },
+/**
+ * Handles aiopponentemotions functionality for the application
+ * 
+/**
+ * Handles aiopponentemotions functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AIOpponentEmotions(params);
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await AIOpponentEmotions(params);
+ */
   surprised: {
     expression: '😲',
     color: 'bg-pink-100',

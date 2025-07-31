@@ -1,3 +1,15 @@
+/**
+ * STRATEGIC-CARD MODULE
+ * 
+ * This module provides functionality for strategic-card.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,8 +32,120 @@ import {
   Repeat
 } from "lucide-react";
 
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * GameCard interface defines the contract for implementation.
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * GameCard interface defines the contract for implementation.
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+/**
+ * StrategicCardProps interface defines the contract for implementation.
+/**
+ * GameCard interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+/**
+ * StrategicCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StrategicCardProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StrategicCardProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * StrategicCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StrategicCardProps
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * StrategicCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StrategicCardProps
+ */
+ * @interface GameCard
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ * @interface GameCard
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface GameCard
+ */
+ * @interface GameCard
+ */
+/**
+ * StrategicCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StrategicCardProps
+ */
 interface GameCard {
   id: string;
+/**
+ * StrategicCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StrategicCardProps
+ */
   exercise: {
     id: number;
     name: string;
@@ -30,6 +154,25 @@ interface GameCard {
     icon?: string;
   };
   points: number;
+/**
+ * StrategicCardProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StrategicCardProps
+ */
+/**
+ * Handles strategiccard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await StrategicCard(params);
+ */
   difficulty: number;
   type: 'cardio' | 'strength' | 'flexibility' | 'mixed' | 'warmup' | 'utility';
   combo?: string;
@@ -59,11 +202,33 @@ const typeIcons = {
   cardio: Heart,
   strength: Dumbbell,
   flexibility: Waves,
+/**
+ * Handles strategiccard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await StrategicCard(params);
+ */
   mixed: Activity,
   warmup: Thermometer,
   utility: Settings
 };
 
+/**
+ * Handles strategiccard functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await StrategicCard(params);
+ */
 const utilityIcons = {
   redraw_hand: Repeat,
   shuffle_deck: Shuffle,

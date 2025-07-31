@@ -9,6 +9,104 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Star, Flame, Crown, Zap, Heart } from 'lucide-react';
 
+/**
+ * ConfettiProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles confetti functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+/**
+ * ConfettiProps interface defines the contract for implementation.
+/**
+ * ConfettiProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles confetti functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+/**
+ * ConfettiProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * ConfettiProps interface defines the contract for implementation.
+/**
+ * ConfettiProps interface defines the contract for implementation.
+/**
+ * ConfettiProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+/**
+ * Handles confetti functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+ * @interface ConfettiProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ConfettiProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ConfettiProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+/**
+ * LevelUpAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LevelUpAnimationProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ConfettiProps
+ */
+ * @interface ConfettiProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface ConfettiProps
+ */
+ * @interface ConfettiProps
+/**
+ * LevelUpAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LevelUpAnimationProps
+ */
+ */
 interface ConfettiProps {
   show: boolean;
   onComplete?: () => void;
@@ -16,6 +114,14 @@ interface ConfettiProps {
 
 export function Confetti({ show, onComplete }: ConfettiProps) {
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; color: string; delay: number }>>([]);
+/**
+ * LevelUpAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LevelUpAnimationProps
+ */
 
   useEffect(() => {
     if (show) {
@@ -30,15 +136,45 @@ export function Confetti({ show, onComplete }: ConfettiProps) {
 
       // Clear after animation
       setTimeout(() => {
+/**
+ * LevelUpAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LevelUpAnimationProps
+/**
+ * Handles levelupanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
         setParticles([]);
         onComplete?.();
       }, 3000);
     }
+/**
+ * LevelUpAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LevelUpAnimationProps
+ */
   }, [show, onComplete]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-50">
       {particles.map((particle) => (
+/**
+ * AchievementPopupProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AchievementPopupProps
+ */
         <motion.div
           key={particle.id}
           className="absolute w-2 h-2 rounded-full"
@@ -48,13 +184,65 @@ export function Confetti({ show, onComplete }: ConfettiProps) {
             top: particle.y,
           }}
           initial={{ y: -10, rotate: 0 }}
+/**
+ * LevelUpAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LevelUpAnimationProps
+/**
+ * Handles levelupanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
           animate={{ 
             y: window.innerHeight + 10,
+/**
+ * LevelUpAnimationProps interface defines the contract for implementation.
+ * 
+/**
+ * AchievementPopupProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AchievementPopupProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LevelUpAnimationProps
+/**
+ * Handles levelupanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+/**
+ * XPGainAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface XPGainAnimationProps
+ */
+ */
+ */
             rotate: 360,
             x: particle.x + (Math.random() - 0.5) * 200,
           }}
           transition={{
             duration: 2.5,
+/**
+ * AchievementPopupProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AchievementPopupProps
+ */
             delay: particle.delay,
             ease: "easeOut",
           }}
@@ -81,6 +269,14 @@ export function LevelUpAnimation({ show, newLevel, xpGained, onComplete }: Level
       // Auto-hide after animation
       setTimeout(() => {
         onComplete?.();
+/**
+ * StreakAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakAnimationProps
+ */
       }, 4000);
     }
   }, [show, onComplete]);
@@ -88,7 +284,53 @@ export function LevelUpAnimation({ show, newLevel, xpGained, onComplete }: Level
   return (
     <AnimatePresence>
       {show && (
+/**
+ * XPGainAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface XPGainAnimationProps
+ */
         <motion.div
+/**
+ * AchievementPopupProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AchievementPopupProps
+ */
+/**
+ * AchievementPopupProps interface defines the contract for implementation.
+/**
+ * Handles achievementpopup functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * 
+/**
+ * XPGainAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface XPGainAnimationProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AchievementPopupProps
+/**
+ * LifeLostAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LifeLostAnimationProps
+ */
+ */
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -105,6 +347,14 @@ export function LevelUpAnimation({ show, newLevel, xpGained, onComplete }: Level
               className="mb-6"
               animate={{ rotate: [0, 360] }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+/**
+ * StreakAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakAnimationProps
+ */
             >
               <Crown className="h-16 w-16 mx-auto text-yellow-500" />
             </motion.div>
@@ -114,30 +364,120 @@ export function LevelUpAnimation({ show, newLevel, xpGained, onComplete }: Level
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}
+/**
+ * AnimatedProgressBarProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedProgressBarProps
+ */
             >
               LEVEL UP!
             </motion.h2>
+/**
+ * AchievementPopupProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AchievementPopupProps
+ */
             
             <motion.div
+/**
+ * Handles achievementpopup functionality for the application
+ * 
+ * @param {any} params - Function parameters
+/**
+ * StreakAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakAnimationProps
+ */
+ * @returns {any} Function return value
+ */
               className="text-6xl font-bold text-gray-800 dark:text-white mb-2"
+/**
+ * XPGainAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface XPGainAnimationProps
+ */
               initial={{ scale: 0 }}
               animate={{ scale: [0, 1.2, 1] }}
               transition={{ delay: 0.8, duration: 0.5 }}
             >
               {newLevel}
             </motion.div>
+/**
+ * LifeLostAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+/**
+ * XPGainAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface XPGainAnimationProps
+/**
+ * Handles xpgainanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LifeLostAnimationProps
+ */
             
+/**
+ * AchievementPopupProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AchievementPopupProps
+ */
             <motion.p
               className="text-gray-600 dark:text-gray-300 mb-4"
+/**
+ * Handles achievementpopup functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1.2 }}
+/**
+ * AnimatedProgressBarProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedProgressBarProps
+ */
             >
               You earned {xpGained} XP and reached Level {newLevel}!
             </motion.p>
             
             <motion.div
               className="flex items-center justify-center gap-2 text-yellow-600"
+/**
+ * LifeLostAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LifeLostAnimationProps
+ */
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.5 }}
@@ -147,13 +487,57 @@ export function LevelUpAnimation({ show, newLevel, xpGained, onComplete }: Level
               <Star className="h-5 w-5 fill-yellow-500" />
             </motion.div>
           </motion.div>
+/**
+ * StreakAnimationProps interface defines the contract for implementation.
+/**
+ * StreakAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles streakanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface StreakAnimationProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface StreakAnimationProps
+ */
           
           <Confetti show={show} />
         </motion.div>
+/**
+ * AnimatedProgressBarProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedProgressBarProps
+ */
       )}
     </AnimatePresence>
   );
 }
+/**
+ * XPGainAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface XPGainAnimationProps
+/**
+ * Handles xpgainanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ */
 
 interface AchievementPopupProps {
   show: boolean;
@@ -166,6 +550,42 @@ interface AchievementPopupProps {
 }
 
 export function AchievementPopup({ show, achievement, onComplete }: AchievementPopupProps) {
+/**
+ * XPGainAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * LifeLostAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles lifelostanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface LifeLostAnimationProps
+ */
+ * @interface XPGainAnimationProps
+/**
+ * Handles xpgainanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+/**
+ * LifeLostAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface LifeLostAnimationProps
+ */
+ */
+ */
   useEffect(() => {
     if (show) {
       // Play achievement sound
@@ -175,6 +595,34 @@ export function AchievementPopup({ show, achievement, onComplete }: AchievementP
       // Auto-hide after 3 seconds
       setTimeout(() => {
         onComplete?.();
+/**
+ * StreakAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles streakanimation functionality for the application
+ * 
+/**
+ * AnimatedProgressBarProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedProgressBarProps
+ */
+/**
+ * Handles animatedprogressbar functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface StreakAnimationProps
+ */
       }, 3000);
     }
   }, [show, onComplete]);
@@ -184,6 +632,14 @@ export function AchievementPopup({ show, achievement, onComplete }: AchievementP
       {show && (
         <motion.div
           className="fixed top-4 right-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white p-4 rounded-lg shadow-lg z-30 max-w-sm"
+/**
+ * AnimatedProgressBarProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedProgressBarProps
+ */
           initial={{ x: 400, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 400, opacity: 0 }}
@@ -195,6 +651,20 @@ export function AchievementPopup({ show, achievement, onComplete }: AchievementP
               transition={{ repeat: Infinity, duration: 1.5 }}
             >
               <Trophy className="h-8 w-8" />
+/**
+ * StreakAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles streakanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface StreakAnimationProps
+ */
             </motion.div>
             <div>
               <h3 className="font-bold text-sm">Achievement Unlocked!</h3>
@@ -206,6 +676,20 @@ export function AchievementPopup({ show, achievement, onComplete }: AchievementP
       )}
     </AnimatePresence>
   );
+/**
+ * LifeLostAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * Handles lifelostanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface LifeLostAnimationProps
+ */
 }
 
 interface XPGainAnimationProps {
@@ -234,6 +718,34 @@ export function XPGainAnimation({ show, xpGained, reason, onComplete }: XPGainAn
           exit={{ y: -50, opacity: 0, scale: 0.8 }}
         >
           <div className="flex items-center gap-2">
+/**
+ * LifeLostAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * AnimatedProgressBarProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedProgressBarProps
+ */
+/**
+ * Handles animatedprogressbar functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+/**
+ * Handles lifelostanimation functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * @interface LifeLostAnimationProps
+ */
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -268,6 +780,20 @@ export function StreakAnimation({ show, streakCount, onComplete }: StreakAnimati
 
   return (
     <AnimatePresence>
+/**
+ * AnimatedProgressBarProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface AnimatedProgressBarProps
+ */
+/**
+ * Handles animatedprogressbar functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
       {show && (
         <motion.div
           className="fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-30"

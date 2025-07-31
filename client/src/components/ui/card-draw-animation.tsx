@@ -1,10 +1,125 @@
+/**
+ * CARD-DRAW-ANIMATION MODULE
+ * 
+ * This module provides functionality for card-draw-animation.
+ * All exports are designed to work seamlessly with the OtterSport application.
+ * 
+ * Human Developer Guide:
+ * - Follow established patterns when modifying this file
+ * - Maintain comprehensive test coverage for all functions
+ * - Update documentation when adding new functionality
+ */
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { Exercise } from "@shared/schema";
 
+/**
+ * CardDrawAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * CardDrawAnimationProps interface defines the contract for implementation.
+/**
+ * CardDrawAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+/**
+ * CardDrawAnimationProps interface defines the contract for implementation.
+ * 
+/**
+ * defines interface defines the contract for implementation.
+ * 
+/**
+ * CardDrawAnimationProps interface defines the contract for implementation.
+/**
+ * CardDrawAnimationProps interface defines the contract for implementation.
+/**
+ * CardDrawAnimationProps interface defines the contract for implementation.
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDrawAnimationProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDrawAnimationProps
+ */
+ * 
+/**
+ * Handles that functionality for the application
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDrawAnimationProps
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface defines
+ */
+/**
+ * Handles carddrawanimation functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardDrawAnimation(params);
+ */
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDrawAnimationProps
+ */
+ * @interface CardDrawAnimationProps
+ */
+ * 
+ * This interface defines the contract for implementation.
+ * All properties and methods should be implemented according to specification.
+ * 
+ * @interface CardDrawAnimationProps
+ */
+ * @interface CardDrawAnimationProps
+ */
 interface CardDrawAnimationProps {
+/**
+ * Handles carddrawanimation functionality for the application
+ * 
+/**
+ * Handles carddrawanimation functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardDrawAnimation(params);
+ */
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await CardDrawAnimation(params);
+ */
   exercise: Exercise;
   reps?: number | null;
   duration?: number | null;

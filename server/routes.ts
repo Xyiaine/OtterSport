@@ -11,8 +11,41 @@ import { storage } from "./db";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertDeckSchema, insertWorkoutSchema, insertExerciseSchema, insertDeckExerciseSchema } from "@shared/schema";
 import { z } from "zod";
-import { registerTotalHealthRoutes } from "./total-health-system";
+import { setupTotalHealthRoutes } from "./total-health-system";
 
+/**
+ * Handles registerroutes functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await registerRoutes(params);
+ */
+/**
+ * Handles registerroutes functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await registerRoutes(params);
+ */
+/**
+ * Handles registerroutes functionality for the application
+ * 
+ * This is a complex function that requires careful attention.
+ * 
+ * @param {any} params - Function parameters
+ * @returns {any} Function return value
+ * 
+ * @example
+ * const result = await registerRoutes(params);
+ */
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication middleware
   await setupAuth(app);
@@ -23,7 +56,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Register Total Health System routes
-  registerTotalHealthRoutes(app);
+  setupTotalHealthRoutes(app);
 
   // Health endpoint
   app.get('/api/health', (req, res) => {                    
